@@ -1,0 +1,75 @@
+name: Intranet deployment
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    name: Deploy to production website
+    runs-on: ubuntu-latest
+
+    env:
+      SSHPASS: ${{ secrets.REMOTE_PASS }}
+
+    steps:
+      - name: Install SSHPASS
+        run: |
+          BIGreen="\033[1;92m"
+
+          sudo apt update &> /dev/null
+          echo -e "Update system ${BIGreen}[OK]"
+
+          sudo apt install sshpass &> /dev/null
+          echo -e "Install sshpass ${BIGreen}[OK]"
+
+      - name: Update files
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
+
+          git fetch origin master --quiet &&
+          echo -e "Git fetch ${BIGreen}[OK]" &&
+
+          git pull origin master --quiet &&
+          echo -e "Git pull ${BIGreen}[OK]"'
+
+      - name: Update components
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
+
+          export COMPOSER_ALLOW_SUPERUSER=1 &&
+          composer install --quiet &&
+          echo -e "Install dependencies ${BIGreen}[OK]" &&
+
+          composer update --quiet &&
+          echo -e "Update dependencies ${BIGreen}[OK]" &&
+
+          npm install &> /dev/null &&
+          echo -e "Install packages ${BIGreen}[OK]" &&
+
+          npm update &> /dev/null &&
+          echo -e "Update packages ${BIGreen}[OK]"'
+
+      - name: Compile assets
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
+
+          npm run build &> /dev/null &&
+          echo -e "Compile assets ${BIGreen}[OK]"'
+
+      - name: Set server settings
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
+
+          export COMPOSER_ALLOW_SUPERUSER=1 &&
+          composer dump-env prod --quiet &&
+          echo -e "Put the website into production ${BIGreen}[OK]" &&
+
+          symfony console cache:clear --quiet &&
+          echo -e "Clear the cache ${BIGreen}[OK]" &&
+
+          chmod -Rf 777 ./var/ &&
+          echo -e "Update var folders permissions ${BIGreen}[OK]"'
