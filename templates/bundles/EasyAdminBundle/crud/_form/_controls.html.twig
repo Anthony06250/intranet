@@ -1,0 +1,54 @@
+{{ form_start(form) }}
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                <div class="col-6" hidden></div>
+                {{ form_row(form.user) }}
+                {{ form_row(form.store) }}
+                {{ form_row(form.controlsCounter) }}
+                {{ form_row(form.controlsPeriod) }}
+                {{ form_row(form.created_at) }}
+                {{ form_row(form.updated_at) }}
+                {{ form_row(form.turnover) }}
+                {{ form_row(form.cash_fund) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.one_cent) }}
+                {{ form_row(form.two_cents) }}
+                {{ form_row(form.five_cents) }}
+                {{ form_row(form.ten_cents) }}
+                {{ form_row(form.twenty_cents) }}
+                {{ form_row(form.fifty_cents) }}
+                {{ form_row(form.one_euro) }}
+                {{ form_row(form.two_euros) }}
+                {{ form_row(form.five_euros) }}
+                {{ form_row(form.ten_euros) }}
+                {{ form_row(form.twenty_euros) }}
+                {{ form_row(form.fifty_euros) }}
+                {{ form_row(form.one_hundred_euros) }}
+                {{ form_row(form.two_hundred_euros) }}
+                {{ form_row(form.five_hundred_euros) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section id="debit-alert" class="alert alert-primary text-center border-0" role="alert" style="display: none">
+                    <span id="debit-text-positive" style="display: none">
+                        {{ 'Controls.Positive debit' | trans | raw }}
+                    </span>
+                <span id="debit-text-negative" style="display: none">
+                        {{ 'Controls.Negative debit' | trans | raw }}
+                    </span>
+            </section>
+            <section class="row">
+                {{ form_row(form.result) }}
+                {{ form_row(form.error) }}
+            </section>
+        </article>
+    </article>
+{{ form_end(form) }}

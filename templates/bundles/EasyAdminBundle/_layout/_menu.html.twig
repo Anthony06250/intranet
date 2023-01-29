@@ -1,0 +1,15 @@
+<nav class="topnav">
+    <article class="container-fluid active">
+        <nav class="navbar navbar-expand-lg">
+            <section class="collapse navbar-collapse active" id="topnav-menu-content">
+                {% block main_menu_before %}{% endblock %}
+                <ul class="navbar-nav">
+                    {% block main_menu_wrapper %}
+                        {% include ea.templatePath('main_menu') %}
+                    {% endblock main_menu_wrapper %}
+                </ul>
+                {% block main_menu_after %}{% endblock %}
+            </section>
+        </nav>
+    </article>
+</nav>

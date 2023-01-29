@@ -1,0 +1,68 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+
+{% block main_menu %}
+    {% for menuItem in ea.mainMenu.items %}
+        {{ _self.render_menu(menuItem) }}
+    {% endfor %}
+{% endblock main_menu %}
+
+{% macro render_menu(menuItem) %}
+    {% block menu_item %}
+        {% set level = 1 %}
+        <li class="{{ menuItem.isMenuSection ? 'nav-title' }} nav-item {{ menuItem.isSelected ? 'menuitem-active' }} {{ menuItem.hasSubItems ? 'dropdown' }} {{ menuItem.isExpanded ? 'active' }}">
+            {{ _self.render_menu_item(menuItem, level) }}
+            {% if menuItem.hasSubItems %}
+                {% set level = level + 1 %}
+                <section class="dropdown-menu" aria-labelledby="topnav-{{ menuItem.label | trans | raw }}">
+                    {% for menuSubItem in menuItem.subItems %}
+                        {% block menu_subitem %}
+                            {{ _self.render_menu_item(menuSubItem, level) }}
+                        {% endblock menu_subitem %}
+                    {% endfor %}
+                </section>
+            {% endif %}
+        </li>
+    {% endblock menu_item %}
+{% endmacro %}
+
+{% macro render_menu_item(item, level) %}
+    {% if item.isMenuSection %}
+        {% if item.icon is not empty %}
+            <i class="{{ item.icon }}"></i>
+        {% endif %}
+        {% if item.label %}
+            {{ item.label | trans | raw }}
+        {% else %}
+            <div class="dropdown-divider my-1"></div>
+        {% endif %}
+        {% if item.badge %}
+            <span class="badge bg-success float-end {{ item.badge.cssClass }}">
+                {{ item.badge.content }}
+            </span>
+        {% endif %}
+    {% else %}
+        <a class="{{ level == 1 or item.hasSubItems ? 'nav-link' }} {{ item.hasSubItems ? 'dropdown-toggle arrow-none' : 'dropdown-item' }} {{ item.isSelected ? 'active' }} {{ item.cssClass }}"
+           href="{{ item.hasSubItems ? '#' : item.linkUrl }}"
+                {% if item.hasSubItems %}
+                    id="topnav-{{ item.label | trans | raw }}"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                {% endif %}
+        >
+            {% if item.icon is not empty %}
+                <i class="{{ item.icon }} me-1"></i>
+            {% endif %}
+            {% if item.badge %}
+                <span class="badge bg-success float-end ms-2 {{ item.badge.cssClass }}" style="margin-top: 2px">
+                    {{ item.badge.content }}
+                </span>
+            {% endif %}
+            {{ item.label|trans|raw }}
+            {% if item.hasSubItems %}
+                <span class="arrow-down"></span>
+            {% endif %}
+        </a>
+    {% endif %}
+{% endmacro %}

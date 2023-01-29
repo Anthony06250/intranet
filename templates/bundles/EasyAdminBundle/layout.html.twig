@@ -1,0 +1,139 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% trans_default_domain ea.i18n.translationDomain %}
+
+<!DOCTYPE html>
+<html lang="{{ ea.i18n.htmlLocale }}" dir="{{ ea.i18n.textDirection }}" data-layout="topnav" data-theme="light"
+      data-layout-mode="fluid" data-topbar-color="light" data-layout-position="fixed" data-sidenav-size="default"
+      data-menu-color="brand"
+>
+    <head>
+        {% block head_metas %}
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache">
+            <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        {% endblock head_metas %}
+        {% block head_favicon %}
+            <link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
+        {% endblock %}
+        {% set page_title_block_output %}
+            {% block page_title %}
+                {{ block('content_title') }}
+            {% endblock %}
+        {% endset %}
+        <title>
+            {{ page_title_block_output | striptags | raw }}
+        </title>
+        {% block head_stylesheets %}
+            <link href="{{ asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css">
+            <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
+            <link href="{{ asset('assets/css/app-modern.min.css') }}" rel="stylesheet" type="text/css" id="app-style">
+        {% endblock %}
+        {% block configured_stylesheets %}
+            {{ include('@EasyAdmin/includes/_css_assets.html.twig', {assets: ea.assets.cssAssets ?? []}, with_context = false) }}
+            {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', {assets: ea.assets.webpackEncoreAssets ?? []}, with_context = false) }}
+        {% endblock %}
+        {% block head_javascript %}
+            <script src="{{ asset('assets/js/hyper-config.js') }}"></script>
+        {% endblock head_javascript %}
+        {% block configured_head_contents %}
+            {% for htmlContent in ea.assets.headContents ?? [] %}
+                {{ htmlContent | raw }}
+            {% endfor %}
+        {% endblock %}
+    </head>
+    <body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="ea {% block body_class %}{% endblock %} show">
+        {% block javascript_page_layout %}{% endblock javascript_page_layout %}
+        {% block javascript_page_color_scheme %}{% endblock javascript_page_color_scheme %}
+        {% block wrapper_wrapper %}
+            <section class="wrapper">
+                {%  include 'bundles/EasyAdminBundle/_layout/_topnav.html.twig' %}
+                {%  include 'bundles/EasyAdminBundle/_layout/_menu.html.twig' %}
+                <main class="content-page">
+                    <article class="content">
+                        <div class="container-fluid">
+                            {% block body %}
+                                {% block wrapper %}
+                                    {% block content %}
+                                        {% block content_header_wrapper %}
+                                            {% set has_help_message = (ea.crud.helpMessage ?? '') is not empty %}
+                                            {% block content_header %}
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="page-title-box">
+                                                            {% block page_actions_wrapper %}
+                                                                <div class="page-title-right">
+                                                                    {% block page_actions %}{% endblock %}
+                                                                </div>
+                                                            {% endblock %}
+                                                            <h4 class="page-title">
+                                                                {% block content_title %}{% endblock %}
+                                                                {% block content_help %}
+                                                                    {% if has_help_message %}
+                                                                        <a tabindex="0" class="content-header-help"
+                                                                           data-bs-toggle="popover"
+                                                                           data-bs-custom-class="ea-content-help-popover"
+                                                                           data-bs-animation="true" data-bs-html="true"
+                                                                           data-bs-placement="bottom"
+                                                                           data-bs-trigger="focus"
+                                                                           data-bs-content="{{ ea.crud.helpMessage | trans | e('html_attr') }}">
+                                                                            <i class="far fa-question-circle"></i>
+                                                                        </a>
+                                                                    {% endif %}
+                                                                {% endblock %}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endblock content_header %}
+                                        {% endblock content_header_wrapper %}
+                                        <section id="main" class="content-body">
+                                            <article class="row">
+                                                <section class="col-12">
+                                                    {% block main %}{% endblock %}
+                                                </section>
+                                            </article>
+                                        </section>
+                                        {% block content_footer_wrapper %}
+                                            {% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}
+                                            {% if content_footer is not empty %}
+                                                <section class="content-footer">
+                                                    <div class="row">
+                                                        <div class="col12">
+                                                            {{ content_footer }}
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            {% endif %}
+                                        {% endblock %}
+                                    {% endblock content %}
+                                {% endblock wrapper %}
+                            {% endblock %}
+                        </div>
+                    </article>
+                    {%  include 'bundles/EasyAdminBundle/_layout/_footer.html.twig' %}
+                </main>
+            </section>
+        {% endblock wrapper_wrapper %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% include 'bundles/EasyAdminBundle/_layout/_theme-settings.html.twig' %}
+        {% endif %}
+        {% block body_javascript %}
+            <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
+            <script src="{{ asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
+            <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        {% endblock body_javascript %}
+        {% block configured_javascripts %}
+            {{ include('@EasyAdmin/includes/_js_assets.html.twig', {assets: ea.assets.jsAssets ?? []}, with_context = false) }}
+            {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', {assets: ea.assets.webpackEncoreAssets ?? []}, with_context = false) }}
+        {% endblock %}
+        {% block configured_body_contents %}
+            {% for htmlContent in ea.assets.bodyContents ?? [] %}
+                {{ htmlContent | raw }}
+            {% endfor %}
+        {% endblock %}
+        {% block flash_messages %}
+            {% include ea.templatePath('flash_messages') %}
+        {% endblock flash_messages %}
+    </body>
+</html>

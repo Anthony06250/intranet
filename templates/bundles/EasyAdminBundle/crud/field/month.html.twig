@@ -1,0 +1,6 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+<time datetime="{{ field.value | date('c') }}" title="{{ field.value | date('r') }}">
+    {{ (field.formattedValue ~ '-07') | format_date(pattern='MMMM Y', locale=app.request.locale) | capitalize }}
+</time>

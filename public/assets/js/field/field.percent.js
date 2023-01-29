@@ -1,0 +1,1 @@
+$(document).ready(function(){"use strict";$(".field-percent input").on("change",function(){var n=$(this).val().toNumber();console.log(n),$(this).val(n?n.toCurrency():null)})});

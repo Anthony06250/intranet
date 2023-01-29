@@ -1,0 +1,1 @@
+$(document).ready(function(){"use strict";$(".field-integer input").on("change",function(){var n=$(this).val().toNumber();$(this).val(n||null)})});

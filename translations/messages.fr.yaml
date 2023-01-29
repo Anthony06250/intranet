@@ -1,0 +1,304 @@
+Menu:
+  Welcome !: Bienvenue !
+  Navigation: Navigation
+  Dashboard: Tableau de bord
+  My account: Mon compte
+  Support: Support
+  Users: Utilisateurs
+  UsersPermissions: Autorisations
+  Stores: Magasins
+  ControlsCounters: Comptoirs
+  ControlsPeriods: Périodes
+  Controls: Contrôles
+  Safes: Coffres
+  SafesMovements: Mouvements
+  SafesControls: Contrôles de coffre
+  Buybacks: Buybacks
+  Customers: Clients
+  Search: Rechercher
+  Logout: Se déconnecter
+
+Login:
+  Message: Entrez votre identifiant et votre mot de passe pour accéder au panneau d'administration.
+
+Users:
+  User: un utilisateur
+  Users: des utilisateurs
+  List of users: Liste des utilisateurs
+  Create user: Créer un utilisateur
+  Edit user: Éditer un utilisateur
+  View user: Voir un utilisateur
+
+UsersCivilities:
+  UsersCivility: une civilité
+  UsersCivilities: des civilités
+  List of users civilities: Liste des civilités
+  Create users civility: Créer une civilité
+  Edit users civility: Éditer une civilité
+  View users civility: Voir une civilité
+
+UsersPermissions:
+  UsersPermission: une autorisation
+  UsersPermissions: des autorisations
+  List of users permissions: Liste des autorisations
+  Create users permission: Créer une autorisation
+  Edit users permission: Éditer une autorisation
+  View users permission: Voir une autorisation
+
+Customers:
+  Customer: un client
+  Customers: des clients
+  List of customers: Liste des clients
+  Create customer: Créer un client
+  Edit customer: Éditer un client
+  View customer: Voir un client
+
+CustomersTypesIds:
+  CustomersTypesId: un type de pièce d'identité
+  CustomersTypesIds: des types de pièces d'identité
+  List of customers types ids: Liste des types de pièces d'identité
+  Create customers types id: Créer un type de pièce d'identité
+  Edit customers types id: Éditer un type de pièce d'identité
+  View customers types id: Voir un type de pièce d'identité
+
+Stores:
+  Store: un magasin
+  Stores: des magasins
+  List of stores: Liste des magasins
+  Create store: Créer un magasin
+  Edit store: Éditer un magasin
+  View store: Voir un magasin
+
+ControlsCounters:
+  ControlsCounter: un comptoir
+  ControlsCounters: des comptoirs
+  List of controlsCounters: Liste des comptoirs
+  Create controlsCounter: Créer un comptoir
+  Edit controlsCounter: Éditer un comptoir
+  View controlsCounter: Voir un comptoir
+
+ControlsPeriods:
+  ControlsPeriod: une période
+  ControlsPeriods: des périodes
+  List of controlsPeriods: Liste des périodes
+  Create controlsPeriod: Créer une période
+  Edit controlsPeriod: Éditer une période
+  View controlsPeriod: Voir une période
+
+Controls:
+  Control: un contrôle
+  Controls: des contrôles
+  List of controls: Liste des contrôles
+  Create control: Créer un contrôle
+  Create sell morning control: Créer un contrôle des ventes du matin
+  Create sell evening control: Créer un contrôle des ventes du soir
+  Create buy morning control: Créer un contrôle des achats du matin
+  Create buy evening control: Créer un contrôle des achats du soir
+  Edit control: Éditer un contrôle
+  View control: Voir un contrôle
+  Positive debit: <strong>Attention -</strong> Vous devez prélever <strong class="debit-span"></strong> euros dans la caisse.
+  Negative debit: <strong>Attention -</strong> Vous devez rajouter <strong class="debit-span"></strong> euros dans la caisse.
+
+Safes:
+  Safe: un coffre
+  Safes: des coffres
+  List of safes: Liste des coffres
+  Create safe: Créer un coffre
+  Edit safe: Éditer un coffre
+  View safe: Voir un coffre
+  Safe sheet: Fiche coffre du magasin de "%store%" pour le mois de "%month%"
+
+SafesMovements:
+  SafesMovement: un mouvement
+  SafesMovements: des mouvements
+  List of safes movements: Liste des mouvements
+  Create safes movement: Créer un mouvement
+  Edit safes movement: Éditer un mouvement
+  View safes movement: Voir un mouvement
+
+SafesMovementsTypes:
+  SafesMovementsType: un type de mouvement
+  SafesMovementsTypes: des types de mouvement
+  List of safes movements types: Liste des types de mouvement
+  Create safes movements type: Créer un type de mouvement
+  Edit safes movements type: Éditer un type de mouvement
+  View safes movements type: Voir un type de mouvement
+
+SafesControls:
+  SafesControl: un contrôle de coffre
+  SafesControls: des contrôles de coffre
+  List of safes controls: Liste des contrôles de coffre
+  Create safes control: Créer un contrôle de coffre
+  Edit safes control: Éditer un contrôle de coffre
+  View safes control: Voir un contrôle de coffre
+
+Buybacks:
+  Buyback: un buyback
+  Buybacks: des buybacks
+  List of buybacks: Liste des buybacks
+  Create buyback: Créer un buyback
+  Edit buyback: Éditer un buyback
+  View buyback: Voir un buyback
+  Generate contracts: Générer les contrats
+  Generate repossessions: Générer les reprises
+  Statuses:
+    Pending: En cours
+    Expired: Échu
+    Recovered: Récupéré
+
+Forms:
+  Labels:
+    Label: Étiquette
+    User: Utilisateur
+    Role: Autorisation
+    Store: Magasin
+    Counter: Comptoir
+    Counters: Comptoirs
+    Period: Période
+    Username: Nom d'utilisateur
+    Civility: Civilité
+    Firstname: Prénom
+    Lastname: Nom de famille
+    Fullname: Nom complet
+    Password: Mot de passe
+    Types ID: Type de pièce d'identité
+    ID number: Numéro de pièce d'identité
+    Birthday: Date de naissance
+    Hiring date: Date d'embauche
+    Phone: Téléphone
+    Email: Email
+    Active: Actif
+    Reverse calc: Calcul inversé
+    Address: Adresse
+    AdditionalAddress: Complément d'adresse
+    PlusCode: Plus code
+    Zipcode: Code postal
+    CRN: RCS
+    City: Ville
+    Turnover: Chiffre d'affaire
+    Cash fund: Fond de caisse
+    One cent: 1 ¢
+    Two cents: 2 ¢
+    Five cents: 5 ¢
+    Ten cents: 10 ¢
+    Twenty cents: 20 ¢
+    Fifty cents: 50 ¢
+    One euro: 1 €
+    Two euros: 2 €
+    Five euros: 5 €
+    Ten euros: 10 €
+    Twenty euros: 20 €
+    Fifty euros: 50 €
+    One hundred euros: 100 €
+    Two hundred euros: 200 €
+    Five hundred euros: 500 €
+    Result: Résultat
+    Error: Erreur
+    Total: Total
+    Balance: Balance
+    Amount: Montant
+    Safe error: Erreur %counter%
+    Movements type: Type de mouvement
+    Movements types: Types de mouvement
+    Bank: Banque
+    Various: Divers
+    Product: Produit
+    Serial number: Numéro de serie
+    Comments: Commentaires
+    Starting price: Prix de base
+    Increased percent: Majoration
+    Increased price: Prix majoré
+    Customer: Client
+    Duration: Durée (jours)
+    Status: Status
+    Date: Date
+    Created at: Date de création
+    Updated at: Date de mise à jour
+    Due at: Date d'échéance
+    Month: Mois
+  Placeholders:
+    Username: Entrer votre nom d'utilisateur
+    Password: Entrer votre mot de passe
+    Customers: Choisissez un client
+  Feedbacks:
+    Username: Veuillez entrer un nom d'utilisateur.
+    Password: Veuillez entrer un mot de passe.
+
+Widgets:
+  Birthday:
+    Title: Anniversaires dans les %days% prochains jours
+    Age: (%age% ans)
+    Empty: Aucun anniversaire dans les %days% prochains jours
+
+Flashes:
+  Title:
+    Success: Succès
+    Error: Erreur
+  Login:
+    Login: Bienvenue %username% !</br> Vous êtes maintenant connecté.
+    Logout: Au revoir %username% !</br> Vous êtes maintenant déconnecté.
+  Users:
+    Create: L'utilisateur \"%instance%\" a été créé.
+    Update: L'utilisateur \"%instance%\" a été mis à jour.
+    Delete: L'utilisateur \"%instance%\" a été supprimé.
+    Inactive: L'utilisateur \"%user%\" est inactif.
+  UsersPermissions:
+    Create: L'autorisation \"%instance%\" a été créé.
+    Update: L'autorisation \"%instance%\" a été mis à jour.
+    Delete: L'autorisation \"%instance%\" a été supprimé.
+  Customers:
+    Create: Le client \"%instance%\" a été créé.
+    Update: Le client \"%instance%\" a été mis à jour.
+    Delete: Le client \"%instance%\" a été supprimé.
+  CustomersTypesIds:
+    Create: Le type de pièce d'identité \"%instance%\" a été créé.
+    Update: Le type de pièce d'identité \"%instance%\" a été mis à jour.
+    Delete: Le type de pièce d'identité \"%instance%\" a été supprimé.
+  Stores:
+    Create: Le magasin de \"%instance%\" a été créé.
+    Update: Le magasin de \"%instance%\" a été mis à jour.
+    Delete: Le magasin de \"%instance%\" a été supprimé.
+  ControlsCounters:
+    Create: Le comptoir \"%instance%\" a été créé.
+    Update: Le comptoir \"%instance%\" a été mis à jour.
+    Delete: Le comptoir \"%instance%\" a été supprimé.
+  ControlsPeriods:
+    Create: La période \"%instance%\" a été créé.
+    Update: La période \"%instance%\" a été mis à jour.
+    Delete: La période \"%instance%\" a été supprimé.
+  Controls:
+    Create: Le contrôle \"%instance%\" a été créé.
+    Update: Le contrôle \"%instance%\" a été mis à jour.
+    Delete: Le contrôle \"%instance%\" a été supprimé.
+  Safes:
+    Create: Le coffre de \"%instance%\" a été créé.
+    Update: Le coffre de \"%instance%\" a été mis à jour.
+    Delete: Le coffre de \"%instance%\" a été supprimé.
+  SafesMovements:
+    Create: Le mouvement du coffre de \"%instance%\" a été créé.
+    Update: Le mouvement du coffre de \"%instance%\" a été mis à jour.
+    Delete: Le mouvement du coffre de \"%instance%\" a été supprimé.
+  SafesMovementsTypes:
+    Create: Le type de mouvment \"%instance%\" a été créé.
+    Update: Le type de mouvment \"%instance%\" a été mis à jour.
+    Delete: Le type de mouvment \"%instance%\" a été supprimé.
+  SafesControls:
+    Create: Le contrôle du coffre de \"%instance%\" a été créé.
+    Update: Le contrôle du coffre de \"%instance%\" a été mis à jour.
+    Delete: Le contrôle du coffre de \"%instance%\" a été supprimé.
+  Buybacks:
+    Create: Le buyback \"%instance%\" a été créé.
+    Update: Le buyback \"%instance%\" a été mis à jour.
+    Delete: Le buyback \"%instance%\" a été supprimé.
+    Recover: Le buyback \"%instance%\" a été récupéré.
+    Expire: Le buyback \"%instance%\" a expiré.
+
+Errors:
+  Title: Erreur %error_code%
+  Return: Retour à l'accueil
+  404:
+    Label: Page non trouvée
+    Message: Il semble que vous ayez pris un mauvais virage.</br> Ne vous inquiétez pas... cela arrive aux meilleurs d'entre nous.</br> Voici une petite astuce qui pourrait vous aider à vous remettre sur la bonne voie.
+  500:
+    Label: Erreur interne du serveur
+    Message: Pourquoi ne pas essayer de rafraîchir votre page ?</br> Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.

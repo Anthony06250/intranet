@@ -1,0 +1,27 @@
+//
+// dompdf.scss
+//
+
+@page {
+  margin: 100px 50px;
+}
+
+#pdf-header {
+  @extend .position-fixed, .start-0, .end-0;
+
+  top: -60px;
+}
+
+#pdf-body {
+  @extend .mt-4, .mb-1;
+
+  .copy-for {
+    margin-top: -100px;
+  }
+}
+
+#pdf-footer {
+  @extend .position-fixed, .start-0, .end-0;
+
+  bottom: -70px;
+}

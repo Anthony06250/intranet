@@ -1,0 +1,26 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if field.value | length %}
+    {% if 'toMany' == field.customOptions.get('associationType') %}
+        {% set entities = [] %}
+        {% for entity in field.value %}
+            {% set url = ea_url()
+                .setController(field.customOptions.get('crudControllerFqcn'))
+                .setAction('detail')
+                .set('entityId', entity.id) %}
+            {% set entities = entities | merge(['<a href="' ~ url ~ '">' ~ entity ~ '</a>']) %}
+        {% endfor %}
+        {{ entities | join(', ') | raw }}
+    {% else %}
+        {% if field.customOptions.get('relatedUrl') is not null %}
+            <a href="{{ field.customOptions.get('relatedUrl') }}">
+                {{ field.formattedValue }}
+            </a>
+        {% else %}
+            {{ field.formattedValue }}
+        {% endif %}
+    {% endif %}
+{% else %}
+    {% include 'bundles/EasyAdminBundle/label/null.html.twig' %}
+{% endif %}

@@ -1,0 +1,38 @@
+{# This is a template used internally by EasyAdmin. Don't use it
+   directly in your applications. Instead, use the 'login.html.twig' template #}
+{% trans_default_domain translation_domain ?? 'messages' %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        {% block head_favicon %}
+            <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
+        {% endblock %}
+        <title>
+            {{ block('page_title') | striptags | raw }}
+        </title>
+        {% block head_stylesheets %}
+            <link href="{{ asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css">
+            <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
+            <link href="{{ asset('assets/css/app-modern.min.css') }}" rel="stylesheet" type="text/css" id="app-style">
+        {% endblock %}
+        {% block head_javascript %}
+            <script src="{{ asset('assets/js/hyper-config.js') }}"></script>
+        {% endblock head_javascript %}
+    </head>
+    <body id="{% block body_id %}{% endblock %}" class="ea {% block body_class %}{% endblock %}">
+        {% block wrapper_wrapper %}{% endblock wrapper_wrapper %}
+        {% block body_javascript %}
+            <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
+            <script src="{{ asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
+            <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        {% endblock body_javascript %}
+        {% block flash_messages %}
+            {% include '@EasyAdmin/flash_messages.html.twig' %}
+        {% endblock flash_messages %}
+    </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="utf-8">
+        {% if links is defined %}
+            {{ links }}
+        {% endif %}
+    </head>
+    <body id="pdf-body">
+        <header id="pdf-header">
+            <section class="text-center">
+                <img src="{{ absolute_url('/assets/images/logo-dark.png') }}" alt="logo"><br>
+                <h4 class="fw-bolder mt-2">
+                    {{ buyback.store.city | upper }}
+                </h4>
+            </section>
+        </header>
+        <footer id="pdf-footer">
+            <table class="w-100">
+                <tbody>
+                <tr>
+                    <td>
+                        {% if buyback.store.phone is not empty %}
+                            Téléphone : {{ buyback.store.phone | phone_number_format('NATIONAL') }}
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        {% if buyback.store.email is not empty %}
+                            Email : {{ buyback.store.email }}
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <article class="text-center">
+                <small>
+                    {% if buyback.store.commercialRegisterNumber is not empty %}
+                        RCS {{ buyback.store.commercialRegisterNumber }}
+                    {% endif %}
+                </small>
+            </article>
+        </footer>
+        <main>
+            <article class="copy-for text-end text-decoration-underline float-end">
+                {{ copy_for }}
+            </article>
+            <h3 class="text-center mb-5">
+                EXERCICE DE LA FACULTÉ DE REPRISE DE BIENS
+            </h3>
+            <p>
+                « Le vendeur » :<br>
+                {%  if buyback.customer.civility is defined and buyback.customer.firstname is defined and buyback.customer.lastname is defined %}
+                    {{ buyback.customer.civility ~ ' ' ~ buyback.customer.firstname ~ ' ' ~ buyback.customer.lastname }}<br>
+                {% endif %}
+                {%  if buyback.customer.address is defined and buyback.customer.address is not empty %}
+                    {{ buyback.customer.address }}<br>
+                {% endif %}
+                {%  if buyback.customer.additionalAddress is defined and buyback.customer.additionalAddress is not empty %}
+                    {{ buyback.customer.additionalAddress }}<br>
+                {% endif %}
+                {%  if buyback.customer.zipcode is defined or buyback.customer.city is defined %}
+                    {{ buyback.customer.zipcode }} {{ buyback.customer.city }}<br>
+                {% endif %}
+                {%  if buyback.customer.idNumber is defined %}
+                    Pièce d'identitée n°: {{ buyback.customer.idNumber }}
+                {% endif %}
+            </p>
+            <p class="text-end mb-5">
+                « L’acquéreur » :<br>
+                AXE CASH {{ buyback.store.city | upper }}<br>
+                {% if buyback.store.address is not empty %}
+                    {{ buyback.store.address }}<br>
+                {% endif %}
+                {% if buyback.store.additionalAddress is not empty %}
+                    {{ buyback.store.additionalAddress }}<br>
+                {% endif %}
+                {{ buyback.store.zipcode }} {{ buyback.store.city }}
+            </p>
+            <p>
+                Désigné ci-après « Le vendeur », déclare exercer la faculté de reprise qui m’a été consentie dans les termes et délais stipulés au contrat de vente à réméré et en donne bonne et valable quittance de « l’acquéreur ».
+            </p>
+            <p>
+                « Le vendeur » reconnaît que les biens lui ont été rendus dans le même état que celui des biens lors de la vente à réméré et en donne bonne valable quittance à « l’acquéreur ».
+            </p>
+            <p>
+                « Le vendeur » remet ce jour à « l’acquéreur » l’intégralité du prix de vente augmenté de l’indemnité visée à l’article 1673 du code civil soit un total de
+                <span class="fw-bold">
+                    {{ (buyback.increasedPrice / 100) | round(2, 'common')  | replace({'.' : ','}) }}
+                </span>
+                euros.
+            </p>
+            <p>
+                « L’acquéreur » lui en donne bonne et valable quittance sous réserve d’encaissement.
+            </p>
+            <p class="mb-5">
+                « Le vendeur » se déclare entièrement rempli de ses droits et ne pouvoir désormais exercer aucun recours à l’encontre de « l’acquéreur » au titre du contrat de vente à réméré susvisé.
+            </p>
+            <p>
+                Fait en 2 exemplaires le
+                <span class="fw-bold">
+                    {{ "now" | date("d/m/Y") }}
+                </span>
+            </p>
+            <table class="w-100">
+                <tbody>
+                <tr>
+                    <td>
+                        « Le vendeur » :<br>
+                        Lu et approuvé – Bon pour accord
+                    </td>
+                    <td class="text-end">
+                        « L’acquéreur » :<br>
+                        AXE CASH {{ buyback.store.city | upper }}<br>
+                        ({{ buyback.user.fullname }})
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

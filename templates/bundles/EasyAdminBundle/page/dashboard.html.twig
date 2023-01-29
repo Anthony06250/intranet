@@ -1,0 +1,118 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% extends ea.templatePath('layout') %}
+{% trans_default_domain ea.i18n.translationDomain %}
+
+{% block body_class 'page-content' %}
+
+{% block content_title %}
+    {{ 'Menu.Dashboard' | trans({}, 'messages') }}
+{% endblock %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-8">
+            <section class="row">
+                {{ _self.render_count_widget('Users', 'uil-users-alt', 'bg-success-lighten text-success', count_users) }}
+                {{ _self.render_count_widget('Customers', 'uil-raddit-alien-alt', 'bg-info-lighten text-info', count_customers) }}
+                {{ _self.render_count_widget('Stores', 'uil-store', null, count_stores) }}
+                {{ _self.render_count_widget('Controls', 'uil-file-check-alt', 'bg-warning-lighten text-warning', count_controls) }}
+                {{ _self.render_count_widget('Safes', 'uil-shield-check', 'bg-danger-lighten text-danger', count_safes) }}
+                {{ _self.render_count_widget('SafesMovements', 'uil-shield-exclamation', 'bg-warning-lighten text-warning', count_safesMovements) }}
+                {{ _self.render_count_widget('SafesControls', 'uil-file-shield-alt', 'bg-warning-lighten text-warning', count_safesControls) }}
+                {{ _self.render_count_widget('Buybacks', 'uil-exchange-alt', null, count_buybacks) }}
+            </section>
+        </article>
+        <article class="col-4">
+            <article class="card cta-box bg-success text-white" style="height: 92.5%;">
+                <article class="card-body">
+                    <header class="d-flex align-items-center">
+                        <article class="w-100 overflow-hidden">
+                            <h3 class="m-0 cta-box-title">
+                                {{ 'Widgets.Birthday.Title' | trans({'%days%': days_until_birthdays}, 'messages') }}
+                            </h3>
+                        </article>
+                        <img class="ms-3" src="{{ asset('assets/images/svg/birthday.svg')}}" width="100" alt="Birthday image">
+                    </header>
+                    <section>
+                        {% if next_birthdays | length %}
+                            {% for next_birthday in next_birthdays %}
+                                <section class="mt-1">
+                                    {% set url = ea_url()
+                                        .setController('App\\Controller\\Admin\\UsersCrudController')
+                                        .setAction('detail')
+                                        .set('entityId', next_birthday.id) %}
+                                    <a href="{{ url }}" class="text-reset">
+                                        <img class="me-2 rounded-circle" src="{{ next_birthday.email | gravatar({'size': 32}) }}"
+                                             alt="{{ next_birthday.username | capitalize }} gravatar"
+                                             height="32"
+                                        >
+                                        <span class="font-14 fw-bold">
+                                            {{ next_birthday.firstname | capitalize }} {{ next_birthday.lastname | upper }}
+                                        </span>
+                                        <span class="ms-2 font-12">
+                                            {{ next_birthday.birthdayDate | format_datetime('short', 'none', locale=app.request.locale) }}
+                                            {% set age = date().diff(date(next_birthday.birthdayDate)).y %}
+                                            {{ 'Widgets.Birthday.Age' | trans({'%age%': age}, 'messages') }}
+                                        </span>
+                                    </a>
+                                </section>
+                            {% endfor %}
+                        {% else %}
+                            <span class="mt-1 font-14 fw-bold">
+                                {{ 'Widgets.Birthday.Empty' | trans({'%days%': days_until_birthdays}, 'messages') }}
+                            </span>
+                        {% endif %}
+                    </section>
+                </article>
+            </article>
+        </article>
+    </section>
+    <section class="row">
+        {{ _self.render_controls_widget(1, 1, 'Controls.Create sell morning control') }}
+        {{ _self.render_controls_widget(1, 2, 'Controls.Create sell evening control') }}
+        {% if is_granted('ROLE_JEWELER') %}
+            {{ _self.render_controls_widget(2, 1, 'Controls.Create buy morning control') }}
+            {{ _self.render_controls_widget(2, 2, 'Controls.Create buy evening control') }}
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% macro render_count_widget(controller, icon, icon_color, value) %}
+    <article class="col-3">
+        {% set url = ea_url()
+            .setController('App\\Controller\\Admin\\' ~ controller ~ 'CrudController')
+            .setAction('index') %}
+        <a href="{{ url }}" class="card widget-flat">
+            <section class="card-body">
+                <article class="float-end">
+                    <i class="{{ icon }} {{ icon_color }} widget-icon"></i>
+                </article>
+                <h5 class="text-muted fw-normal mt-0" title="users">
+                    {{ ('Menu.' ~ controller) | trans({}, 'messages') }}
+                </h5>
+                <h3 class="mt-3 mb-3">
+                    {{ value }}
+                </h3>
+            </section>
+        </a>
+    </article>
+{% endmacro %}
+
+{% macro render_controls_widget(counter, period, message) %}
+    <article class="col-6">
+        {% set url = ea_url()
+            .setController('App\\Controller\\Admin\\ControlsCrudController')
+            .setAction('new')
+            .set('controlsCounter', counter)
+            .set('controlsPeriod', period) %}
+        <a href="{{ url }}" class="card cta-box {{ period == 1 ? 'bg-warning' : 'bg-primary' }} text-white">
+            <article class="card-body">
+                <h3 class="m-0 fw-normal cta-box-title">
+                    {{ message | trans({}, 'messages') }}
+                    <i class="{{ period == 1 ? 'uil-sun' : 'uil-moon' }} float-end"></i>
+                </h3>
+            </article>
+        </a>
+    </article>
+{% endmacro %}
+

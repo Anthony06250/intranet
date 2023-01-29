@@ -1,0 +1,47 @@
+{% extends '@EasyAdmin/page/login_minimal.html.twig' %}
+{% trans_default_domain 'messages' %}
+
+{% block page_title %}
+    {{ 'Errors.Title' | trans({'%error_code%': exception.statusCode}, 'messages') }}
+{% endblock %}
+
+{% block body_class 'authentication-bg' %}
+{% block wrapper_wrapper %}
+    <main class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">
+        <article class="container">
+            <article class="row justify-content-center">
+                <article class="col-xxl-4 col-lg-5">
+                    <section class="card">
+                        <header class="card-header pt-4 pb-4 text-center bg-primary">
+                            <a href="/">
+                                <span>
+                                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo" height="22">
+                                </span>
+                            </a>
+                        </header>
+                        <article class="card-body p-4">
+                            <section class="text-center">
+                                {% block error_code %}
+                                    <h1 class="text-error">
+                                        {{ exception.statusCode }}
+                                    </h1>
+                                {% endblock %}
+                                {% block error_label %}
+                                    <h4 class="text-uppercase text-danger mt-3">
+                                        {{ exception.statusText }}
+                                    </h4>
+                                {% endblock %}
+                                {% block error_message %}{% endblock %}
+                                <footer class="my-3 text-center">
+                                    <a class="btn btn-primary" href="/">
+                                        {{ 'Errors.Return' | trans }}
+                                    </a>
+                                </footer>
+                            </section>
+                        </article>
+                    </section>
+                </article>
+            </article>
+        </article>
+    </main>
+{% endblock %}

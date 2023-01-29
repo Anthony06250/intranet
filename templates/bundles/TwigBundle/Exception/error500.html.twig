@@ -1,0 +1,18 @@
+{% extends '@Twig/Exception/error.html.twig' %}
+
+{% block error_code %}
+    <img src="{{ asset('assets/images/svg/startman.svg') }}" height="120" alt="File not found Image">
+    <h1 class="text-error mt-4">
+        {{ exception.statusCode }}
+    </h1>
+{% endblock %}
+{% block error_label %}
+    <h4 class="text-uppercase text-danger mt-3">
+        {{ 'Errors.500.Label' | trans }}
+    </h4>
+{% endblock %}
+{% block error_message %}
+    <p class="text-muted mt-3">
+        {{ 'Errors.500.Message' | trans({'%url%': '/'}) | raw }}
+    </p>
+{% endblock %}

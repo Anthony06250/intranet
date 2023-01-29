@@ -1,0 +1,33 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# This template checks for 'ea' variable existence because it can
+   be used in a EasyAdmin Dashboard controller, where 'ea' is defined
+   or from any other Symfony controller, where 'ea' is not defined #}
+{% trans_default_domain ea is defined ? ea.i18n.translationDomain : (translation_domain is defined ? translation_domain ?? 'messages') %}
+
+{% if app.session is not null and app.session.started %}
+    {% set flash_messages = app.session.flashbag.all %}
+
+    {% if flash_messages|length > 0 %}
+        <script>
+            !function (c) {
+                'use strict';
+
+                function t() {}
+                t.prototype.send = function (t, o, i, e, n, a, s, r) {
+                    t = {heading: t, text: o, position: i, loaderBg: e, icon: n, hideAfter: a = a || 3e3, stack: s = s || 1};
+                    t.showHideTransition = r || "fade", c.toast().reset("all"), c.toast(t)
+                }, c.NotificationApp = new t, c.NotificationApp.Constructor = t
+            }(window.jQuery);
+
+            {% for label, messages in flash_messages %}
+                {% for message in messages %}
+                    $.NotificationApp.send("{{ ('Flashes.Title.' ~ (label | capitalize)) | trans({}, 'messages') }}",
+                        '{{ message | trans | raw }}',
+                        'top-right',
+                        'rgba(0,0,0,0.2)',
+                        '{{ label }}');
+                {% endfor %}
+            {% endfor %}
+        </script>
+    {% endif %}
+{% endif %}

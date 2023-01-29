@@ -1,0 +1,19 @@
+{% extends '@Twig/Exception/error.html.twig' %}
+
+{% block error_code %}
+    <h1 class="text-error">
+        4
+        <i class="mdi mdi-emoticon-sad"></i>
+        4
+    </h1>
+{% endblock %}
+{% block error_label %}
+    <h4 class="text-uppercase text-danger mt-3">
+        {{ 'Errors.404.Label' | trans }}
+    </h4>
+{% endblock %}
+{% block error_message %}
+    <p class="text-muted mt-3">
+        {{ 'Errors.404.Message' | trans | raw }}
+    </p>
+{% endblock %}

@@ -1,0 +1,24 @@
+framework:
+    workflows:
+        buybacks:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Buybacks
+            initial_marking: pending
+            places:
+                - pending
+                - expired
+                - recovered
+            transitions:
+                expire:
+                    from: pending
+                    to: expired
+                recover:
+                    from: pending
+                    to: recovered
+

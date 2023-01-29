@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="utf-8">
+        {% if links is defined %}
+            {{ links }}
+        {% endif %}
+    </head>
+    <body id="pdf-body">
+        <header id="pdf-header">
+            <section class="text-center">
+                <img src="{{ absolute_url('/assets/images/logo-dark.png') }}" alt="logo"><br>
+                <h4 class="fw-bolder mt-2">
+                    {{ buyback.store.city | upper }}
+                </h4>
+            </section>
+        </header>
+        <footer id="pdf-footer">
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>
+                            {% if buyback.store.phone is not empty %}
+                                Téléphone : {{ buyback.store.phone | phone_number_format('NATIONAL') }}
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if buyback.store.email is not empty %}
+                                Email : {{ buyback.store.email }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <article class="text-center">
+                <small>
+                    {% if buyback.store.commercialRegisterNumber is not empty %}
+                        RCS {{ buyback.store.commercialRegisterNumber }}
+                    {% endif %}
+                </small>
+            </article>
+        </footer>
+        <main>
+            <article class="copy-for text-end text-decoration-underline float-end">
+                {{ copy_for }}
+            </article>
+            <h3 class="text-center mb-5">
+                VENTE AVEC OPTION DE RACHAT
+            </h3>
+            <p>
+                « Le vendeur » :<br>
+                {%  if buyback.customer.civility is defined and buyback.customer.firstname is defined and buyback.customer.lastname is defined %}
+                    {{ buyback.customer.civility ~ ' ' ~ buyback.customer.firstname ~ ' ' ~ buyback.customer.lastname }}<br>
+                {% endif %}
+                {%  if buyback.customer.address is defined and buyback.customer.address is not empty %}
+                    {{ buyback.customer.address }}<br>
+                {% endif %}
+                {%  if buyback.customer.additionalAddress is defined and buyback.customer.additionalAddress is not empty %}
+                    {{ buyback.customer.additionalAddress }}<br>
+                {% endif %}
+                {%  if buyback.customer.zipcode is defined or buyback.customer.city is defined %}
+                    {{ buyback.customer.zipcode }} {{ buyback.customer.city }}<br>
+                {% endif %}
+                {%  if buyback.customer.idNumber is defined %}
+                    Pièce d'identitée n°: {{ buyback.customer.idNumber }}
+                {% endif %}
+            </p>
+            <p class="text-end mb-5">
+                « L’acquéreur » :<br>
+                AXE CASH {{ buyback.store.city | upper }}<br>
+                {% if buyback.store.address is not empty %}
+                    {{ buyback.store.address }}<br>
+                {% endif %}
+                {% if buyback.store.additionalAddress is not empty %}
+                    {{ buyback.store.additionalAddress }}<br>
+                {% endif %}
+                {{ buyback.store.zipcode }} {{ buyback.store.city }}
+            </p>
+            <p>
+                « Le vendeur » vend à réméré à « l’acquéreur » les bien ci-après :<br>
+                <span class="fw-bold">
+                {{ buyback.product }}
+            </span>
+            </p>
+            <p>
+                Moyennant un prix de :
+                <span class="fw-bold">
+                {{ (buyback.startingPrice / 100) | round(2, 'common') | replace({'.' : ','}) }}
+            </span>
+                euros.
+            </p>
+            <p>
+                Délai de la promesse, jusqu’au
+                <span class="fw-bold">
+                {{ buyback.dueAt | date("d/m/Y", false) }}
+            </span>
+                soit
+                <span class="fw-bold">
+                {{ buyback.duration}}
+            </span>
+                jours.
+            </p>
+            <p class="mb-4">
+                « Le vendeur » s’engage à régler un prix de vente augmenté de l’indemnité visée à « l’article 1673 du code civil » soit un total de
+                <span class="fw-bold">
+                {{ (buyback.increasedPrice / 100) | round(2, 'common')  | replace({'.' : ','}) }}
+            </span>
+                euros.
+            </p>
+            <p>
+                La présente vente à réméré relève des dispositions de « l’article 1659 du code civil » aux termes duquel :<br>
+                « La faculté de rachat est un pacte par lequel le vendeur se réserve de reprendre la chose vendue, moyennent la restitution du prix principal et le remboursement dont il est parlé à l’article 1673 du code civil ».
+            </p>
+            <p class="fw-bold">
+                Elle ne saurait en aucune façon d’être assimilée à une opération de crédit.
+            </p>
+            <p>
+                « Le vendeur » pourra reprendre les biens durant une période de
+                <span class="fw-bold">
+                {{ buyback.duration }}
+            </span>
+                jours à compter de la signature des présentes, étant précisé que si la date d’expiration de ce délai correspond à un jour férié ou un jour de fermeture du magasin de « l’acquéreur », cette date reportée au premier jour ouvré suivant.
+            </p>
+            <p>
+                La faculté de reprise devra être exercée selon les modalités suivantes :<br>
+                -	« Le vendeur » se présentera, durant les heures normales d’ouverture du magasin, personnellement, dans le magasin où il a vendu les biens, muni d’une pièce d’identité en cours de validité et de l’original de l’exemplaire qui lui a été remis du présent contrat.<br>
+                -	« Le vendeur » restituera l’intégralité du prix de vente de « l’acquéreur » comptant majoré de l’indemnité visée à « l’article 1673 du code civil », par tout moyen de paiement accepté par « l’acquéreur ».<br>
+                -	A défaut d’exercice par « le vendeur » de sa faculté de rachat, les biens demeureront la propriété exclusive et définitive de « l’acquéreur » qui pourra en disposer selon sa convenance sans que « le vendeur » ne puisse revendiquer un quelconque droit au titre des dits biens.<br>
+            </p>
+            <p class="mb-5">
+                Tout litige relatif au contrat relèvera, à défaut d’accord amiable, de la compétence exclusive du Tribunal de Commerce de Cannes.
+            </p>
+            <p>
+                Fait en 2 exemplaires le
+                <span class="fw-bold">
+                    {{ buyback.createdAt | date("d/m/Y", false) }}
+                </span>
+            </p>
+            <table class="w-100">
+                <tbody>
+                <tr>
+                    <td>
+                        « Le vendeur » :<br>
+                        Lu et approuvé – Bon pour accord
+                    </td>
+                    <td class="text-end">
+                        « L’acquéreur » :<br>
+                        AXE CASH {{ buyback.store.city | upper }}<br>
+                        ({{ buyback.user.fullname }})
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

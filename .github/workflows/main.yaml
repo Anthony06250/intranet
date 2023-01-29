@@ -1,0 +1,89 @@
+name: Intranet deployment
+on:
+  push:
+    branches: [development]
+
+jobs:
+  deploy:
+    name: Deploy to development website
+    runs-on: ubuntu-latest
+
+    env:
+      SSHPASS: ${{ secrets.REMOTE_PASS }}
+
+    steps:
+      - name: Install SSHPASS
+        run: |
+          BIGreen="\033[1;92m"
+
+          sudo apt update &> /dev/null
+          echo -e "Update system ${BIGreen}[OK]"
+
+          sudo apt install sshpass &> /dev/null
+          echo -e "Install sshpass ${BIGreen}[OK]"
+
+      - name: Update files
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
+
+          git fetch origin development --quiet &&
+          echo -e "Git fetch ${BIGreen}[OK]" &&
+
+          git pull origin development --quiet &&
+          echo -e "Git pull ${BIGreen}[OK]"'
+
+      - name: Update components
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
+
+          export COMPOSER_ALLOW_SUPERUSER=1 &&
+          composer install --quiet &&
+          echo -e "Install dependencies ${BIGreen}[OK]" &&
+
+          composer update --quiet &&
+          echo -e "Update dependencies ${BIGreen}[OK]" &&
+
+          npm install &> /dev/null &&
+          echo -e "Install packages ${BIGreen}[OK]" &&
+
+          npm update &> /dev/null &&
+          echo -e "Update packages ${BIGreen}[OK]"'
+
+      - name: Compile assets
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
+
+          npm run build &> /dev/null &&
+          echo -e "Compile assets ${BIGreen}[OK]"'
+
+      - name: Set server settings
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
+
+          export COMPOSER_ALLOW_SUPERUSER=1 &&
+          composer dump-env dev --quiet &&
+          echo -e "Put the website into development ${BIGreen}[OK]" &&
+
+          symfony console cache:clear --quiet &&
+          echo -e "Clear the cache ${BIGreen}[OK]" &&
+
+          chmod -Rf 777 ./var/ &&
+          echo -e "Update var folders permissions ${BIGreen}[OK]"'
+
+      - name: Load fixtures
+        run:
+          sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
+
+          symfony console doctrine:schema:drop --force --quiet &&
+          echo -e "Delete existing datatables ${BIGreen}[OK]" &&
+
+          symfony console doctrine:schema:update --complete --force --quiet &&
+          echo -e "Create new datatables ${BIGreen}[OK]" &&
+
+          symfony console doctrine:fixtures:load --append --quiet &&
+          echo -e "Load fixtures ${BIGreen}[OK]"'
