@@ -27,10 +27,10 @@ jobs:
           sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
 
-          git fetch origin development --quiet &&
+          git fetch origin development &&
           echo -e "Git fetch ${BIGreen}[OK]" &&
 
-          git pull origin development --quiet &&
+          git pull origin development &&
           echo -e "Git pull ${BIGreen}[OK]"'
 
       - name: Update components
