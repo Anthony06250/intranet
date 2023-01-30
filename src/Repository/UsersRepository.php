@@ -26,11 +26,19 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UsersRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Users::class);
     }
 
+    /**
+     * @param Users $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(Users $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -40,6 +48,11 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         }
     }
 
+    /**
+     * @param Users $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(Users $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -51,6 +64,9 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @param PasswordAuthenticatedUserInterface $user
+     * @param string $newHashedPassword
+     * @return void
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
@@ -64,14 +80,14 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
     }
 
     /**
-     * @return float|int|mixed|string
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countUsers(): mixed
+    public function countUsers(): int
     {
         return $this->createQueryBuilder('u')
-            ->select('count(u.id) as count')
+            ->select('COUNT(u.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

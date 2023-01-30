@@ -18,11 +18,19 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UsersPermissionsRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UsersPermissions::class);
     }
 
+    /**
+     * @param UsersPermissions $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(UsersPermissions $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -32,6 +40,11 @@ class UsersPermissionsRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param UsersPermissions $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(UsersPermissions $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -42,14 +55,14 @@ class UsersPermissionsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return float|int|mixed|string
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countUsersPermissions(): mixed
+    public function countUsersPermissions(): int
     {
         return $this->createQueryBuilder('p')
-            ->select('count(p.id) as count')
+            ->select('COUNT(p.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

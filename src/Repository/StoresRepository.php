@@ -55,14 +55,14 @@ class StoresRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return float|int|mixed|string
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countStores(): mixed
+    public function countStores(): int
     {
         return $this->createQueryBuilder('s')
-            ->select('count(s.id) as count')
+            ->select('COUNT(s.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

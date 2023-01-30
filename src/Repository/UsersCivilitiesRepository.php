@@ -16,11 +16,19 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UsersCivilitiesRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UsersCivilities::class);
     }
 
+    /**
+     * @param UsersCivilities $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(UsersCivilities $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +38,11 @@ class UsersCivilitiesRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param UsersCivilities $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(UsersCivilities $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

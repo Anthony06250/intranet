@@ -3,10 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Safes;
+use App\Entity\Stores;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Safes>
@@ -20,8 +24,16 @@ class SafesRepository extends ServiceEntityRepository
 {
     /**
      * @param ManagerRegistry $registry
+     * @param StoresRepository $storesRepository
+     * @param ControlsPeriodsRepository $controlsPeriodsRepository
+     * @param ControlsCountersRepository $controlsCountersRepository
+     * @param SafesMovementsTypesRepository $safesMovementsTypesRepository
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry,
+                                private readonly StoresRepository $storesRepository,
+                                private readonly ControlsPeriodsRepository $controlsPeriodsRepository,
+                                private readonly ControlsCountersRepository $controlsCountersRepository,
+                                private readonly SafesMovementsTypesRepository $safesMovementsTypesRepository)
     {
         parent::__construct($registry, Safes::class);
     }
@@ -55,16 +67,94 @@ class SafesRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countSafes(): mixed
+    public function countSafes(): int
     {
         return $this->createQueryBuilder('s')
-            ->select('count(s.id) as count')
+            ->select('COUNT(s.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countMissingSafesForCurrentMonth(): int
+    {
+        $countSafes = $this->findMissingSafesForCurrentMonth()
+            ->select('COUNT(b.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $this->storesRepository->countStores() - $countSafes;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function createMissingSafesForCurrentMonth(): int
+    {
+        $safes = $this->findMissingSafesForCurrentMonth()
+            ->getQuery()
+            ->getResult();
+        $existStores = array_column(array_column($safes, 'store'), 'id');
+        $stores = $this->storesRepository->findAll();
+
+        foreach ($stores as $store) {
+            if (!in_array($store->getId(), $existStores)) {
+                $this->createMissingSafeForCurrentMonth($store);
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return count($stores) - count($safes);
+    }
+
+    /**
+     * @param Stores $store
+     * @return void
+     * @throws Exception
+     */
+    private function createMissingSafeForCurrentMonth(Stores $store): void
+    {
+        $safe = new Safes();
+
+        $safe->setMonth((new DateTimeImmutable())->format('Y-m') . '-01');
+        $safe->setStore($store);
+        $safe->setControlsPeriod($this->controlsPeriodsRepository->find(2));
+
+        for ($i = 1; $i <= 2; $i++) {
+            $controlsCounter = $this->controlsCountersRepository->find($i);
+
+            $safe->addControlsCounters($controlsCounter);
+        }
+
+        for ($i = 1; $i <= 3; $i++) {
+            $safesMovementsTypes = $this->safesMovementsTypesRepository->find($i);
+
+            $safe->addSafesMovementsTypes($safesMovementsTypes);
+        }
+
+        $safe->setCreatedAt(new DateTimeImmutable());
+        $safe->setUpdatedAt(new DateTimeImmutable());
+        $this->getEntityManager()->persist($safe);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function findMissingSafesForCurrentMonth(): QueryBuilder
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('MONTH(b.created_at) = :month')
+            ->setParameter('month', (new DateTimeImmutable())->format('m'));
     }
 
 //    /**
