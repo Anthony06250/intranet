@@ -55,14 +55,14 @@ class CustomersRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countCustomers(): mixed
+    public function countCustomers(): int
     {
         return $this->createQueryBuilder('c')
-            ->select('count(c.id) as count')
+            ->select('COUNT(c.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

@@ -58,14 +58,14 @@ class SafesControlsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
     public function countSafesControls(): mixed
     {
         return $this->createQueryBuilder('sc')
-            ->select('count(sc.id) as count')
+            ->select('COUNT(sc.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

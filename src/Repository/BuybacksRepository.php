@@ -57,14 +57,14 @@ class BuybacksRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countBuybacks(): mixed
+    public function countBuybacks(): int
     {
         return $this->createQueryBuilder('b')
-            ->select('count(b.id) as count')
+            ->select('COUNT(b.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

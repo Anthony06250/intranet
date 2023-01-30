@@ -87,6 +87,24 @@ class Safes
     }
 
     /**
+     * @param $property
+     * @return mixed
+     */
+    public function __get($property): mixed
+    {
+        return $this->$property;
+    }
+
+    /**
+     * @param $property
+     * @return bool
+     */
+    public function __isset($property): bool
+    {
+        return isset($this->$property);
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int

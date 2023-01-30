@@ -59,14 +59,14 @@ class ControlsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countControls(): mixed
+    public function countControls(): int
     {
         return $this->createQueryBuilder('c')
-            ->select('count(c.id) as count')
+            ->select('COUNT(c.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

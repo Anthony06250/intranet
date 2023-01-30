@@ -58,14 +58,14 @@ class SafesMovementsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countSafesMovements(): mixed
+    public function countSafesMovements(): int
     {
         return $this->createQueryBuilder('sm')
-            ->select('count(sm.id) as count')
+            ->select('COUNT(sm.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

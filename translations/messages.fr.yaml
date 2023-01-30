@@ -303,3 +303,8 @@ Errors:
   500:
     Label: Erreur interne du serveur
     Message: Pourquoi ne pas essayer de rafraîchir votre page ?</br> Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.
+
+Commands:
+  Dry mode: Dry mode activé.
+  Buybacks expire: Mise à jour de %count% buybacks échus.
+  Safes create: Création de %count% coffres pour le mois en cours.

@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Repository\BuybacksRepository;
+use App\Repository\SafesRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -13,14 +13,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[AsCommand('app:buybacks:expire', 'Expire all pending buybacks that have expired from the database')]
-class ExpireBuybacksCommand extends Command
+#[AsCommand('app:safes:create', 'Create missing safes for current month in the database')]
+class CreateSafesCommand extends Command
 {
     /**
-     * @param BuybacksRepository $buybacksRepository
+     * @param SafesRepository $safesRepository
      * @param TranslatorInterface $translator
      */
-    public function __construct(private readonly BuybacksRepository $buybacksRepository,
+    public function __construct(private readonly SafesRepository $safesRepository,
                                 private readonly TranslatorInterface $translator)
     {
         parent::__construct();
@@ -48,13 +48,13 @@ class ExpireBuybacksCommand extends Command
         if ($input->getOption('dry-run')) {
             $io->note($this->translator->trans('Commands.Dry mode'));
 
-            $count = $this->buybacksRepository->countPendingBuybacksToExpired();
+            $count = $this->safesRepository->countMissingSafesForCurrentMonth();
         }
         else {
-            $count = $this->buybacksRepository->updatePendingBuybacksToExpired();
+            $count = $this->safesRepository->createMissingSafesForCurrentMonth();
         }
 
-        $io->success($this->translator->trans('Commands.Buybacks expire', [
+        $io->success($this->translator->trans('Commands.Safes create', [
             '%count%' => $count,
         ]));
 

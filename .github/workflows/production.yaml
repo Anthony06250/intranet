@@ -78,4 +78,9 @@ jobs:
           croncmd="/var/www/intranet/bin/console app:buybacks:expire" &&
           cronjob="@daily $croncmd" &&
           (crontab -l | grep -v -F "$croncmd"; echo "$cronjob") | crontab - &&
-          echo -e "Install cron for buybacks expire ${BIGreen}[OK]"'
+          echo -e "Install cron for buybacks expire ${BIGreen}[OK]" &&
+
+          croncmd="/var/www/intranet/bin/console app:safes:create" &&
+          cronjob="@monthly $croncmd" &&
+          (crontab -l | grep -v -F "$croncmd"; echo "$cronjob") | crontab - &&
+          echo -e "Install cron for safes create ${BIGreen}[OK]"'
