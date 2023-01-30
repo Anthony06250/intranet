@@ -38,18 +38,16 @@ jobs:
           sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
 
+          rm -rf ./public/bundles/
+          rm -rf ./var/
+          rm -rf ./vendor/
           export COMPOSER_ALLOW_SUPERUSER=1 &&
           composer install --quiet &&
           echo -e "Install dependencies ${BIGreen}[OK]" &&
 
-          composer update --quiet &&
-          echo -e "Update dependencies ${BIGreen}[OK]" &&
-
+          rm -rf ./node_modules/
           npm install &> /dev/null &&
           echo -e "Install packages ${BIGreen}[OK]" &&
-
-          npm update &> /dev/null &&
-          echo -e "Update packages ${BIGreen}[OK]"'
 
       - name: Compile assets
         run:
