@@ -73,7 +73,12 @@ jobs:
           echo -e "Clear the cache ${BIGreen}[OK]" &&
 
           chmod -Rf 777 ./var/ &&
-          echo -e "Update var folders permissions ${BIGreen}[OK]"'
+          echo -e "Update var folders permissions ${BIGreen}[OK]" &&
+
+          croncmd="/var/www/intranet/bin/console app:buybacks:expire" &&
+          cronjob="@daily $croncmd" &&
+          (crontab -l | grep -v -F "$croncmd"; echo "$cronjob") | crontab - &&
+          echo -e "Install cron for buybacks expire ${BIGreen}[OK]"'
 
       - name: Load fixtures
         run:
