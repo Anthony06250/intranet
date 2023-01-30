@@ -13,15 +13,12 @@
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@babel/preset-env": "^7.18.9",
+    "@hotwired/stimulus": "^3.2.1",
     "@symfony/stimulus-bridge": "^2.0.0",
     "@symfony/webpack-encore": "^1.0.0",
-    "@hotwired/stimulus": "^3.2.1",
-    "core-js": "^3.0.0",
-    "regenerator-runtime": "^0.13.2",
-    "stimulus": "^2.0.0",
-    "webpack-notifier": "^1.6.0",
     "browser-sync": "^2.27.10",
     "clean-css": "^5.3.1",
+    "core-js": "^3.0.0",
     "del": "^6.1.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
@@ -40,7 +37,10 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "inquirer": "^8.0.0",
-    "sass": "^1.54.0"
+    "regenerator-runtime": "^0.13.2",
+    "sass": "^1.54.0",
+    "stimulus": "^2.0.0",
+    "webpack-notifier": "^1.6.0"
   },
   "dependencies": {
     "admin-resources": "git+https://github.com/coderthemes/admin-resources.git#master",
@@ -76,6 +76,7 @@
     "frappe-gantt": "^0.6.0",
     "fullcalendar": "^5.10.2",
     "gmaps": "^0.4.25",
+    "gulp-cli": "^2.3.0",
     "handlebars": "^4.7.7",
     "highlightjs": "^9.16.2",
     "ion-rangeslider": "^2.3.1",

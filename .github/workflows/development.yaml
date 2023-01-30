@@ -55,7 +55,10 @@ jobs:
           'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
 
           npm run build &> /dev/null &&
-          echo -e "Compile assets ${BIGreen}[OK]"'
+          echo -e "Compile webpack assets ${BIGreen}[OK]" &&
+
+          gulp build --silent &&
+          echo -e "Compile gulp assets ${BIGreen}[OK]"'
 
       - name: Set server settings
         run:
