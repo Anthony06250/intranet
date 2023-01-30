@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
+use App\DBAL\Types\BuybacksStatusesType;
 use App\Entity\Buybacks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -65,6 +67,43 @@ class BuybacksRepository extends ServiceEntityRepository
             ->select('count(b.id) as count')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countPendingBuybacksToExpired(): int
+    {
+        return $this->findPendingBuybacksToExpired()
+            ->select('COUNT(b.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     */
+    public function updatePendingBuybacksToExpired(): int
+    {
+        return $this->findPendingBuybacksToExpired()
+            ->update()
+            ->set('b.status', ':expired')
+            ->setParameter(':expired', BuybacksStatusesType::STATE_EXPIRED)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function findPendingBuybacksToExpired(): QueryBuilder
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.status = :pending')
+            ->andWhere('b.due_at < CURRENT_TIMESTAMP()')
+            ->setParameter('pending', BuybacksStatusesType::STATE_PENDING);
     }
 
 //    /**

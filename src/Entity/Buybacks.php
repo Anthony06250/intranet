@@ -53,7 +53,6 @@ class Buybacks
      * @var string|null
      */
     #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 50)]
     private ?string $serial_number = null;
 
