@@ -280,7 +280,14 @@ class ControlsCrudController extends AbstractCrudController
      */
     private function getControlsPeriodsField(): AssociationField
     {
-        $periodsField = AssociationField::new('controlsPeriod', 'Forms.Labels.Period');
+        $periodsField = AssociationField::new('controlsPeriod', 'Forms.Labels.Period')
+            ->setFormTypeOptions([
+                'choice_attr' => function ($choice) {
+                    return [
+                        'data-debit' => $choice->isDebit()
+                    ];
+                }
+            ]);
 
         if (isset($_GET['controlsPeriod'])) {
             $periodsField->setFormTypeOptions([

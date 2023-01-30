@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ControlsPeriods;
+use App\Form\Field\BooleanField;
 use App\Form\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -51,6 +52,8 @@ class ControlsPeriodsCrudController extends AbstractCrudController
     {
         yield TextField::new('label', 'Forms.Labels.Label')
             ->addCssClass('fw-bold');
+        yield BooleanField::new('debit', 'Forms.Labels.Allow debit')
+            ->setFormTypeOption('disabled', !$this->isGranted('ROLE_ADMIN'));
     }
 
     /**

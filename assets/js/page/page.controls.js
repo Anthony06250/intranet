@@ -10,7 +10,7 @@ $(document).ready(function () {
         control.loadCounter(true);
     });
 
-    $('input').on('change', function () {
+    $('input, #Controls_controlsPeriod').on('change', function () {
         control.calcResult();
     });
 
@@ -124,15 +124,16 @@ class Control {
      * @param debit
      */
     displayDebit(debit) {
-        let reverse = (typeof $('#Controls_controlsCounter').find(':selected').attr('data-reverse') !== 'undefined');
+        let isReverse = (typeof $('#Controls_controlsCounter').find(':selected').attr('data-reverse') !== 'undefined');
+        let isDebit = (typeof $('#Controls_controlsPeriod').find(':selected').attr('data-debit') !== 'undefined');
 
-        $('#debit-alert').css('display', (debit) ? 'block' : 'none')
+        $('#debit-alert').css('display', (isDebit && debit) ? 'block' : 'none')
             .removeClass(debit >= 0
-                ? !reverse ? 'alert-danger' : 'alert-primary'
-                : !reverse ? 'alert-primary' : 'alert-danger')
+                ? !isReverse ? 'alert-danger' : 'alert-primary'
+                : !isReverse ? 'alert-primary' : 'alert-danger')
             .addClass(debit >= 0
-                ? !reverse ? 'alert-primary' : 'alert-danger'
-                : !reverse ? 'alert-danger' : 'alert-primary'
+                ? !isReverse ? 'alert-primary' : 'alert-danger'
+                : !isReverse ? 'alert-danger' : 'alert-primary'
         );
         $('.debit-span').text((debit >= 0 ? debit : -debit).toCurrency());
         $('#debit-text-positive').css('display', debit >= 0 ? 'block' : 'none');

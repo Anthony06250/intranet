@@ -34,6 +34,12 @@ class ControlsPeriods
     private ?string $label = null;
 
     /**
+     * @var bool|null
+     */
+    #[ORM\Column(nullable: false)]
+    private ?bool $debit = false;
+
+    /**
      * @var ArrayCollection|Collection
      */
     #[ORM\OneToMany(mappedBy: 'controlsPeriod', targetEntity: Controls::class)]
@@ -82,6 +88,25 @@ class ControlsPeriods
     public function setLabel(string $label): self
     {
         $this->label = strtolower($label);
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isDebit(): ?bool
+    {
+        return $this->debit;
+    }
+
+    /**
+     * @param bool $debit
+     * @return $this
+     */
+    public function setDebit(bool $debit): self
+    {
+        $this->debit = $debit;
 
         return $this;
     }
