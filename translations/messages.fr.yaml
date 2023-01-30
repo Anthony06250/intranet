@@ -169,6 +169,7 @@ Forms:
     Email: Email
     Active: Actif
     Reverse calc: Calcul inversé
+    Allow debit: Débit autorisé
     Address: Adresse
     AdditionalAddress: Complément d'adresse
     PlusCode: Plus code

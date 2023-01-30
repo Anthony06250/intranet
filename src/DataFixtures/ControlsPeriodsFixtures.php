@@ -13,8 +13,14 @@ class ControlsPeriodsFixtures extends Fixture
      * @var array|string[]
      */
     private array $controlsPeriods = [
-        'Matin',
-        'Soir'
+        [
+            'label' => 'Matin',
+            'debit' => false
+        ],
+        [
+            'label' => 'Soir',
+            'debit' => true
+        ]
     ];
 
     /**
@@ -28,7 +34,8 @@ class ControlsPeriodsFixtures extends Fixture
         foreach ($this->controlsPeriods as $controlsPeriod) {
             $object = new ControlsPeriods();
 
-            $object->setLabel($controlsPeriod)
+            $object->setLabel($controlsPeriod['label'])
+                ->setDebit($controlsPeriod['debit'])
                 ->setCreatedAt(new DateTimeImmutable())
                 ->setUpdatedAt(new DateTimeImmutable());
             $manager->persist($object);
