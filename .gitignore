@@ -25,3 +25,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> symfony/gulp ###
+/public/assets/
+###< symfony/gulp ###

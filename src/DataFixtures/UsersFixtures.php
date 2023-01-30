@@ -67,7 +67,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             'phone' => '0620461018'
         ],
         [
-            'username' => 'rémy',
+            'username' => 'remy',
             'civility' => '1',
             'firstname' => 'rémy',
             'lastname' => 'peraire',
@@ -112,7 +112,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             'phone' => '0618236525'
         ],
         [
-            'username' => 'léa',
+            'username' => 'lea',
             'civility' => '2',
             'firstname' => 'léa',
             'lastname' => 'pietri',
@@ -140,23 +140,6 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             'hiring' => '2022-03-01',
             'email' => 'grattepanche.jimmy@gmail.com',
             'phone' => '0780458579'
-        ],
-        [
-            'username' => 'clément',
-            'civility' => '1',
-            'firstname' => 'clément',
-            'lastname' => 'colussi',
-            'password' => 'test',
-            'permission' => '4',
-            'stores' => [
-                '1',
-                '2',
-                '3'
-            ],
-            'birthday' => '1993-01-13',
-            'hiring' => '2021-10-02',
-            'email' => 'clement.colussi@gmail.com',
-            'phone' => '0610983057'
         ],
         [
             'username' => 'antho',

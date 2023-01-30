@@ -37,7 +37,7 @@ const demoPaths = {
 };
 
 let demo = "";
-let demoPath = "";
+let demoPath = "modern";
 
 /**
  * @param done
@@ -248,7 +248,6 @@ exports.default = series(
 
 // Build Tasks
 exports.build = series(
-    input,
     clean,
     vendor,
     parallel(data, fonts, images, javascript, scss, icons)
