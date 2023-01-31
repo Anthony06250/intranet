@@ -7,6 +7,8 @@ use App\Form\Field\AssociationField;
 use App\Form\Field\DateTimeField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\TextareaField;
+use App\Repository\StoresRepository;
+use App\Repository\UsersRepository;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -100,14 +102,55 @@ class SafesMovementsCrudController extends AbstractCrudController
      */
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('user', 'Forms.Labels.User')
-            ->addCssClass('fw-bold');
-        yield AssociationField::new('store', 'Forms.Labels.Store');
+        yield $this->getUsersField();
+        yield $this->getStoresField();
+
         yield MoneyField::new('amount', 'Forms.Labels.Amount');
         yield AssociationField::new('safesMovementsType', 'Forms.Labels.Movements type');
         yield DateTimeField::new('created_at', 'Forms.Labels.Created at');
         yield TextareaField::new('comments', 'Forms.Labels.Comments')
             ->setColumns('col-12');
+    }
+
+    /**
+     * @return AssociationField
+     */
+    private function getUsersField(): AssociationField
+    {
+        $usersField = AssociationField::new('user', 'Forms.Labels.User')
+            ->addCssClass('fw-bold');
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $usersField->setFormTypeOptions([
+                'query_builder' => function (UsersRepository $usersRepository) {
+                    return $usersRepository->createQueryBuilder('u')
+                        ->where('u.id = (:id)')
+                        ->setParameter('id', $this->getUser()->getId());
+                }
+            ]);
+        }
+
+        return $usersField;
+    }
+
+    /**
+     * @return AssociationField
+     */
+    private function getStoresField(): AssociationField
+    {
+        $storesField = AssociationField::new('store', 'Forms.Labels.Store');
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $storesField->setFormTypeOptions([
+                'query_builder' => function (StoresRepository $storesRepository) {
+                    return $storesRepository->createQueryBuilder('s')
+                        ->where('s.id IN (:ids)')
+                        ->setParameter('ids', $this->getStoresForUser());
+                }
+            ]);
+        }
+
+        return $storesField;
     }
 
     /**

@@ -309,23 +309,19 @@ class SafesCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn): mixed
     {
         $safe = parent::createEntity($entityFqcn);
-        $controlsPeriodRepository = $this->container->get('doctrine')->getRepository(ControlsPeriods::class);
-        $controlsCounterRepository = $this->container->get('doctrine')->getRepository(ControlsCounters::class);
-        $safesMovementsTypesRepository = $this->container->get('doctrine')->getRepository(SafesMovementsTypes::class);
-        $controlsPeriod = $controlsPeriodRepository->find(2);
+        $entityManager = $this->container->get('doctrine')->getManager();
+        $controlsPeriod = $entityManager->getRepository(ControlsPeriods::class)->find(2);
+        $controlsCounters = $entityManager->getRepository(ControlsCounters::class)->findAll();
+        $safesMovementsTypes = $entityManager->getRepository(SafesMovementsTypes::class)->findAll();
 
         $safe->setControlsPeriod($controlsPeriod);
 
-        for ($i = 1; $i <= 2; $i++) {
-            $controlsCounter = $controlsCounterRepository->find($i);
-
+        foreach ($controlsCounters as $controlsCounter) {
             $safe->addControlsCounters($controlsCounter);
         }
 
-        for ($i = 1; $i <= 3; $i++) {
-            $safesMovementsTypes = $safesMovementsTypesRepository->find($i);
-
-            $safe->addSafesMovementsTypes($safesMovementsTypes);
+        foreach ($safesMovementsTypes as $safesMovementsType) {
+            $safe->addSafesMovementsTypes($safesMovementsType);
         }
 
         return $safe;

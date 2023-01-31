@@ -291,10 +291,9 @@ class SafesControlsCrudController extends AbstractCrudController
     {
         $safesControl = parent::createEntity($entityFqcn);
         $controlsCounterRepository = $this->container->get('doctrine')->getRepository(ControlsCounters::class);
+        $controlsCounters = $controlsCounterRepository->findAll();
 
-        for ($i = 1; $i <= 2; $i++) {
-            $controlsCounter = $controlsCounterRepository->find($i);
-
+        foreach ($controlsCounters as $controlsCounter) {
             $safesControl->addControlsCounters($controlsCounter);
         }
 

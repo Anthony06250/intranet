@@ -9,20 +9,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EntitySubscriber implements EventSubscriberInterface
+readonly class EntitySubscriber implements EventSubscriberInterface
 {
     /**
      * @param UserPasswordHasherInterface $hasher
-     * @param RequestStack $request
+     * @param NotifierInterface $notifier
      * @param TranslatorInterface $translator
      */
-    public function __construct(private readonly UserPasswordHasherInterface $hasher,
-                                private readonly RequestStack $request,
-                                private readonly TranslatorInterface $translator)
+    public function __construct(private UserPasswordHasherInterface $hasher,
+                                private NotifierInterface $notifier,
+                                private TranslatorInterface $translator)
     {
     }
 
@@ -70,7 +71,7 @@ class EntitySubscriber implements EventSubscriberInterface
     {
         $className = explode('\\', get_class($event->getEntityInstance()));
 
-        $this->addFlash((string) $event->getEntityInstance(), 'Flashes.' . end($className) . '.Create');
+        $this->notifier('Flashes.' . end($className) . '.Create', $event->getEntityInstance());
     }
 
     /**
@@ -81,7 +82,7 @@ class EntitySubscriber implements EventSubscriberInterface
     {
         $className = explode('\\', get_class($event->getEntityInstance()));
 
-        $this->addFlash((string) $event->getEntityInstance(), 'Flashes.' . end($className) . '.Update');
+        $this->notifier('Flashes.' . end($className) . '.Update', $event->getEntityInstance());
     }
 
     /**
@@ -92,7 +93,7 @@ class EntitySubscriber implements EventSubscriberInterface
     {
         $className = explode('\\', get_class($event->getEntityInstance()));
 
-        $this->addFlash((string) $event->getEntityInstance(), 'Flashes.' . end($className) . '.Delete');
+        $this->notifier('Flashes.' . end($className) . '.Delete', $event->getEntityInstance());
     }
 
     /**
@@ -107,14 +108,15 @@ class EntitySubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param string $instance
      * @param string $message
+     * @param string $instance
      * @return void
      */
-    private function addFlash(string $instance, string $message): void
+    private function notifier(string $message, string $instance): void
     {
-        $this->request->getSession()->getFlashBag()->add('success', $this->translator->trans($message, [
+        $this->notifier->send((new Notification($this->translator->trans($message, [
             '%instance%' => $instance,
-        ]));
+        ]), ['browser']))
+            ->importance(Notification::IMPORTANCE_LOW));
     }
 }
