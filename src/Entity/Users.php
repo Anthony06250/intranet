@@ -145,6 +145,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Buybacks::class)]
     private Collection|ArrayCollection $buybacks;
 
+    /**
+     * @var ArrayCollection|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepositsSales::class)]
+    private Collection|ArrayCollection $depositsSales;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
@@ -152,6 +158,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->safesMovements = new ArrayCollection();
         $this->safesControls = new ArrayCollection();
         $this->buybacks = new ArrayCollection();
+        $this->depositsSales = new ArrayCollection();
     }
 
     /**
@@ -330,6 +337,15 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = $plainPassword;
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     * @return void
+     */
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
     }
 
     /**
@@ -612,11 +628,40 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @see UserInterface
-     * @return void
+     * @return Collection<int, DepositsSales>
      */
-    public function eraseCredentials(): void
+    public function getDepositsSales(): Collection
     {
-         $this->plainPassword = null;
+        return $this->depositsSales;
+    }
+
+    /**
+     * @param DepositsSales $depositsSale
+     * @return $this
+     */
+    public function addDepositsSale(DepositsSales $depositsSale): self
+    {
+        if (!$this->depositsSales->contains($depositsSale)) {
+            $this->depositsSales->add($depositsSale);
+            $depositsSale->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param DepositsSales $depositsSale
+     * @return $this
+     */
+    public function removeDepositsSale(DepositsSales $depositsSale): self
+    {
+        if ($this->depositsSales->removeElement($depositsSale)) {
+            // set the owning side to null (unless already changed)
+            if ($depositsSale->getUser() === $this) {
+                $depositsSale->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

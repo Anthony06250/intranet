@@ -2,20 +2,18 @@
 
 namespace App\Controller\Admin;
 
-use App\DBAL\Types\BuybacksStatusesType;
-use App\Entity\Buybacks;
+use App\DBAL\Types\DepositsSalesStatusesType;
+use App\Entity\DepositsSales;
 use App\Form\Field\AssociationField;
 use App\Form\Field\ChoiceField;
 use App\Form\Field\DateField;
-use App\Form\Field\IntegerField;
 use App\Form\Field\MoneyField;
-use App\Form\Field\PercentField;
 use App\Form\Field\TextareaField;
 use App\Form\Field\TextField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
-use App\Workflow\BuybacksWorkflow;
+use App\Workflow\DepositsSalesWorkflow;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -35,7 +33,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class BuybacksCrudController extends AbstractCrudController
+class DepositsSalesCrudController extends AbstractCrudController
 {
     /**
      * Index page settings
@@ -52,9 +50,9 @@ class BuybacksCrudController extends AbstractCrudController
     public const ROLE_DELETE = 'ROLE_ADMIN';
 
     /**
-     * @param BuybacksWorkflow $buybacksStateMachine
+     * @param DepositsSalesWorkflow $depositsSalesStateMachine
      */
-    public function __construct(private readonly BuybacksWorkflow $buybacksStateMachine)
+    public function __construct(private readonly DepositsSalesWorkflow $depositsSalesStateMachine)
     {
     }
 
@@ -63,7 +61,7 @@ class BuybacksCrudController extends AbstractCrudController
      */
     public static function getEntityFqcn(): string
     {
-        return Buybacks::class;
+        return DepositsSales::class;
     }
 
     /**
@@ -92,20 +90,20 @@ class BuybacksCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Buybacks.Buyback')
-            ->setEntityLabelInPlural('Buybacks.Buybacks')
-            ->setPageTitle(Crud::PAGE_INDEX, 'Buybacks.List of buybacks')
-            ->setPageTitle(Crud::PAGE_NEW, 'Buybacks.Create buyback')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Buybacks.Edit buyback')
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Buybacks.View buyback')
+            ->setEntityLabelInSingular('DepositsSales.DepositSales')
+            ->setEntityLabelInPlural('DepositsSales.DepositsSales')
+            ->setPageTitle(Crud::PAGE_INDEX, 'DepositsSales.List of deposits sales')
+            ->setPageTitle(Crud::PAGE_NEW, 'DepositsSales.Create deposit sales')
+            ->setPageTitle(Crud::PAGE_EDIT, 'DepositsSales.Edit deposit sales')
+            ->setPageTitle(Crud::PAGE_DETAIL, 'DepositsSales.View deposit sales')
             ->setDefaultSort([
-                'due_at' => 'DESC'
+                'created_at' => 'ASC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
             ->overrideTemplates([
-                'crud/new' => 'bundles/EasyAdminBundle/crud/buybacks.html.twig',
-                'crud/edit' => 'bundles/EasyAdminBundle/crud/buybacks.html.twig'
+                'crud/new' => 'bundles/EasyAdminBundle/crud/deposits-sales.html.twig',
+                'crud/edit' => 'bundles/EasyAdminBundle/crud/deposits-sales.html.twig'
             ]);
     }
 
@@ -116,7 +114,7 @@ class BuybacksCrudController extends AbstractCrudController
     public function configureAssets(Assets $assets): Assets
     {
         $assets
-            ->addJsFile(Asset::new('assets/js/page/page.buybacks.js')
+            ->addJsFile(Asset::new('assets/js/page/page.deposits-sales.js')
                 ->onlyOnForms());
 
         return $assets;
@@ -154,35 +152,15 @@ class BuybacksCrudController extends AbstractCrudController
             ->setRequired(false)
             ->setColumns('col-12');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
-            ->setChoices(BuybacksStatusesType::getChoices())
+            ->setChoices(DepositsSalesStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
-        yield MoneyField::new('starting_price', 'Forms.Labels.Starting price')
-            ->hideOnIndex()
-            ->setColumns('col-5');
-        yield PercentField::new('increased_percent', 'Forms.Labels.Increased percent')
-            ->hideOnIndex()
-            ->setColumns('col-2');
-        yield MoneyField::new('increased_price', 'Forms.Labels.Increased price')
-            ->hideOnIndex()
-            ->setColumns('col-5');
+        yield MoneyField::new('reserved_price', 'Forms.Labels.Reserved price')
+            ->hideOnIndex();
         yield DateField::new('created_at', 'Forms.Labels.Created at')
-            ->hideOnIndex()
-            ->setColumns('col-5')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
-        yield IntegerField::new('duration', 'Forms.Labels.Duration')
-            ->hideOnIndex()
-            ->setFormTypeOption('attr', [
-                'min' => 1
-            ])
-            ->setColumns('col-2');
-        yield DateField::new('due_at', 'Forms.Labels.Due at')
-            ->setFormTypeOption('attr', [
-                'readonly' => true
-            ])
-            ->setColumns('col-5');
         yield TextareaField::new('comments', 'Forms.Labels.Comments')
             ->hideOnIndex()
             ->setColumns('col-12');
@@ -252,42 +230,41 @@ class BuybacksCrudController extends AbstractCrudController
 
         return $actions
             // Workflow actions
-            ->add(Crud::PAGE_INDEX, Action::new('recover', 'Buybacks.Statuses.Recovered')
-                ->linkToCrudAction('recover')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
-                    && $this->buybacksStateMachine->canRecover($buyback))
+            ->add(Crud::PAGE_INDEX, Action::new(DepositsSalesWorkflow::TRANSITION_SOLD, 'DepositsSales.Statuses.' . ucfirst(DepositsSalesStatusesType::STATE_SOLDED))
+                ->linkToCrudAction(DepositsSalesWorkflow::TRANSITION_SOLD)
+                ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
+                        || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                    && $this->depositsSalesStateMachine->canSold($depositsSales))
                 ->setCssClass('btn btn-outline-success btn-sm py-0 px-1 me-1'))
-            ->add(Crud::PAGE_INDEX, Action::new('expire', 'Buybacks.Statuses.Expired')
-                ->linkToCrudAction('expire')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
-                    && $this->buybacksStateMachine->canExpire($buyback))
+            ->add(Crud::PAGE_INDEX, Action::new(DepositsSalesWorkflow::TRANSITION_PAID, 'DepositsSales.Statuses.' . ucfirst(DepositsSalesStatusesType::STATE_PAYED))
+                ->linkToCrudAction(DepositsSalesWorkflow::TRANSITION_PAID)
+                ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
+                        || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                    && $this->depositsSalesStateMachine->canPaid($depositsSales))
+                ->setCssClass('btn btn-outline-primary btn-sm py-0 px-1 me-1'))
+            ->add(Crud::PAGE_INDEX, Action::new(DepositsSalesWorkflow::TRANSITION_RECOVER, 'DepositsSales.Statuses.' . ucfirst(DepositsSalesStatusesType::STATE_RECOVERED))
+                ->linkToCrudAction(DepositsSalesWorkflow::TRANSITION_RECOVER)
+                ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
+                        || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                    && $this->depositsSalesStateMachine->canRecover($depositsSales))
                 ->setCssClass('btn btn-outline-primary btn-sm py-0 px-1 me-1'))
 
             // Generate actions
-            ->add(Crud::PAGE_INDEX, Action::new('generateContracts', 'Buybacks.Generate contracts')
-                ->linkToCrudAction('generateBuybacksContracts'))
+            ->add(Crud::PAGE_INDEX, Action::new('generateContracts', 'DepositsSales.Generate contracts')
+                ->linkToCrudAction('generateDepositsSalesContracts'))
             ->update(Crud::PAGE_INDEX, 'generateContracts',
                 fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
-                    && $this->buybacksStateMachine->canRecover($buyback)))
-            ->add(Crud::PAGE_INDEX, Action::new('generateRepossessions', 'Buybacks.Generate repossessions')
-                ->linkToCrudAction('generateBuybacksRepossessions'))
-            ->update(Crud::PAGE_INDEX, 'generateRepossessions',
-                fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
-                    && !$this->buybacksStateMachine->isExpire($buyback)
-                    && !$this->buybacksStateMachine->canRecover($buyback)))
+                    ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
+                            || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                        && ($this->depositsSalesStateMachine->canSold($depositsSales)
+                            || $this->depositsSalesStateMachine->canPaid($depositsSales))))
 
             // Reorder
             ->reorder(Crud::PAGE_INDEX, [
                 'generateContracts',
-                'generateRepossessions',
+                'sold',
+                'paid',
                 'recover',
-                'expire',
                 Action::DETAIL,
                 Action::EDIT,
                 Action::DELETE
@@ -309,9 +286,9 @@ class BuybacksCrudController extends AbstractCrudController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function recover(AdminContext $context, AdminUrlGenerator $adminUrlGenerator): Response
+    public function sold(AdminContext $context, AdminUrlGenerator $adminUrlGenerator): Response
     {
-        return $this->changeWorkflowPlace(BuybacksWorkflow::TRANSITION_RECOVER, $context, $adminUrlGenerator);
+        return $this->changeWorkflowPlace(DepositsSalesWorkflow::TRANSITION_SOLD, $context, $adminUrlGenerator);
     }
 
     /**
@@ -321,9 +298,21 @@ class BuybacksCrudController extends AbstractCrudController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function expire(AdminContext $context, AdminUrlGenerator $adminUrlGenerator): Response
+    public function paid(AdminContext $context, AdminUrlGenerator $adminUrlGenerator): Response
     {
-        return $this->changeWorkflowPlace(BuybacksWorkflow::TRANSITION_EXPIRE, $context, $adminUrlGenerator);
+        return $this->changeWorkflowPlace(DepositsSalesWorkflow::TRANSITION_PAID, $context, $adminUrlGenerator);
+    }
+
+    /**
+     * @param AdminContext $context
+     * @param AdminUrlGenerator $adminUrlGenerator
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function recover(AdminContext $context, AdminUrlGenerator $adminUrlGenerator): Response
+    {
+        return $this->changeWorkflowPlace(DepositsSalesWorkflow::TRANSITION_RECOVER, $context, $adminUrlGenerator);
     }
 
     /**
@@ -341,7 +330,7 @@ class BuybacksCrudController extends AbstractCrudController
         $adminUrlGenerator->setController(self::class)->setAction('index')->removeReferrer()->setEntityId(null);
 
         try {
-            $this->buybacksStateMachine->$place($buyback);
+            $this->depositsSalesStateMachine->$place($buyback);
             $this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn())->flush();
         } catch (Exception) {
         }
@@ -354,30 +343,14 @@ class BuybacksCrudController extends AbstractCrudController
      * @param PdfService $pdfService
      * @return void
      */
-    public function generateBuybacksContracts(AdminContext $context, PdfService $pdfService): void
+    public function generateDepositsSalesContracts(AdminContext $context, PdfService $pdfService): void
     {
         $locale = $context->getRequest()->getLocale();
-        $buyback = $context->getEntity()->getInstance();
-        $html = $this->render('pdf/buybacks/generate-contracts-' . $locale . '.html.twig', [
-            'buyback' => $buyback
+        $depositsSales = $context->getEntity()->getInstance();
+        $html = $this->render('pdf/deposits-sales/generate-contracts-' . $locale . '.html.twig', [
+            'deposits_sales' => $depositsSales
         ]);
 
-        $pdfService->generatePdfFile('buyback-contracts-' . $buyback->getId(), $html);
-    }
-
-    /**
-     * @param AdminContext $context
-     * @param PdfService $pdfService
-     * @return void
-     */
-    public function generateBuybacksRepossessions(AdminContext $context, PdfService $pdfService): void
-    {
-        $locale = $context->getRequest()->getLocale();
-        $buyback = $context->getEntity()->getInstance();
-        $html = $this->render('pdf/buybacks/generate-repossessions-' . $locale . '.html.twig', [
-            'buyback' => $buyback
-        ]);
-
-        $pdfService->generatePdfFile('buyback-repossessions-' . $buyback->getId(), $html);
+        $pdfService->generatePdfFile('deposits-sales-contracts-' . $depositsSales->getId(), $html);
     }
 }

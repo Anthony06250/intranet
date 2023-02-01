@@ -79,8 +79,11 @@
             <p>
                 « Le vendeur » vend à réméré à « l’acquéreur » les bien ci-après :<br>
                 <span class="fw-bold">
-                {{ buyback.product }}
-            </span>
+                    {{ buyback.product }}<br>
+                </span>
+                {% if buyback.serialNumber is not empty %}
+                    Numéro de série : {{ buyback.serialNumber }}<br>
+                {% endif %}
             </p>
             <p>
                 Moyennant un prix de :

@@ -6,6 +6,7 @@ Menu:
   Support: Support
   Users: Utilisateurs
   UsersPermissions: Autorisations
+  Customers: Clients
   Stores: Magasins
   ControlsCounters: Comptoirs
   ControlsPeriods: Périodes
@@ -14,7 +15,7 @@ Menu:
   SafesMovements: Mouvements
   SafesControls: Contrôles de coffre
   Buybacks: Buybacks
-  Customers: Clients
+  DepositsSales: Dépôts-ventes
   Search: Rechercher
   Logout: Se déconnecter
 
@@ -146,6 +147,20 @@ Buybacks:
     Expired: Échu
     Recovered: Récupéré
 
+DepositsSales:
+  DepositSales: un dépôt-ventes
+  DepositsSales: des dépôts-ventes
+  List of deposits sales: Liste des dépôts-ventes
+  Create deposit sales: Créer un dépôt-ventes
+  Edit deposit sales: Éditer un dépôt-ventes
+  View deposit sales: Voir un dépôt-ventes
+  Generate contracts: Générer les contrats
+  Statuses:
+    Pending: En cours
+    Recovered: Récupéré
+    Solded: Vendu
+    Payed: Payé
+
 Forms:
   Labels:
     Label: Étiquette
@@ -209,6 +224,7 @@ Forms:
     Starting price: Prix de base
     Increased percent: Majoration
     Increased price: Prix majoré
+    Reserved price: Prix de réserve
     Customer: Client
     Duration: Durée (jours)
     Status: Status
@@ -293,6 +309,13 @@ Flashes:
     Delete: Le buyback \"%instance%\" a été supprimé.
     Recover: Le buyback \"%instance%\" a été récupéré.
     Expire: Le buyback \"%instance%\" a expiré.
+  DepositsSales:
+    Create: Le dépôt-vente \"%instance%\" a été créé.
+    Update: Le dépôt-vente \"%instance%\" a été mis à jour.
+    Delete: Le dépôt-vente \"%instance%\" a été supprimé.
+    Recover: Le dépôt-vente \"%instance%\" a été récupéré.
+    Sold: Le dépôt-vente \"%instance%\" a été vendu.
+    Paid: Le dépôt-vente \"%instance%\" a été payé.
 
 Errors:
   Title: Erreur %error_code%

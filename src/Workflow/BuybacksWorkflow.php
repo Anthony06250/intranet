@@ -2,6 +2,7 @@
 
 namespace App\Workflow;
 
+use App\DBAL\Types\BuybacksStatusesType;
 use App\Entity\Buybacks;
 use LogicException;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -24,8 +25,8 @@ final class BuybacksWorkflow
      */
     public function isExpire(Buybacks $buyback): bool
     {
-        if (array_key_exists('expired', $this->buybacksStateMachine->getMarking($buyback)->getPlaces())
-            && $this->buybacksStateMachine->getMarking($buyback)->getPlaces()['expired'] === 1) {
+        if (array_key_exists(BuybacksStatusesType::STATE_EXPIRED, $this->buybacksStateMachine->getMarking($buyback)->getPlaces())
+            && $this->buybacksStateMachine->getMarking($buyback)->getPlaces()[BuybacksStatusesType::STATE_EXPIRED] === 1) {
             return true;
         }
 

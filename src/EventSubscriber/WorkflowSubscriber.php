@@ -7,6 +7,7 @@ use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function Symfony\Component\String\u;
 
 readonly class WorkflowSubscriber implements EventSubscriberInterface
 {
@@ -35,7 +36,7 @@ readonly class WorkflowSubscriber implements EventSubscriberInterface
      */
     public function workflowCompletedEventSubscriber(CompletedEvent $event): void
     {
-        $this->notifier('Flashes.' . ucfirst($event->getWorkflowName()) . '.' . ucfirst($event->getTransition()->getName()),
+        $this->notifier('Flashes.' . u($event->getWorkflowName())->camel()->title() . '.' . ucfirst($event->getTransition()->getName()),
             $event->getSubject()
         );
     }
