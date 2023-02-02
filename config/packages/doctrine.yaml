@@ -8,7 +8,9 @@ doctrine:
 
         types:
             BuybacksStatusesType: App\DBAL\Types\BuybacksStatusesType
+            DepositsSalesStatusesType: App\DBAL\Types\DepositsSalesStatusesType
             phone_number: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
+
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware

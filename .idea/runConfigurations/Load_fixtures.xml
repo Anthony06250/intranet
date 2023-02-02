@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Load fixtures" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="symfony console doctrine:schema:drop --force &amp;&amp; symfony console doctrine:schema:update --complete --force &amp;&amp; symfony console doctrine:fixtures:load --append" />
+    <option name="SCRIPT_TEXT" value="symfony console doctrine:schema:drop --force &amp;&amp; symfony console doctrine:schema:update --complete --force &amp;&amp; symfony console doctrine:fixtures:load --append &amp;&amp; symfony console app:safes:create" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />

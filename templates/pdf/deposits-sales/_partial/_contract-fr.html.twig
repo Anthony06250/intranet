@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="utf-8">
+        {% if links is defined %}
+            {{ links }}
+        {% endif %}
+    </head>
+    <body id="pdf-body">
+        <header id="pdf-header">
+            <section class="text-center">
+                <img src="{{ absolute_url('/assets/images/logo-dark.png') }}" alt="logo"><br>
+                <h4 class="fw-bolder mt-2">
+                    {{ deposits_sales.store.city | upper }}
+                </h4>
+            </section>
+        </header>
+        <footer id="pdf-footer">
+            <table class="w-100">
+                <tbody>
+                <tr>
+                    <td>
+                        {% if deposits_sales.store.phone is not empty %}
+                            Téléphone : {{ deposits_sales.store.phone | phone_number_format('NATIONAL') }}
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        {% if deposits_sales.store.email is not empty %}
+                            Email : {{ deposits_sales.store.email }}
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <article class="text-center">
+                <small>
+                    {% if deposits_sales.store.commercialRegisterNumber is not empty %}
+                        RCS {{ deposits_sales.store.commercialRegisterNumber }}
+                    {% endif %}
+                </small>
+            </article>
+        </footer>
+        <main>
+            <article class="copy-for text-end text-decoration-underline float-end">
+                {{ copy_for }}
+            </article>
+            <h3 class="text-center mb-5">
+                DÉPÔT-VENTE
+            </h3>
+            <p>
+                « Le client » :<br>
+                {%  if deposits_sales.customer.civility is defined and deposits_sales.customer.firstname is defined and deposits_sales.customer.lastname is defined %}
+                    {{ deposits_sales.customer.civility ~ ' ' ~ deposits_sales.customer.firstname ~ ' ' ~ deposits_sales.customer.lastname }}<br>
+                {% endif %}
+                {%  if deposits_sales.customer.address is defined and deposits_sales.customer.address is not empty %}
+                    {{ deposits_sales.customer.address }}<br>
+                {% endif %}
+                {%  if deposits_sales.customer.additionalAddress is defined and deposits_sales.customer.additionalAddress is not empty %}
+                    {{ deposits_sales.customer.additionalAddress }}<br>
+                {% endif %}
+                {%  if deposits_sales.customer.zipcode is defined or deposits_sales.customer.city is defined %}
+                    {{ deposits_sales.customer.zipcode }} {{ deposits_sales.customer.city }}<br>
+                {% endif %}
+                {%  if deposits_sales.customer.idNumber is defined %}
+                    Pièce d'identitée n°: {{ deposits_sales.customer.idNumber }}
+                {% endif %}
+            </p>
+            <p class="text-end mb-5">
+                « Le magasin » :<br>
+                AXE CASH {{ deposits_sales.store.city | upper }}<br>
+                {% if deposits_sales.store.address is not empty %}
+                    {{ deposits_sales.store.address }}<br>
+                {% endif %}
+                {% if deposits_sales.store.additionalAddress is not empty %}
+                    {{ deposits_sales.store.additionalAddress }}<br>
+                {% endif %}
+                {{ deposits_sales.store.zipcode }} {{ deposits_sales.store.city }}
+            </p>
+            <p>
+                « Le client » met en dépot-vente auprès « du magasin » les bien ci-après :<br>
+                <span class="fw-bold">
+                    {{ deposits_sales.product }}<br>
+                </span>
+                {% if deposits_sales.serialNumber is not empty %}
+                    Numéro de série : {{ deposits_sales.serialNumber }}<br>
+                {% endif %}
+            </p>
+            <p>
+                Il a été convenue entre « le client » et « le magasin » un prix de réserve pour les produits de
+                <span class="fw-bold">
+                    {{ (deposits_sales.reservedPrice / 100) | round(2, 'common') | replace({'.' : ','}) }}
+                </span>
+                euros.
+            </p>
+            <p>
+                Durant toute la durée du dépôt-vente « le client » restera le propriétaire des produits laissés « au magasin ».
+            </p>
+            <p>
+                « Le client » pourra à tout moment récupérer ses produits sur simple demande.
+            </p>
+            <p>
+                Dès la vente des produits par  « le magasin », « le client » en sera averti le jour-même.<br>
+            </p>
+            <p>
+                Commencera alors un délai de 10 jours, corespondant à la livraison et au retour du produit pour un éventuel dysfonctionnement.<br>
+                Passé ce délai, « le client » sera contacté par « le magasin » pour procéder à l'achat et effectuer le paiement des produits.
+            </p>
+            <p>
+                La récupération ou l'achat des produits devront être exercée selon la modalité suivante :<br>
+                - « Le client » se présentera, durant les heures normales d’ouverture « du magasin », personnellement, dans « le magasin » où il a déposé les biens, muni d’une pièce d’identité en cours de validité et de l’original de l’exemplaire qui lui a été remis du présent contrat.
+            </p>
+            <p class="mb-5">
+                Tout litige relatif au contrat relèvera, à défaut d’accord amiable, de la compétence exclusive du Tribunal de Commerce de Cannes.
+            </p>
+            <p>
+                Fait en 2 exemplaires le
+                <span class="fw-bold">
+                    {{ deposits_sales.createdAt | date("d/m/Y", false) }}
+                </span>
+            </p>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>
+                            « Le client » :<br>
+                            Lu et approuvé – Bon pour accord
+                        </td>
+                        <td class="text-end">
+                            « Le magasin » :<br>
+                            AXE CASH {{ deposits_sales.store.city | upper }}<br>
+                            ({{ deposits_sales.user.fullname }})
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

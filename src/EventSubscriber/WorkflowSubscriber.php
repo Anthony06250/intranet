@@ -3,18 +3,20 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function Symfony\Component\String\u;
 
-class WorkflowSubscriber implements EventSubscriberInterface
+readonly class WorkflowSubscriber implements EventSubscriberInterface
 {
     /**
-     * @param RequestStack $request
+     * @param NotifierInterface $notifier
      * @param TranslatorInterface $translator
      */
-    public function __construct(private readonly RequestStack $request,
-                                private readonly TranslatorInterface $translator)
+    public function __construct(private NotifierInterface $notifier,
+                                private TranslatorInterface $translator)
     {
     }
 
@@ -34,18 +36,21 @@ class WorkflowSubscriber implements EventSubscriberInterface
      */
     public function workflowCompletedEventSubscriber(CompletedEvent $event): void
     {
-        $this->addFlash($event->getSubject(), ucfirst('Flashes.' . ucfirst($event->getWorkflowName()) . '.' . ucfirst($event->getTransition()->getName())));
+        $this->notifier('Flashes.' . u($event->getWorkflowName())->camel()->title() . '.' . ucfirst($event->getTransition()->getName()),
+            $event->getSubject()
+        );
     }
 
     /**
-     * @param string $instance
      * @param string $message
+     * @param string $instance
      * @return void
      */
-    private function addFlash(string $instance, string $message): void
+    private function notifier(string $message, string $instance): void
     {
-        $this->request->getSession()->getFlashBag()->add('success', $this->translator->trans($message, [
+        $this->notifier->send((new Notification($this->translator->trans($message, [
             '%instance%' => $instance,
-        ]));
+        ]), ['browser']))
+            ->importance(Notification::IMPORTANCE_LOW));
     }
 }

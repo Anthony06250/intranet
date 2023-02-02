@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\ControlsCounters;
+use App\Entity\ControlsPeriods;
 use App\Entity\Safes;
+use App\Entity\SafesMovementsTypes;
 use App\Entity\Stores;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -24,16 +27,8 @@ class SafesRepository extends ServiceEntityRepository
 {
     /**
      * @param ManagerRegistry $registry
-     * @param StoresRepository $storesRepository
-     * @param ControlsPeriodsRepository $controlsPeriodsRepository
-     * @param ControlsCountersRepository $controlsCountersRepository
-     * @param SafesMovementsTypesRepository $safesMovementsTypesRepository
      */
-    public function __construct(ManagerRegistry $registry,
-                                private readonly StoresRepository $storesRepository,
-                                private readonly ControlsPeriodsRepository $controlsPeriodsRepository,
-                                private readonly ControlsCountersRepository $controlsCountersRepository,
-                                private readonly SafesMovementsTypesRepository $safesMovementsTypesRepository)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Safes::class);
     }
@@ -91,7 +86,7 @@ class SafesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $this->storesRepository->countStores() - $countSafes;
+        return $this->getEntityManager()->getRepository(Stores::class)->countStores() - $countSafes;
     }
 
     /**
@@ -104,7 +99,7 @@ class SafesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         $existStores = array_column(array_column($safes, 'store'), 'id');
-        $stores = $this->storesRepository->findAll();
+        $stores = $this->getEntityManager()->getRepository(Stores::class)->findAll();
 
         foreach ($stores as $store) {
             if (!in_array($store->getId(), $existStores)) {
@@ -125,21 +120,20 @@ class SafesRepository extends ServiceEntityRepository
     private function createMissingSafeForCurrentMonth(Stores $store): void
     {
         $safe = new Safes();
+        $controlsPeriod = $this->getEntityManager()->getRepository(ControlsPeriods::class)->find(2);
+        $controlsCounters = $this->getEntityManager()->getRepository(ControlsCounters::class)->findAll();
+        $safesMovementsTypes = $this->getEntityManager()->getRepository(SafesMovementsTypes::class)->findAll();
 
         $safe->setMonth((new DateTimeImmutable())->format('Y-m') . '-01');
         $safe->setStore($store);
-        $safe->setControlsPeriod($this->controlsPeriodsRepository->find(2));
+        $safe->setControlsPeriod($controlsPeriod);
 
-        for ($i = 1; $i <= 2; $i++) {
-            $controlsCounter = $this->controlsCountersRepository->find($i);
-
+        foreach ($controlsCounters as $controlsCounter) {
             $safe->addControlsCounters($controlsCounter);
         }
 
-        for ($i = 1; $i <= 3; $i++) {
-            $safesMovementsTypes = $this->safesMovementsTypesRepository->find($i);
-
-            $safe->addSafesMovementsTypes($safesMovementsTypes);
+        foreach ($safesMovementsTypes as $safesMovementsType) {
+            $safe->addSafesMovementsTypes($safesMovementsType);
         }
 
         $safe->setCreatedAt(new DateTimeImmutable());
@@ -153,7 +147,7 @@ class SafesRepository extends ServiceEntityRepository
     public function findMissingSafesForCurrentMonth(): QueryBuilder
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('MONTH(b.created_at) = :month')
+            ->andWhere('MONTH(b.month) = :month')
             ->setParameter('month', (new DateTimeImmutable())->format('m'));
     }
 

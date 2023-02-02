@@ -118,6 +118,12 @@ class Stores
     #[ORM\OneToMany(mappedBy: 'store', targetEntity: Buybacks::class)]
     private Collection|ArrayCollection $buybacks;
 
+    /**
+     * @var ArrayCollection|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'store', targetEntity: DepositsSales::class)]
+    private Collection|ArrayCollection $depositsSales;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -126,6 +132,7 @@ class Stores
         $this->safesMovements = new ArrayCollection();
         $this->safesControls = new ArrayCollection();
         $this->buybacks = new ArrayCollection();
+        $this->depositsSales = new ArrayCollection();
     }
 
     /**
@@ -533,6 +540,44 @@ class Stores
             // set the owning side to null (unless already changed)
             if ($buyback->getStore() === $this) {
                 $buyback->setStore(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepositsSales>
+     */
+    public function getDepositsSales(): Collection
+    {
+        return $this->depositsSales;
+    }
+
+    /**
+     * @param DepositsSales $depositsSale
+     * @return $this
+     */
+    public function addDepositsSale(DepositsSales $depositsSale): self
+    {
+        if (!$this->depositsSales->contains($depositsSale)) {
+            $this->depositsSales->add($depositsSale);
+            $depositsSale->setStore($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param DepositsSales $depositsSale
+     * @return $this
+     */
+    public function removeDepositsSale(DepositsSales $depositsSale): self
+    {
+        if ($this->depositsSales->removeElement($depositsSale)) {
+            // set the owning side to null (unless already changed)
+            if ($depositsSale->getStore() === $this) {
+                $depositsSale->setStore(null);
             }
         }
 

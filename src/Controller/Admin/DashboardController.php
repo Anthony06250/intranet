@@ -8,6 +8,7 @@ use App\Entity\ControlsCounters;
 use App\Entity\ControlsPeriods;
 use App\Entity\Customers;
 use App\Entity\CustomersTypesIds;
+use App\Entity\DepositsSales;
 use App\Entity\Safes;
 use App\Entity\SafesControls;
 use App\Entity\SafesMovements;
@@ -19,6 +20,7 @@ use App\Entity\Users;
 use App\Repository\BuybacksRepository;
 use App\Repository\ControlsRepository;
 use App\Repository\CustomersRepository;
+use App\Repository\DepositsSalesRepository;
 use App\Repository\SafesControlsRepository;
 use App\Repository\SafesMovementsRepository;
 use App\Repository\SafesRepository;
@@ -26,6 +28,8 @@ use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\CrudMenuItem;
@@ -54,6 +58,7 @@ class DashboardController extends AbstractDashboardController
      * @param SafesMovementsRepository $safesMovementsRepository
      * @param SafesControlsRepository $safesControlsRepository
      * @param BuybacksRepository $buybacksRepository
+     * @param DepositsSalesRepository $depositsSalesRepository
      */
     public function __construct(private readonly UsersRepository $usersRepository,
                                 private readonly CustomersRepository $customersRepository,
@@ -62,7 +67,8 @@ class DashboardController extends AbstractDashboardController
                                 private readonly SafesRepository $safesRepository,
                                 private readonly SafesMovementsRepository $safesMovementsRepository,
                                 private readonly SafesControlsRepository $safesControlsRepository,
-                                private readonly BuybacksRepository $buybacksRepository)
+                                private readonly BuybacksRepository $buybacksRepository,
+                                private readonly DepositsSalesRepository $depositsSalesRepository)
     {
     }
 
@@ -81,6 +87,7 @@ class DashboardController extends AbstractDashboardController
             $countSafesMovements = $this->safesMovementsRepository->countSafesMovements();
             $countSafesControls = $this->safesControlsRepository->countSafesControls();
             $countBuybacks = $this->buybacksRepository->countBuybacks();
+            $countDepositsSales = $this->depositsSalesRepository->countDepositsSales();
             $nextBirthdays = $this->usersRepository->findNextBirthday(self::DAYS_UNTIL_BIRTHDAYS);
         } catch (NoResultException|NonUniqueResultException|Exception) {
         }
@@ -94,6 +101,7 @@ class DashboardController extends AbstractDashboardController
             'count_safesMovements' => $countSafesMovements ?? 0,
             'count_safesControls' => $countSafesControls ?? 0,
             'count_buybacks' => $countBuybacks ?? 0,
+            'count_deposits_sales' => $countDepositsSales ?? 0,
             'next_birthdays' => $nextBirthdays ?? null,
             'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS
         ]);
@@ -127,6 +135,8 @@ class DashboardController extends AbstractDashboardController
         yield $this->configureSafesMenuItem();
         // Buybacks menu
         yield $this->configureBuybacksMenuItem();
+        // Deposits sales menu
+        yield $this->configureDepositsSalesMenuItem();
     }
 
     /**
@@ -295,6 +305,25 @@ class DashboardController extends AbstractDashboardController
     }
 
     /**
+     * @return CrudMenuItem|SubMenuItem
+     */
+    private function configureDepositsSalesMenuItem(): CrudMenuItem|SubMenuItem
+    {
+        if ($this->isGranted(DepositsSalesCrudController::ROLE_NEW)) {
+            return MenuItem::subMenu('Menu.DepositsSales', 'uil-moneybag-alt')->setSubItems([
+                MenuItem::linkToCrud('DepositsSales.List of deposits sales', null, DepositsSales::class)
+                    ->setAction(Crud::PAGE_INDEX),
+                MenuItem::section(),
+                MenuItem::linkToCrud('DepositsSales.Create deposit sales', null, DepositsSales::class)
+                    ->setAction(Crud::PAGE_NEW)
+            ]);
+        }
+
+        return MenuItem::linkToCrud('Menu.DepositsSales', 'uil-moneybag-alt', DepositsSales::class)
+            ->setAction(Crud::PAGE_INDEX);
+    }
+
+    /**
      * @param UserInterface $user
      * @return UserMenu
      */
@@ -313,4 +342,48 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToLogout('Menu.Logout', 'mdi mdi-logout')
             ]);
     }
-}
+
+    public function configureActions(): Actions
+    {
+        return parent::configureActions()
+            // Index page
+            ->update(Crud::PAGE_INDEX, Action::NEW,
+                fn (Action $action) => $action->setCssClass('action-new btn btn-success'))
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->update(Crud::PAGE_INDEX, Action::DETAIL,
+                fn (Action $action) => $action->addCssClass('btn btn-outline-info btn-sm py-0 px-1 me-1'))
+            ->update(Crud::PAGE_INDEX, Action::EDIT,
+                fn (Action $action) => $action->addCssClass('btn btn-outline-warning btn-sm py-0 px-1 me-1')
+                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
+                        || $this->getUser()->getId() === $entity->getId()))
+            ->update(Crud::PAGE_INDEX, Action::DELETE,
+                fn (Action $action) => $action->setCssClass('action-delete btn btn-outline-danger btn-sm py-0 px-1'))
+
+            // New page
+            ->add(Crud::PAGE_NEW, Action::INDEX)
+            ->update(Crud::PAGE_NEW, Action::INDEX,
+                fn (Action $action) => $action->setCssClass('action-index btn btn-secondary'))
+            ->update(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER,
+                fn (Action $action) => $action->setCssClass('action-saveAndAddAnother btn btn-info action-save'))
+            ->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN,
+                fn (Action $action) => $action->setCssClass('action-saveAndReturn btn btn-success action-save'))
+
+            // Edit page
+            ->add(Crud::PAGE_EDIT, Action::INDEX)
+            ->update(Crud::PAGE_EDIT, Action::INDEX,
+                fn (Action $action) => $action->setCssClass('action-index btn btn-secondary'))
+            ->update(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE,
+                fn (Action $action) => $action->setCssClass('action-saveAndContinue btn btn-info action-save'))
+            ->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN,
+                fn (Action $action) => $action->setCssClass('action-saveAndReturn btn btn-warning action-save'))
+
+            // Detail page
+            ->update(Crud::PAGE_DETAIL, Action::DELETE,
+                fn (Action $action) => $action->setCssClass('action-delete btn btn-danger text-white'))
+            ->update(Crud::PAGE_DETAIL, Action::INDEX,
+                fn (Action $action) => $action->setCssClass('action-index btn btn-secondary'))
+            ->update(Crud::PAGE_DETAIL, Action::EDIT,
+                fn (Action $action) => $action->setCssClass('action-edit btn btn-warning')
+                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
+                        || $this->getUser()->getId() === $entity->getId()));
+    }}

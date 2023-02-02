@@ -22,3 +22,28 @@ framework:
                     from: pending
                     to: recovered
 
+        deposits_sales:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\DepositsSales
+            initial_marking: pending
+            places:
+                - pending
+                - recovered
+                - solded
+                - payed
+            transitions:
+                recover:
+                    from: pending
+                    to: recovered
+                sold:
+                    from: pending
+                    to: solded
+                paid:
+                    from: solded
+                    to: payed

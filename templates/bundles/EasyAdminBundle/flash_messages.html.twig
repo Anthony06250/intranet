@@ -6,8 +6,8 @@
 
 {% if app.session is not null and app.session.started %}
     {% set flash_messages = app.session.flashbag.all %}
-
-    {% if flash_messages|length > 0 %}
+    {% if flash_messages | length > 0 %}
+        {{ dump(flash_messages) }}
         <script>
             !function (c) {
                 'use strict';
@@ -20,6 +20,9 @@
             }(window.jQuery);
 
             {% for label, messages in flash_messages %}
+                {% if label == 'danger' %}
+                    {% set label = 'error' %}
+                {% endif %}
                 {% for message in messages %}
                     $.NotificationApp.send("{{ ('Flashes.Title.' ~ (label | capitalize)) | trans({}, 'messages') }}",
                         '{{ message | trans | raw }}',

@@ -3,19 +3,20 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LoginSubscriber implements EventSubscriberInterface
+readonly class LoginSubscriber implements EventSubscriberInterface
 {
     /**
-     * @param RequestStack $request
+     * @param NotifierInterface $notifier
      * @param TranslatorInterface $translator
      */
-    public function __construct(private readonly RequestStack $request,
-                                private readonly TranslatorInterface $translator)
+    public function __construct(private NotifierInterface $notifier,
+                                private TranslatorInterface $translator)
     {
     }
 
@@ -36,7 +37,7 @@ class LoginSubscriber implements EventSubscriberInterface
      */
     public function loginEventSubscriber(LoginSuccessEvent $event): void
     {
-        $this->addFlash($event->getAuthenticatedToken()->getUser()->getUserIdentifier(), 'Flashes.Login.Login');
+        $this->notifier('Flashes.Login.Login', ucfirst($event->getAuthenticatedToken()->getUser()->getUserIdentifier()));
     }
 
     /**
@@ -45,18 +46,19 @@ class LoginSubscriber implements EventSubscriberInterface
      */
     public function logoutEventSubscriber(LogoutEvent $event): void
     {
-        $this->addFlash($event->getToken()->getUserIdentifier(), 'Flashes.Login.Logout');
+        $this->notifier('Flashes.Login.Logout', ucfirst($event->getToken()->getUserIdentifier()));
     }
 
     /**
-     * @param string $username
      * @param string $message
+     * @param string $username
      * @return void
      */
-    private function addFlash(string $username, string $message): void
+    private function notifier(string $message, string $username): void
     {
-        $this->request->getSession()->getFlashBag()->add('success', $this->translator->trans($message, [
-            '%username%' => ucfirst($username),
-        ]));
+        $this->notifier->send((new Notification($this->translator->trans($message, [
+            '%username%' => $username,
+        ]), ['browser']))
+            ->importance(Notification::IMPORTANCE_LOW));
     }
 }

@@ -97,4 +97,7 @@ jobs:
           echo -e "Create new datatables ${BIGreen}[OK]" &&
 
           symfony console doctrine:fixtures:load --append --quiet &&
-          echo -e "Load fixtures ${BIGreen}[OK]"'
+          echo -e "Load fixtures ${BIGreen}[OK]" &&
+          
+          symfony console app:safes:create --quiet &&
+          echo -e "Create safes for the current month ${BIGreen}[OK]"'

@@ -7,6 +7,8 @@ use App\Form\Field\AssociationField;
 use App\Form\Field\DateTimeField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\TextareaField;
+use App\Repository\StoresRepository;
+use App\Repository\UsersRepository;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -100,14 +102,55 @@ class SafesMovementsCrudController extends AbstractCrudController
      */
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('user', 'Forms.Labels.User')
-            ->addCssClass('fw-bold');
-        yield AssociationField::new('store', 'Forms.Labels.Store');
+        yield $this->getUsersField();
+        yield $this->getStoresField();
+
         yield MoneyField::new('amount', 'Forms.Labels.Amount');
         yield AssociationField::new('safesMovementsType', 'Forms.Labels.Movements type');
         yield DateTimeField::new('created_at', 'Forms.Labels.Created at');
         yield TextareaField::new('comments', 'Forms.Labels.Comments')
             ->setColumns('col-12');
+    }
+
+    /**
+     * @return AssociationField
+     */
+    private function getUsersField(): AssociationField
+    {
+        $usersField = AssociationField::new('user', 'Forms.Labels.User')
+            ->addCssClass('fw-bold');
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $usersField->setFormTypeOptions([
+                'query_builder' => function (UsersRepository $usersRepository) {
+                    return $usersRepository->createQueryBuilder('u')
+                        ->where('u.id = (:id)')
+                        ->setParameter('id', $this->getUser()->getId());
+                }
+            ]);
+        }
+
+        return $usersField;
+    }
+
+    /**
+     * @return AssociationField
+     */
+    private function getStoresField(): AssociationField
+    {
+        $storesField = AssociationField::new('store', 'Forms.Labels.Store');
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $storesField->setFormTypeOptions([
+                'query_builder' => function (StoresRepository $storesRepository) {
+                    return $storesRepository->createQueryBuilder('s')
+                        ->where('s.id IN (:ids)')
+                        ->setParameter('ids', $this->getStoresForUser());
+                }
+            ]);
+        }
+
+        return $storesField;
     }
 
     /**
@@ -130,54 +173,12 @@ class SafesMovementsCrudController extends AbstractCrudController
      */
     public function configureActions(Actions $actions): Actions
     {
-        return $actions
-            // Index page
-            ->update(Crud::PAGE_INDEX, Action::NEW,
-                fn (Action $action) => $action->setCssClass('action-new btn btn-success'))
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->update(Crud::PAGE_INDEX, Action::DETAIL,
-                fn (Action $action) => $action->addCssClass('btn btn-outline-info btn-sm py-0 px-1 me-1'))
-            ->update(Crud::PAGE_INDEX, Action::EDIT,
-                fn (Action $action) => $action->addCssClass('btn btn-outline-warning btn-sm py-0 px-1 me-1')
-                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $entity->getUser()->getId()))
-            ->update(Crud::PAGE_INDEX, Action::DELETE,
-                fn (Action $action) => $action->setCssClass('action-delete btn btn-outline-danger btn-sm py-0 px-1'))
-
-            // New page
-            ->add(Crud::PAGE_NEW, Action::INDEX)
-            ->update(Crud::PAGE_NEW, Action::INDEX,
-                fn (Action $action) => $action->setCssClass('action-index btn btn-secondary'))
-            ->update(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER,
-                fn (Action $action) => $action->setCssClass('action-saveAndAddAnother btn btn-info action-save'))
-            ->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN,
-                fn (Action $action) => $action->setCssClass('action-saveAndReturn btn btn-success action-save'))
-
-            // Edit page
-            ->add(Crud::PAGE_EDIT, Action::INDEX)
-            ->update(Crud::PAGE_EDIT, Action::INDEX,
-                fn (Action $action) => $action->setCssClass('action-index btn btn-secondary'))
-            ->update(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE,
-                fn (Action $action) => $action->setCssClass('action-saveAndContinue btn btn-info action-save'))
-            ->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN,
-                fn (Action $action) => $action->setCssClass('action-saveAndReturn btn btn-warning action-save'))
-
-            // Detail page
-            ->update(Crud::PAGE_DETAIL, Action::DELETE,
-                fn (Action $action) => $action->setCssClass('action-delete btn btn-danger text-white'))
-            ->update(Crud::PAGE_DETAIL, Action::INDEX,
-                fn (Action $action) => $action->setCssClass('action-index btn btn-secondary'))
-            ->update(Crud::PAGE_DETAIL, Action::EDIT,
-                fn (Action $action) => $action->setCssClass('action-edit btn btn-warning')
-                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $entity->getUser()->getId()))
-
-            // Permissions
-            ->setPermissions([
-                Action::INDEX => self::ROLE_INDEX,
-                Action::NEW => self::ROLE_NEW,
-                Action::EDIT => self::ROLE_EDIT,
-                Action::DELETE => self::ROLE_DELETE
-            ]);
+        // Permissions
+        return $actions->setPermissions([
+            Action::INDEX => self::ROLE_INDEX,
+            Action::NEW => self::ROLE_NEW,
+            Action::EDIT => self::ROLE_EDIT,
+            Action::DELETE => self::ROLE_DELETE
+        ]);
     }
 }

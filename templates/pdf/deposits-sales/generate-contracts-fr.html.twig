@@ -1,0 +1,6 @@
+{% set links %}
+    <link href="{{ absolute_url('/assets/css/app-modern-pdf.min.css') }}" rel="stylesheet" type="text/css">
+{% endset %}
+
+{% include 'pdf/deposits-sales/_partial/_contract-fr.html.twig' with {'links': links, 'copy_for': 'Exemplaire client'} %}
+{% include 'pdf/deposits-sales/_partial/_contract-fr.html.twig' with {'copy_for': 'Exemplaire magasin'} %}
