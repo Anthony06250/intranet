@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\AdvancesPayments;
 use App\Entity\Buybacks;
 use App\Entity\Controls;
 use App\Entity\ControlsCounters;
@@ -17,6 +18,7 @@ use App\Entity\UsersCivilities;
 use App\Entity\UsersPermissions;
 use App\Entity\Stores;
 use App\Entity\Users;
+use App\Repository\AdvancesPaymentsRepository;
 use App\Repository\BuybacksRepository;
 use App\Repository\ControlsRepository;
 use App\Repository\CustomersRepository;
@@ -68,7 +70,8 @@ class DashboardController extends AbstractDashboardController
                                 private readonly SafesMovementsRepository $safesMovementsRepository,
                                 private readonly SafesControlsRepository $safesControlsRepository,
                                 private readonly BuybacksRepository $buybacksRepository,
-                                private readonly DepositsSalesRepository $depositsSalesRepository)
+                                private readonly DepositsSalesRepository $depositsSalesRepository,
+                                private readonly AdvancesPaymentsRepository $advancesPaymentsRepository)
     {
     }
 
@@ -80,6 +83,7 @@ class DashboardController extends AbstractDashboardController
     {
         try {
             $countUsers = $this->usersRepository->countUsers();
+            $nextBirthdays = $this->usersRepository->findNextBirthday(self::DAYS_UNTIL_BIRTHDAYS);
             $countCustomers = $this->customersRepository->countCustomers();
             $countStores = $this->storesRepository->countStores();
             $countControls = $this->controlsRepository->countControls();
@@ -88,12 +92,14 @@ class DashboardController extends AbstractDashboardController
             $countSafesControls = $this->safesControlsRepository->countSafesControls();
             $countBuybacks = $this->buybacksRepository->countBuybacks();
             $countDepositsSales = $this->depositsSalesRepository->countDepositsSales();
-            $nextBirthdays = $this->usersRepository->findNextBirthday(self::DAYS_UNTIL_BIRTHDAYS);
+            $countAdvancesPayments = $this->advancesPaymentsRepository->countAdvancesPayments();
         } catch (NoResultException|NonUniqueResultException|Exception) {
         }
 
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig', [
             'count_users' => $countUsers ?? 0,
+            'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS,
+            'next_birthdays' => $nextBirthdays ?? null,
             'count_customers' => $countCustomers ?? 0,
             'count_stores' => $countStores ?? 0,
             'count_controls' => $countControls ?? 0,
@@ -102,8 +108,7 @@ class DashboardController extends AbstractDashboardController
             'count_safesControls' => $countSafesControls ?? 0,
             'count_buybacks' => $countBuybacks ?? 0,
             'count_deposits_sales' => $countDepositsSales ?? 0,
-            'next_birthdays' => $nextBirthdays ?? null,
-            'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS
+            'count_advances_payments' => $countAdvancesPayments ?? 0
         ]);
     }
 
@@ -137,6 +142,8 @@ class DashboardController extends AbstractDashboardController
         yield $this->configureBuybacksMenuItem();
         // Deposits sales menu
         yield $this->configureDepositsSalesMenuItem();
+        // Advances payments menu
+        yield $this->configureAdvancesPaymentsMenuItem();
     }
 
     /**
@@ -320,6 +327,25 @@ class DashboardController extends AbstractDashboardController
         }
 
         return MenuItem::linkToCrud('Menu.DepositsSales', 'uil-moneybag-alt', DepositsSales::class)
+            ->setAction(Crud::PAGE_INDEX);
+    }
+
+    /**
+     * @return CrudMenuItem|SubMenuItem
+     */
+    private function configureAdvancesPaymentsMenuItem(): CrudMenuItem|SubMenuItem
+    {
+        if ($this->isGranted(AdvancesPaymentsCrudController::ROLE_NEW)) {
+            return MenuItem::subMenu('Menu.AdvancesPayments', 'uil-moneybag-alt')->setSubItems([
+                MenuItem::linkToCrud('AdvancesPayments.List of advances payments', null, AdvancesPayments::class)
+                    ->setAction(Crud::PAGE_INDEX),
+                MenuItem::section(),
+                MenuItem::linkToCrud('AdvancesPayments.Create advance payments', null, AdvancesPayments::class)
+                    ->setAction(Crud::PAGE_NEW)
+            ]);
+        }
+
+        return MenuItem::linkToCrud('Menu.AdvancesPayments', 'uil-moneybag-alt', AdvancesPayments::class)
             ->setAction(Crud::PAGE_INDEX);
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\DBAL\Types\DepositsSalesStatusesType;
-use App\Repository\DepositsSalesRepository;
+use App\DBAL\Types\AdvancesPaymentsStatusesType;
+use App\Repository\AdvancesPaymentsRepository;
 use App\Trait\TimeStampTrait;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -11,11 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints\EnumType;
 use IntlDateFormatter;
 use Locale;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: DepositsSalesRepository::class)]
+#[UniqueEntity('barCode')]
+#[ORM\Entity(repositoryClass: AdvancesPaymentsRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class DepositsSales
+class AdvancesPayments
 {
     use TimeStampTrait;
 
@@ -30,14 +32,14 @@ class DepositsSales
     /**
      * @var Users|null
      */
-    #[ORM\ManyToOne(inversedBy: 'depositsSales')]
+    #[ORM\ManyToOne(inversedBy: 'advancesPayments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $user = null;
 
     /**
      * @var Stores|null
      */
-    #[ORM\ManyToOne(inversedBy: 'depositsSales')]
+    #[ORM\ManyToOne(inversedBy: 'advancesPayments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Stores $store = null;
 
@@ -52,27 +54,34 @@ class DepositsSales
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Length(max: 50)]
-    private ?string $serialNumber = null;
+    #[ORM\Column(length: 20, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min:2, max: 20)]
+    private ?string $barCode = null;
 
     /**
      * @var string
      */
-    #[ORM\Column(name: 'depositsSalesStatus', type: 'DepositsSalesStatusesType', nullable: false)]
-    #[EnumType(entity: DepositsSalesStatusesType::class)]
-    private string $status = DepositsSalesStatusesType::STATE_PENDING;
+    #[ORM\Column(name: 'advancesPaymentsStatus', type: 'AdvancesPaymentsStatusesType', nullable: false)]
+    #[EnumType(entity: AdvancesPaymentsStatusesType::class)]
+    private string $status = AdvancesPaymentsStatusesType::STATE_PENDING;
 
     /**
      * @var float|null
      */
     #[ORM\Column(nullable: false)]
-    private ?float $reservedPrice = null;
+    private ?float $depositAmount = null;
+
+    /**
+     * @var DateTimeImmutable|null
+     */
+    #[ORM\Column(nullable: false)]
+    private ?DateTimeImmutable $expiredAt = null;
 
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(inversedBy: 'depositsSales')]
+    #[ORM\ManyToOne(inversedBy: 'advancesPayments')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 
@@ -81,11 +90,6 @@ class DepositsSales
      */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comments = null;
-
-    public function __construct()
-    {
-        $this->created_at = new DateTimeImmutable();
-    }
 
     /**
      * @return string
@@ -172,18 +176,18 @@ class DepositsSales
     /**
      * @return string|null
      */
-    public function getSerialNumber(): ?string
+    public function getBarCode(): ?string
     {
-        return $this->serialNumber;
+        return $this->barCode;
     }
 
     /**
-     * @param string|null $serialNumber
+     * @param string $barCode
      * @return $this
      */
-    public function setSerialNumber(?string $serialNumber): self
+    public function setBarCode(string $barCode): self
     {
-        $this->serialNumber = $serialNumber;
+        $this->barCode = $barCode;
 
         return $this;
     }
@@ -210,18 +214,37 @@ class DepositsSales
     /**
      * @return float|null
      */
-    public function getReservedPrice(): ?float
+    public function getDepositAmount(): ?float
     {
-        return $this->reservedPrice;
+        return $this->depositAmount;
     }
 
     /**
-     * @param float $reservedPrice
+     * @param float $depositAmount
      * @return $this
      */
-    public function setReservedPrice(float $reservedPrice): self
+    public function setDepositAmount(float $depositAmount): self
     {
-        $this->reservedPrice = $reservedPrice;
+        $this->depositAmount = $depositAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getExpiredAt(): ?DateTimeImmutable
+    {
+        return $this->expiredAt;
+    }
+
+    /**
+     * @param DateTimeImmutable $expiredAt
+     * @return $this
+     */
+    public function setExpiredAt(DateTimeImmutable $expiredAt): self
+    {
+        $this->expiredAt = $expiredAt;
 
         return $this;
     }

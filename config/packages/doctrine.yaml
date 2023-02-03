@@ -9,6 +9,7 @@ doctrine:
         types:
             BuybacksStatusesType: App\DBAL\Types\BuybacksStatusesType
             DepositsSalesStatusesType: App\DBAL\Types\DepositsSalesStatusesType
+            AdvancesPaymentsStatusesType: App\DBAL\Types\AdvancesPaymentsStatusesType
             phone_number: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
 
     orm:

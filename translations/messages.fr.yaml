@@ -16,6 +16,7 @@ Menu:
   SafesControls: Contrôles de coffre
   Buybacks: Buybacks
   DepositsSales: Dépôts-ventes
+  AdvancesPayments: Acomptes
   Search: Rechercher
   Logout: Se déconnecter
 
@@ -161,6 +162,19 @@ DepositsSales:
     Solded: Vendu
     Payed: Payé
 
+AdvancesPayments:
+  AdvancePayments: un acompte
+  AdvancesPayments: des acomptes
+  List of advances payments: Liste des acomptes
+  Create advance payments: Créer un acompte
+  Edit advance payments: Éditer un acompte
+  View advance payments: Voir un acompte
+  Generate documents: Générer les documents
+  Statuses:
+    Pending: En cours
+    Expired: Échu
+    Used: Utilisé
+
 Forms:
   Labels:
     Label: Étiquette
@@ -220,11 +234,13 @@ Forms:
     Various: Divers
     Product: Produit
     Serial number: Numéro de serie
+    Bar code: Code barre
     Comments: Commentaires
     Starting price: Prix de base
     Increased percent: Majoration
     Increased price: Prix majoré
     Reserved price: Prix de réserve
+    Deposit amount: Montant de l'acompte
     Customer: Client
     Duration: Durée (jours)
     Status: Status
@@ -232,6 +248,7 @@ Forms:
     Created at: Date de création
     Updated at: Date de mise à jour
     Due at: Date d'échéance
+    Expired at: Date d'expiration
     Month: Mois
   Placeholders:
     Username: Entrer votre nom d'utilisateur
@@ -316,6 +333,12 @@ Flashes:
     Recover: Le dépôt-vente \"%instance%\" a été récupéré.
     Sold: Le dépôt-vente \"%instance%\" a été vendu.
     Paid: Le dépôt-vente \"%instance%\" a été payé.
+  AdvancesPayments:
+    Create: L\'acompte \"%instance%\" a été créé.
+    Update: L\'acompte \"%instance%\" a été mis à jour.
+    Delete: L\'acompte \"%instance%\" a été supprimé.
+    Use: L\'acompte \"%instance%\" a été utilisé.
+    Expire: L\'acompte \"%instance%\" a expiré.
 
 Errors:
   Title: Erreur %error_code%
@@ -326,6 +349,10 @@ Errors:
   500:
     Label: Erreur interne du serveur
     Message: Pourquoi ne pas essayer de rafraîchir votre page ?</br> Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.
+
+Pdf:
+  Customer copy: Exemplaire client
+  Store copy: Exemplaire magasin
 
 Commands:
   Dry mode: Dry mode activé.

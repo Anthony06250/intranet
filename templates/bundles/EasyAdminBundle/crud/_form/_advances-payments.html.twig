@@ -1,0 +1,30 @@
+{{ form_start(form) }}
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                <div class="col-6" hidden></div>
+                {{ form_row(form.user) }}
+                {{ form_row(form.store) }}
+                {{ form_row(form.product) }}
+                {{ form_row(form.barCode) }}
+                {{ form_row(form.status) }}
+                {{ form_row(form.depositAmount) }}
+                {{ form_row(form.expiredAt) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.customer) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.comments) }}
+            </section>
+        </article>
+    </article>
+{{ form_end(form) }}
