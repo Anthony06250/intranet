@@ -11,7 +11,7 @@ $(document).ready(function () {
     });
 
     $('input, #Controls_controlsPeriod').on('change', function () {
-        control.calcResult();
+        control.loadPeriod();
     });
 
     $('#new-Controls-form, #edit-Controls-form').on('submit', function (event) {
@@ -44,6 +44,14 @@ class Control {
         if (!$('#Controls_cash_fund').val() || force) {
             this.updateCashFund();
         }
+
+        this.calcResult();
+    }
+
+    loadPeriod() {
+        let isDebit = (typeof $('#Controls_controlsPeriod').find(':selected').attr('data-debit') !== 'undefined');
+
+        $('#Controls_turnover').attr('readonly', !isDebit).val(null);
 
         this.calcResult();
     }

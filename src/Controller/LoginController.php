@@ -44,8 +44,7 @@ class LoginController extends AbstractController
             'csrf_token_intention' => 'authenticate',
             'forgot_password_enabled' => true,
 //            'forgot_password_path' => $this->generateUrl('...', ['...' => '...']),
-            'remember_me_enabled' => true,
-            'remember_me_checked' => true
+            'remember_me_enabled' => true
         ]);
     }
 

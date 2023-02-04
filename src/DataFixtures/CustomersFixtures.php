@@ -33,11 +33,11 @@ class CustomersFixtures extends Fixture implements DependentFixtureInterface
         for ($count = 1; $count <= CustomersCrudController::MAX_RESULTS_REQUEST; $count++) {
             $object = new Customers();
 
-            $object->setCivility($this->getReference('usersCivility-' . mt_rand(1, count(UsersCivilitiesFixtures::CIVILITIES))))
+            $object->setCivility($this->getReference('usersCivility-' . $faker->numberBetween(1, count(UsersCivilitiesFixtures::CIVILITIES))))
                 ->setFirstname($faker->firstName)
                 ->setLastname($faker->lastName)
                 ->setBirthdayDate($faker->dateTime)
-                ->setCustomersTypesId($this->getReference('customersTypesId-' . mt_rand(1, count(CustomersTypesIdsFixtures::TYPES_ID))))
+                ->setCustomersTypesId($this->getReference('customersTypesId-' . $faker->numberBetween(1, count(CustomersTypesIdsFixtures::TYPES_ID))))
                 ->setIdNumber($faker->postcode . $faker->postcode)
                 ->setAddress($faker->address)
                 ->setCity($faker->city)

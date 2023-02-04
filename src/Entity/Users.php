@@ -151,6 +151,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepositsSales::class)]
     private Collection|ArrayCollection $depositsSales;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AdvancesPayments::class)]
+    private Collection $advancesPayments;
+
     public function __construct()
     {
         $this->stores = new ArrayCollection();
@@ -159,6 +162,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->safesControls = new ArrayCollection();
         $this->buybacks = new ArrayCollection();
         $this->depositsSales = new ArrayCollection();
+        $this->advancesPayments = new ArrayCollection();
     }
 
     /**
@@ -659,6 +663,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($depositsSale->getUser() === $this) {
                 $depositsSale->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdvancesPayments>
+     */
+    public function getAdvancesPayments(): Collection
+    {
+        return $this->advancesPayments;
+    }
+
+    public function addAdvancesPayment(AdvancesPayments $advancesPayment): self
+    {
+        if (!$this->advancesPayments->contains($advancesPayment)) {
+            $this->advancesPayments->add($advancesPayment);
+            $advancesPayment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvancesPayment(AdvancesPayments $advancesPayment): self
+    {
+        if ($this->advancesPayments->removeElement($advancesPayment)) {
+            // set the owning side to null (unless already changed)
+            if ($advancesPayment->getUser() === $this) {
+                $advancesPayment->setUser(null);
             }
         }
 

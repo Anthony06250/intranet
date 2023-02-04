@@ -346,11 +346,14 @@ class DepositsSalesCrudController extends AbstractCrudController
     public function generateDepositsSalesContracts(AdminContext $context, PdfService $pdfService): void
     {
         $locale = $context->getRequest()->getLocale();
-        $depositsSales = $context->getEntity()->getInstance();
-        $html = $this->render('pdf/deposits-sales/generate-contracts-' . $locale . '.html.twig', [
-            'deposits_sales' => $depositsSales
+        $depositSales = $context->getEntity()->getInstance();
+        $html = $this->render('pdf/generate.html.twig', [
+            'class' => 'deposits-sales',
+            'document' => 'contract',
+            'locale' => $locale,
+            'deposit_sales' => $depositSales
         ]);
 
-        $pdfService->generatePdfFile('deposits-sales-contracts-' . $depositsSales->getId(), $html);
+        $pdfService->generatePdfFile('deposit-sales-contract-' . $locale . '-' . $depositSales->getId(), $html);
     }
 }

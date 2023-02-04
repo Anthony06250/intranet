@@ -47,3 +47,25 @@ framework:
                 paid:
                     from: solded
                     to: payed
+
+        advances_payments:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\AdvancesPayments
+            initial_marking: pending
+            places:
+                - pending
+                - expired
+                - used
+            transitions:
+                expire:
+                    from: pending
+                    to: expired
+                use:
+                    from: pending
+                    to: used

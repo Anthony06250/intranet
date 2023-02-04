@@ -118,12 +118,19 @@ class UsersCrudController extends AbstractCrudController
      */
     public function configureActions(Actions $actions): Actions
     {
-        // Permissions
-        return $actions->setPermissions([
-            Action::INDEX => self::ROLE_INDEX,
-            Action::NEW => self::ROLE_NEW,
-            Action::EDIT => self::ROLE_EDIT,
-            Action::DELETE => self::ROLE_DELETE
-        ]);
+        return $actions
+            // Index page
+            ->update(Crud::PAGE_INDEX, Action::EDIT,
+                fn (Action $action) => $action->addCssClass('btn btn-outline-warning btn-sm py-0 px-1 me-1')
+                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
+                        || $this->getUser()->getId() === $entity->getId()))
+
+            // Permissions
+            ->setPermissions([
+                Action::INDEX => self::ROLE_INDEX,
+                Action::NEW => self::ROLE_NEW,
+                Action::EDIT => self::ROLE_EDIT,
+                Action::DELETE => self::ROLE_DELETE
+            ]);
     }
 }

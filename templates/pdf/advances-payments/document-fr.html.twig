@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="utf-8">
+        {% if links is defined %}
+            {{ links }}
+        {% endif %}
+    </head>
+    <body id="pdf-body">
+        <header id="pdf-header">
+            <section class="text-center">
+                <img src="{{ absolute_url('/assets/images/logo-dark.png') }}" alt="logo"><br>
+                <h4 class="fw-bolder mt-2">
+                    {{ advance_payments.store.city | upper }}
+                </h4>
+            </section>
+        </header>
+        <footer id="pdf-footer">
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>
+                            {% if advance_payments.store.phone is not empty %}
+                                Téléphone : {{ advance_payments.store.phone | phone_number_format('NATIONAL') }}
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if advance_payments.store.email is not empty %}
+                                Email : {{ advance_payments.store.email }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <article class="text-center">
+                <small>
+                    {% if advance_payments.store.commercialRegisterNumber is not empty %}
+                        RCS {{ advance_payments.store.commercialRegisterNumber }}
+                    {% endif %}
+                </small>
+            </article>
+        </footer>
+        <main>
+            <article class="copy-for text-end text-decoration-underline float-end">
+                {{ copy_for }}
+            </article>
+            <h3 class="text-center mb-5">
+                ACOMPTE NON-REMBOURSABLE
+            </h3>
+            <p>
+                « Le client » :<br>
+                {%  if advance_payments.customer.civility is defined and advance_payments.customer.firstname is defined and advance_payments.customer.lastname is defined %}
+                    {{ advance_payments.customer.civility ~ ' ' ~ advance_payments.customer.firstname ~ ' ' ~ advance_payments.customer.lastname }}<br>
+                {% endif %}
+                {%  if advance_payments.customer.address is defined and advance_payments.customer.address is not empty %}
+                    {{ advance_payments.customer.address }}<br>
+                {% endif %}
+                {%  if advance_payments.customer.additionalAddress is defined and advance_payments.customer.additionalAddress is not empty %}
+                    {{ advance_payments.customer.additionalAddress }}<br>
+                {% endif %}
+                {%  if advance_payments.customer.zipcode is defined or advance_payments.customer.city is defined %}
+                    {{ advance_payments.customer.zipcode }} {{ advance_payments.customer.city }}<br>
+                {% endif %}
+                {%  if advance_payments.customer.idNumber is defined %}
+                    Pièce d'identitée n°: {{ advance_payments.customer.idNumber }}
+                {% endif %}
+            </p>
+            <p class="text-end mb-5">
+                « Le magasin » :<br>
+                AXE CASH {{ advance_payments.store.city | upper }}<br>
+                {% if advance_payments.store.address is not empty %}
+                    {{ advance_payments.store.address }}<br>
+                {% endif %}
+                {% if advance_payments.store.additionalAddress is not empty %}
+                    {{ advance_payments.store.additionalAddress }}<br>
+                {% endif %}
+                {{ advance_payments.store.zipcode }} {{ advance_payments.store.city }}
+            </p>
+            <p>
+                « Le magasin » déclare avoir reçu ce jour, de la part « du client » un acompte non-remboursable pour les bien ci-après :<br>
+                {{ advance_payments.barCode }}
+                <span class="fw-bold">
+                    {{ advance_payments.product }}
+                </span>
+            </p>
+            <p>
+                « Le client » verse « au magasin » un acompte d'un montant de
+                <span class="fw-bold">
+                    {{ (advance_payments.depositAmount / 100) | round(2, 'common') | replace({'.' : ','}) }}
+                </span>
+                euros en
+                <span class="fw-bold">
+                    {{ advance_payments.advancesPaymentMethods | lower }}
+                </span>
+                .
+            </p>
+            <p>
+                « Le client » s'engage a versé le solde de son achat auprès « du magasin » avant le
+                <span class="fw-bold">
+                    {{ advance_payments.expiredAt | date("d/m/Y", false) }}.
+                </span>
+            </p>
+            <p>
+                « Le magasin » remettra « au client » les produits le jour du paiement du solde.
+            </p>
+            <p>
+                Passé la date limite de paiement, l'acompte ne sera pas remboursé et les produits remis à la vente.<br>
+            </p>
+            <p>
+                Le versement du solde et la récupération des produits devront être exercée selon la modalité suivante :<br>
+                - « Le client » se présentera, durant les heures normales d’ouverture « du magasin », personnellement, dans « le magasin » où il a versé l'acompte, muni d’une pièce d’identité en cours de validité et de l’original de l’exemplaire qui lui a été remis du présent contrat.
+            </p>
+            <p class="mb-5">
+                Tout litige relatif au contrat relèvera, à défaut d’accord amiable, de la compétence exclusive du Tribunal de Commerce de Cannes.
+            </p>
+            <p>
+                Fait en 2 exemplaires le
+                <span class="fw-bold">
+                    {{ advance_payments.createdAt | date("d/m/Y", false) }}
+                </span>
+            </p>
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>
+                            « Le client » :<br>
+                            Lu et approuvé – Bon pour accord
+                        </td>
+                        <td class="text-end">
+                            « Le magasin » :<br>
+                            AXE CASH {{ advance_payments.store.city | upper }}<br>
+                            ({{ advance_payments.user.fullname }})
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

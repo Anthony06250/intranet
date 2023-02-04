@@ -61,8 +61,9 @@
                 {%  if buyback.customer.zipcode is defined or buyback.customer.city is defined %}
                     {{ buyback.customer.zipcode }} {{ buyback.customer.city }}<br>
                 {% endif %}
-                {%  if buyback.customer.idNumber is defined %}
-                    Pièce d'identitée n°: {{ buyback.customer.idNumber }}
+                {%  if buyback.customer.idNumber is defined and buyback.customer.customersTypesId is defined %}
+                    {{ buyback.customer.customersTypesId }}
+                    n°: {{ buyback.customer.idNumber }}
                 {% endif %}
             </p>
             <p class="text-end mb-5">

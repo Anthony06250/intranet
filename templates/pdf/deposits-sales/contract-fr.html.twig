@@ -11,7 +11,7 @@
             <section class="text-center">
                 <img src="{{ absolute_url('/assets/images/logo-dark.png') }}" alt="logo"><br>
                 <h4 class="fw-bolder mt-2">
-                    {{ deposits_sales.store.city | upper }}
+                    {{ deposit_sales.store.city | upper }}
                 </h4>
             </section>
         </header>
@@ -20,13 +20,13 @@
                 <tbody>
                 <tr>
                     <td>
-                        {% if deposits_sales.store.phone is not empty %}
-                            Téléphone : {{ deposits_sales.store.phone | phone_number_format('NATIONAL') }}
+                        {% if deposit_sales.store.phone is not empty %}
+                            Téléphone : {{ deposit_sales.store.phone | phone_number_format('NATIONAL') }}
                         {% endif %}
                     </td>
                     <td class="text-end">
-                        {% if deposits_sales.store.email is not empty %}
-                            Email : {{ deposits_sales.store.email }}
+                        {% if deposit_sales.store.email is not empty %}
+                            Email : {{ deposit_sales.store.email }}
                         {% endif %}
                     </td>
                 </tr>
@@ -34,8 +34,8 @@
             </table>
             <article class="text-center">
                 <small>
-                    {% if deposits_sales.store.commercialRegisterNumber is not empty %}
-                        RCS {{ deposits_sales.store.commercialRegisterNumber }}
+                    {% if deposit_sales.store.commercialRegisterNumber is not empty %}
+                        RCS {{ deposit_sales.store.commercialRegisterNumber }}
                     {% endif %}
                 </small>
             </article>
@@ -49,46 +49,47 @@
             </h3>
             <p>
                 « Le client » :<br>
-                {%  if deposits_sales.customer.civility is defined and deposits_sales.customer.firstname is defined and deposits_sales.customer.lastname is defined %}
-                    {{ deposits_sales.customer.civility ~ ' ' ~ deposits_sales.customer.firstname ~ ' ' ~ deposits_sales.customer.lastname }}<br>
+                {%  if deposit_sales.customer.civility is defined and deposit_sales.customer.firstname is defined and deposit_sales.customer.lastname is defined %}
+                    {{ deposit_sales.customer.civility ~ ' ' ~ deposit_sales.customer.firstname ~ ' ' ~ deposit_sales.customer.lastname }}<br>
                 {% endif %}
-                {%  if deposits_sales.customer.address is defined and deposits_sales.customer.address is not empty %}
-                    {{ deposits_sales.customer.address }}<br>
+                {%  if deposit_sales.customer.address is defined and deposit_sales.customer.address is not empty %}
+                    {{ deposit_sales.customer.address }}<br>
                 {% endif %}
-                {%  if deposits_sales.customer.additionalAddress is defined and deposits_sales.customer.additionalAddress is not empty %}
-                    {{ deposits_sales.customer.additionalAddress }}<br>
+                {%  if deposit_sales.customer.additionalAddress is defined and deposit_sales.customer.additionalAddress is not empty %}
+                    {{ deposit_sales.customer.additionalAddress }}<br>
                 {% endif %}
-                {%  if deposits_sales.customer.zipcode is defined or deposits_sales.customer.city is defined %}
-                    {{ deposits_sales.customer.zipcode }} {{ deposits_sales.customer.city }}<br>
+                {%  if deposit_sales.customer.zipcode is defined or deposit_sales.customer.city is defined %}
+                    {{ deposit_sales.customer.zipcode }} {{ deposit_sales.customer.city }}<br>
                 {% endif %}
-                {%  if deposits_sales.customer.idNumber is defined %}
-                    Pièce d'identitée n°: {{ deposits_sales.customer.idNumber }}
+                {%  if deposit_sales.customer.idNumber is defined and deposit_sales.customer.customersTypesId is defined %}
+                    {{ deposit_sales.customer.customersTypesId }}
+                    n°: {{ deposit_sales.customer.idNumber }}
                 {% endif %}
             </p>
             <p class="text-end mb-5">
                 « Le magasin » :<br>
-                AXE CASH {{ deposits_sales.store.city | upper }}<br>
-                {% if deposits_sales.store.address is not empty %}
-                    {{ deposits_sales.store.address }}<br>
+                AXE CASH {{ deposit_sales.store.city | upper }}<br>
+                {% if deposit_sales.store.address is not empty %}
+                    {{ deposit_sales.store.address }}<br>
                 {% endif %}
-                {% if deposits_sales.store.additionalAddress is not empty %}
-                    {{ deposits_sales.store.additionalAddress }}<br>
+                {% if deposit_sales.store.additionalAddress is not empty %}
+                    {{ deposit_sales.store.additionalAddress }}<br>
                 {% endif %}
-                {{ deposits_sales.store.zipcode }} {{ deposits_sales.store.city }}
+                {{ deposit_sales.store.zipcode }} {{ deposit_sales.store.city }}
             </p>
             <p>
                 « Le client » met en dépot-vente auprès « du magasin » les bien ci-après :<br>
                 <span class="fw-bold">
-                    {{ deposits_sales.product }}<br>
+                    {{ deposit_sales.product }}<br>
                 </span>
-                {% if deposits_sales.serialNumber is not empty %}
-                    Numéro de série : {{ deposits_sales.serialNumber }}<br>
+                {% if deposit_sales.serialNumber is not empty %}
+                    Numéro de série : {{ deposit_sales.serialNumber }}<br>
                 {% endif %}
             </p>
             <p>
                 Il a été convenue entre « le client » et « le magasin » un prix de réserve pour les produits de
                 <span class="fw-bold">
-                    {{ (deposits_sales.reservedPrice / 100) | round(2, 'common') | replace({'.' : ','}) }}
+                    {{ (deposit_sales.reservedPrice / 100) | round(2, 'common') | replace({'.' : ','}) }}
                 </span>
                 euros.
             </p>
@@ -115,7 +116,7 @@
             <p>
                 Fait en 2 exemplaires le
                 <span class="fw-bold">
-                    {{ deposits_sales.createdAt | date("d/m/Y", false) }}
+                    {{ deposit_sales.createdAt | date("d/m/Y", false) }}
                 </span>
             </p>
             <table class="w-100">
@@ -127,8 +128,8 @@
                         </td>
                         <td class="text-end">
                             « Le magasin » :<br>
-                            AXE CASH {{ deposits_sales.store.city | upper }}<br>
-                            ({{ deposits_sales.user.fullname }})
+                            AXE CASH {{ deposit_sales.store.city | upper }}<br>
+                            ({{ deposit_sales.user.fullname }})
                         </td>
                     </tr>
                 </tbody>
