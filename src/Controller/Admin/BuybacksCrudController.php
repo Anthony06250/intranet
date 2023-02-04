@@ -168,10 +168,10 @@ class BuybacksCrudController extends AbstractCrudController
             ->setColumns('col-5');
         yield DateField::new('created_at', 'Forms.Labels.Created at')
             ->hideOnIndex()
-            ->setColumns('col-5')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
-            ]);
+            ])
+            ->setColumns('col-5');
         yield IntegerField::new('duration', 'Forms.Labels.Duration')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [

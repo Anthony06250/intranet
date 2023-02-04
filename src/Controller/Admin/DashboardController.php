@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\AdvancesPayments;
+use App\Entity\AdvancesPaymentsMethods;
 use App\Entity\Buybacks;
 use App\Entity\Controls;
 use App\Entity\ControlsCounters;
@@ -336,16 +337,21 @@ class DashboardController extends AbstractDashboardController
     private function configureAdvancesPaymentsMenuItem(): CrudMenuItem|SubMenuItem
     {
         if ($this->isGranted(AdvancesPaymentsCrudController::ROLE_NEW)) {
-            return MenuItem::subMenu('Menu.AdvancesPayments', 'uil-moneybag-alt')->setSubItems([
+            return MenuItem::subMenu('Menu.AdvancesPayments', 'uil-bill')->setSubItems([
                 MenuItem::linkToCrud('AdvancesPayments.List of advances payments', null, AdvancesPayments::class)
                     ->setAction(Crud::PAGE_INDEX),
                 MenuItem::section(),
                 MenuItem::linkToCrud('AdvancesPayments.Create advance payments', null, AdvancesPayments::class)
-                    ->setAction(Crud::PAGE_NEW)
+                    ->setAction(Crud::PAGE_NEW),
+                MenuItem::section()
+                    ->setPermission(AdvancesPaymentsMethodsCrudController::ROLE_INDEX),
+                MenuItem::linkToCrud('AdvancesPaymentsMethods.List of advances payments methods', null, AdvancesPaymentsMethods::class)
+                    ->setAction(Crud::PAGE_INDEX)
+                    ->setPermission(AdvancesPaymentsMethodsCrudController::ROLE_INDEX)
             ]);
         }
 
-        return MenuItem::linkToCrud('Menu.AdvancesPayments', 'uil-moneybag-alt', AdvancesPayments::class)
+        return MenuItem::linkToCrud('Menu.AdvancesPayments', 'uil-bill', AdvancesPayments::class)
             ->setAction(Crud::PAGE_INDEX);
     }
 

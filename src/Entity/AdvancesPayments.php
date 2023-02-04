@@ -73,6 +73,13 @@ class AdvancesPayments
     private ?float $depositAmount = null;
 
     /**
+     * @var AdvancesPaymentsMethods|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'advancesPayments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?AdvancesPaymentsMethods $advancesPaymentMethods = null;
+
+    /**
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(nullable: false)]
@@ -90,6 +97,11 @@ class AdvancesPayments
      */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comments = null;
+
+    public function __construct()
+    {
+        $this->created_at = new DateTimeImmutable();
+    }
 
     /**
      * @return string
@@ -226,6 +238,25 @@ class AdvancesPayments
     public function setDepositAmount(float $depositAmount): self
     {
         $this->depositAmount = $depositAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return AdvancesPaymentsMethods|null
+     */
+    public function getAdvancesPaymentMethods(): ?AdvancesPaymentsMethods
+    {
+        return $this->advancesPaymentMethods;
+    }
+
+    /**
+     * @param AdvancesPaymentsMethods|null $advancesPaymentMethods
+     * @return $this
+     */
+    public function setAdvancesPaymentMethods(?AdvancesPaymentsMethods $advancesPaymentMethods): self
+    {
+        $this->advancesPaymentMethods = $advancesPaymentMethods;
 
         return $this;
     }

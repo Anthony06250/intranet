@@ -175,6 +175,14 @@ AdvancesPayments:
     Expired: Échu
     Used: Utilisé
 
+AdvancesPaymentsMethods:
+  AdvancesPaymentMethods: un mode de paiements
+  AdvancesPaymentsMethods: des modes de paiements
+  List of advances payments methods: Liste des modes de paiements
+  Create advances payment methods: Créer un mode de paiement
+  Edit advances payment methods: Éditer un mode de paiement
+  View advances payment methods: Voir un mode de paiement
+
 Forms:
   Labels:
     Label: Étiquette
@@ -241,6 +249,7 @@ Forms:
     Increased price: Prix majoré
     Reserved price: Prix de réserve
     Deposit amount: Montant de l'acompte
+    Payment method: Mode de paiement
     Customer: Client
     Duration: Durée (jours)
     Status: Status
@@ -339,6 +348,10 @@ Flashes:
     Delete: L\'acompte \"%instance%\" a été supprimé.
     Use: L\'acompte \"%instance%\" a été utilisé.
     Expire: L\'acompte \"%instance%\" a expiré.
+  AdvancesPaymentsMethods:
+    Create: Le mode de paiement \"%instance%\" a été créé.
+    Update: Le mode de paiement \"%instance%\" a été mis à jour.
+    Delete: Le mode de paiement \"%instance%\" a été supprimé.
 
 Errors:
   Title: Erreur %error_code%

@@ -88,7 +88,11 @@
                 <span class="fw-bold">
                     {{ (advance_payments.depositAmount / 100) | round(2, 'common') | replace({'.' : ','}) }}
                 </span>
-                euros.
+                euros en
+                <span class="fw-bold">
+                    {{ advance_payments.advancesPaymentMethods | lower }}
+                </span>
+                .
             </p>
             <p>
                 « Le client » s'engage a versé le solde de son achat auprès « du magasin » avant le

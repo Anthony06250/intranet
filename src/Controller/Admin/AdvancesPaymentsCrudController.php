@@ -142,6 +142,13 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
             ->setFormTypeOption('placeholder', false);
         yield MoneyField::new('depositAmount', 'Forms.Labels.Deposit amount')
             ->hideOnIndex();
+        yield AssociationField::new('advancesPaymentMethods', 'Forms.Labels.Payment method')
+            ->hideOnIndex();
+        yield DateField::new('created_at', 'Forms.Labels.Created at')
+            ->hideOnIndex()
+            ->setFormTypeOption('attr', [
+                'readonly' => !$this->isGranted('ROLE_ADMIN')
+            ]);
         yield DateField::new('expiredAt', 'Forms.Labels.Expired at');
         yield TextareaField::new('comments', 'Forms.Labels.Comments')
             ->hideOnIndex()
