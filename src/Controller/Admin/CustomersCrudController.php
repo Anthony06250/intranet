@@ -113,12 +113,17 @@ class CustomersCrudController extends AbstractCrudController
      */
     public function configureActions(Actions $actions): Actions
     {
-        // Permissions
-        return $actions->setPermissions([
-            Action::INDEX => self::ROLE_INDEX,
-            Action::NEW => self::ROLE_NEW,
-            Action::EDIT => self::ROLE_EDIT,
-            Action::DELETE => self::ROLE_DELETE
-        ]);
+        return $actions
+            // Index page
+            ->update(Crud::PAGE_INDEX, Action::EDIT,
+                fn (Action $action) => $action->displayIf(fn ($entity) => true))
+
+            // Permissions
+            ->setPermissions([
+                Action::INDEX => self::ROLE_INDEX,
+                Action::NEW => self::ROLE_NEW,
+                Action::EDIT => self::ROLE_EDIT,
+                Action::DELETE => self::ROLE_DELETE
+            ]);
     }
 }
