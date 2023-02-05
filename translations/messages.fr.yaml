@@ -3,7 +3,7 @@ Menu:
   Navigation: Navigation
   Dashboard: Tableau de bord
   My account: Mon compte
-  Support: Support
+  Support: Assistance
   Users: Utilisateurs
   UsersPermissions: Autorisations
   Customers: Clients
@@ -272,6 +272,9 @@ Widgets:
     Title: Anniversaires dans les %days% prochains jours
     Age: (%age% ans)
     Empty: Aucun anniversaire dans les %days% prochains jours
+  Support:
+    Title: Assistance
+    Message: Pour toute question merci de téléphoner au <a class="fw-bold text-white" href="tel:0618824312">06.18.82.43.12</a>.
 
 Flashes:
   Title:
