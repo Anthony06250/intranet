@@ -99,8 +99,6 @@ class DashboardController extends AbstractDashboardController
 
         return $this->render('bundles/EasyAdminBundle/page/dashboard.html.twig', [
             'count_users' => $countUsers ?? 0,
-            'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS,
-            'next_birthdays' => $nextBirthdays ?? null,
             'count_customers' => $countCustomers ?? 0,
             'count_stores' => $countStores ?? 0,
             'count_controls' => $countControls ?? 0,
@@ -109,7 +107,11 @@ class DashboardController extends AbstractDashboardController
             'count_safesControls' => $countSafesControls ?? 0,
             'count_buybacks' => $countBuybacks ?? 0,
             'count_deposits_sales' => $countDepositsSales ?? 0,
-            'count_advances_payments' => $countAdvancesPayments ?? 0
+            'count_advances_payments' => $countAdvancesPayments ?? 0,
+            'birthday' => [
+                'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS,
+                'next_birthdays' => $nextBirthdays ?? null,
+            ]
         ]);
     }
 
@@ -369,7 +371,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Menu.My account', 'mdi mdi-account-circle', Users::class)
                     ->setAction(Crud::PAGE_DETAIL)
                     ->setEntityId($user->getId()),
-                MenuItem::linkToUrl('Menu.Support', 'mdi mdi-lifebuoy', 'mailto:anthony.duret@outlook.fr'),
+                MenuItem::linkToUrl('Menu.Support', 'mdi mdi-lifebuoy', 'tel:0618824312'),
                 MenuItem::section(),
                 MenuItem::linkToLogout('Menu.Logout', 'mdi mdi-logout')
             ]);
