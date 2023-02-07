@@ -194,12 +194,12 @@ Invoices:
   Generate documents: Générer les documents
 
 InvoicesTaxesRates:
-  InvoicesTaxesRate: un taux
-  InvoicesTaxesRates: des taux
-  List of taxes rates: Liste des taux
-  Create taxes rate: Créer un taux
-  Edit taxes rate: Éditer un taux
-  View taxes rate: Voir un taux
+  InvoicesTaxesRate: un taux de T.V.A.
+  InvoicesTaxesRates: des taux de T.V.A.
+  List of taxes rates: Liste des taux de T.V.A.
+  Create taxes rate: Créer un taux de T.V.A.
+  Edit taxes rate: Éditer un taux de T.V.A.
+  View taxes rate: Voir un taux de T.V.A.
 
 Forms:
   Labels:

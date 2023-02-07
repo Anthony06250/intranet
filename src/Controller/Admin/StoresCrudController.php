@@ -42,7 +42,11 @@ class StoresCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_NEW, 'Stores.Create store')
             ->setPageTitle(Crud::PAGE_EDIT, 'Stores.Edit store')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Stores.View store')
-            ->showEntityActionsInlined();
+            ->showEntityActionsInlined()
+            ->overrideTemplates([
+                'crud/new' => 'bundles/EasyAdminBundle/crud/stores.html.twig',
+                'crud/edit' => 'bundles/EasyAdminBundle/crud/stores.html.twig'
+            ]);
     }
 
     /**

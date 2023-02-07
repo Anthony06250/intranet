@@ -53,7 +53,11 @@ class UsersCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'Users.Edit user')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Users.View user')
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
-            ->showEntityActionsInlined();
+            ->showEntityActionsInlined()
+            ->overrideTemplates([
+                'crud/new' => 'bundles/EasyAdminBundle/crud/users.html.twig',
+                'crud/edit' => 'bundles/EasyAdminBundle/crud/users.html.twig'
+            ]);
     }
 
     /**
