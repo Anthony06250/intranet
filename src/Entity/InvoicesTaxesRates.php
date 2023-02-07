@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\AdvancesPaymentsMethodsRepository;
+use App\Repository\InvoicesTaxesRatesRepository;
 use App\Trait\TimeStampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,9 +11,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity('label')]
-#[ORM\Entity(repositoryClass: AdvancesPaymentsMethodsRepository::class)]
+#[ORM\Entity(repositoryClass: InvoicesTaxesRatesRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class AdvancesPaymentsMethods
+class InvoicesTaxesRates
 {
     use TimeStampTrait;
 
@@ -33,15 +33,20 @@ class AdvancesPaymentsMethods
     #[Assert\Length(min:2, max: 50)]
     private ?string $label = null;
 
-    #[ORM\OneToMany(mappedBy: 'advancesPaymentMethods', targetEntity: AdvancesPayments::class)]
-    private Collection $advancesPayments;
+    /**
+     * @var float|null
+     */
+    #[ORM\Column(nullable: false)]
+    private ?float $rate = null;
 
-    #[ORM\OneToMany(mappedBy: 'paymentMethods', targetEntity: Invoices::class)]
-    private Collection $invoices;
+    /**
+     * @var ArrayCollection|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'taxesRate', targetEntity: Invoices::class)]
+    private Collection|ArrayCollection $invoices;
 
     public function __construct()
     {
-        $this->advancesPayments = new ArrayCollection();
         $this->invoices = new ArrayCollection();
     }
 
@@ -81,31 +86,20 @@ class AdvancesPaymentsMethods
     }
 
     /**
-     * @return Collection<int, AdvancesPayments>
+     * @return float|null
      */
-    public function getAdvancesPayments(): Collection
+    public function getRate(): ?float
     {
-        return $this->advancesPayments;
+        return $this->rate;
     }
 
-    public function addAdvancesPayment(AdvancesPayments $advancesPayment): self
+    /**
+     * @param float $rate
+     * @return $this
+     */
+    public function setRate(float $rate): self
     {
-        if (!$this->advancesPayments->contains($advancesPayment)) {
-            $this->advancesPayments->add($advancesPayment);
-            $advancesPayment->setAdvancesPaymentMethods($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdvancesPayment(AdvancesPayments $advancesPayment): self
-    {
-        if ($this->advancesPayments->removeElement($advancesPayment)) {
-            // set the owning side to null (unless already changed)
-            if ($advancesPayment->getAdvancesPaymentMethods() === $this) {
-                $advancesPayment->setAdvancesPaymentMethods(null);
-            }
-        }
+        $this->rate = $rate;
 
         return $this;
     }
@@ -118,22 +112,30 @@ class AdvancesPaymentsMethods
         return $this->invoices;
     }
 
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
     public function addInvoice(Invoices $invoice): self
     {
         if (!$this->invoices->contains($invoice)) {
             $this->invoices->add($invoice);
-            $invoice->setPaymentMethods($this);
+            $invoice->setTaxesRate($this);
         }
 
         return $this;
     }
 
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
     public function removeInvoice(Invoices $invoice): self
     {
         if ($this->invoices->removeElement($invoice)) {
             // set the owning side to null (unless already changed)
-            if ($invoice->getPaymentMethods() === $this) {
-                $invoice->setPaymentMethods(null);
+            if ($invoice->getTaxesRate() === $this) {
+                $invoice->setTaxesRate(null);
             }
         }
 

@@ -17,6 +17,7 @@ Menu:
   Buybacks: Buybacks
   DepositsSales: Dépôts-ventes
   AdvancesPayments: Acomptes
+  Invoices: Factures
   Search: Rechercher
   Logout: Se déconnecter
 
@@ -183,6 +184,23 @@ AdvancesPaymentsMethods:
   Edit advances payment methods: Éditer un mode de paiement
   View advances payment methods: Voir un mode de paiement
 
+Invoices:
+  Invoice: une facture
+  Invoices: des factures
+  List of invoices: Liste des factures
+  Create invoice: Créer une facture
+  Edit invoice: Éditer une facture
+  View invoice: Voir une facture
+  Generate documents: Générer les documents
+
+InvoicesTaxesRates:
+  InvoicesTaxesRate: un taux
+  InvoicesTaxesRates: des taux
+  List of taxes rates: Liste des taux
+  Create taxes rate: Créer un taux
+  Edit taxes rate: Éditer un taux
+  View taxes rate: Voir un taux
+
 Forms:
   Labels:
     Label: Étiquette
@@ -233,6 +251,8 @@ Forms:
     Result: Résultat
     Error: Erreur
     Total: Total
+    Total without taxes: Total H.T.
+    Total with taxes: Total T.T.C.
     Balance: Balance
     Amount: Montant
     Safe error: Erreur %counter%
@@ -243,6 +263,7 @@ Forms:
     Product: Produit
     Serial number: Numéro de serie
     Bar code: Code barre
+    Product price: Prix du produit
     Comments: Commentaires
     Starting price: Prix de base
     Increased percent: Majoration
@@ -253,9 +274,12 @@ Forms:
     Customer: Client
     Duration: Durée (jours)
     Status: Status
+    Taxes rate: Taux de T.V.A.
+    Taxes amount: Montant des taxes
     Date: Date
     Created at: Date de création
     Updated at: Date de mise à jour
+    Selled at: Date de la vente
     Due at: Date d'échéance
     Expired at: Date d'expiration
     Month: Mois
@@ -274,7 +298,7 @@ Widgets:
     Empty: Aucun anniversaire dans les %days% prochains jours
   Support:
     Title: Assistance
-    Message: Pour toute question merci de téléphoner au <a class="fw-bold text-white" href="tel:0618824312">06.18.82.43.12</a>.
+    Message: Pour toute question, merci de téléphoner au <a class="fw-bold text-white" href="tel:0618824312">06.18.82.43.12</a>.
 
 Flashes:
   Title:
@@ -355,6 +379,14 @@ Flashes:
     Create: Le mode de paiement \"%instance%\" a été créé.
     Update: Le mode de paiement \"%instance%\" a été mis à jour.
     Delete: Le mode de paiement \"%instance%\" a été supprimé.
+  Invoices:
+    Create: La facture \"%instance%\" a été créé.
+    Update: La facture \"%instance%\" a été mis à jour.
+    Delete: La facture \"%instance%\" a été supprimé.
+  InvoicesTaxesRates:
+    Create: Le taux \"%instance%\" a été créé.
+    Update: Le taux \"%instance%\" a été mis à jour.
+    Delete: Le taux \"%instance%\" a été supprimé.
 
 Errors:
   Title: Erreur %error_code%

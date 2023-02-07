@@ -129,11 +129,15 @@ class Customers
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: AdvancesPayments::class)]
     private Collection $advancesPayments;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Invoices::class)]
+    private Collection $invoices;
+
     public function __construct()
     {
         $this->buybacks = new ArrayCollection();
         $this->depositsSales = new ArrayCollection();
         $this->advancesPayments = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     /**
@@ -488,6 +492,36 @@ class Customers
             // set the owning side to null (unless already changed)
             if ($advancesPayment->getCustomer() === $this) {
                 $advancesPayment->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoices>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoices $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoices $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getCustomer() === $this) {
+                $invoice->setCustomer(null);
             }
         }
 

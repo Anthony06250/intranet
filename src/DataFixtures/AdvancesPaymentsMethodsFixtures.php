@@ -11,7 +11,7 @@ class AdvancesPaymentsMethodsFixtures extends Fixture
 {
     public const PAYMENTS_METHODS = [
         'Carte bancaire',
-        'Éspèces',
+        'Espèces',
         'Paypal',
         'Bon d\'achat',
         'Bon d\'avoir'

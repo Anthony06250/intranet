@@ -93,20 +93,6 @@ class SafesCrudController extends AbstractCrudController
     }
 
     /**
-     * @return array
-     */
-    private function getStoresForUser(): array
-    {
-        $stores = [];
-
-        foreach ($this->getUser()->getStores() as $store) {
-            $stores[] = $store->getId();
-        }
-
-        return $stores;
-    }
-
-    /**
      * @param KeyValueStore $responseParameters
      * @return KeyValueStore
      * @throws ContainerExceptionInterface
@@ -245,6 +231,20 @@ class SafesCrudController extends AbstractCrudController
         }
 
         return $storesField;
+    }
+
+    /**
+     * @return array
+     */
+    private function getStoresForUser(): array
+    {
+        $stores = [];
+
+        foreach ($this->getUser()->getStores() as $store) {
+            $stores[] = $store->getId();
+        }
+
+        return $stores;
     }
 
     /**

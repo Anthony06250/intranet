@@ -75,7 +75,7 @@
                 {% if buyback.store.additionalAddress is not empty %}
                     {{ buyback.store.additionalAddress }}<br>
                 {% endif %}
-                {{ buyback.store.zipcode }} {{ buyback.store.city }}
+                {{ buyback.store.zipcode }} {{ buyback.store.city | upper }}
             </p>
             <p>
                 « Le vendeur » vend à réméré à « l’acquéreur » les bien ci-après :<br>

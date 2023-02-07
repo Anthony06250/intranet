@@ -113,9 +113,8 @@ class DepositsSalesCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets
-            ->addJsFile(Asset::new('assets/js/page/page.deposits-sales.js')
-                ->onlyOnForms());
+        $assets->addJsFile(Asset::new('assets/js/page/page.deposits-sales.js')
+            ->onlyOnForms());
 
         return $assets;
     }
@@ -351,7 +350,8 @@ class DepositsSalesCrudController extends AbstractCrudController
             'class' => 'deposits-sales',
             'document' => 'contract',
             'locale' => $locale,
-            'deposit_sales' => $depositSales
+            'deposit_sales' => $depositSales,
+            'copy_for' => true
         ]);
 
         $pdfService->generatePdfFile('deposit-sales-contract-' . $locale . '-' . $depositSales->getId(), $html);

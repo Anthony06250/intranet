@@ -115,9 +115,8 @@ class BuybacksCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets
-            ->addJsFile(Asset::new('assets/js/page/page.buybacks.js')
-                ->onlyOnForms());
+        $assets->addJsFile(Asset::new('assets/js/page/page.buybacks.js')
+            ->onlyOnForms());
 
         return $assets;
     }
@@ -251,6 +250,10 @@ class BuybacksCrudController extends AbstractCrudController
     {
 
         return $actions
+            // Index page
+            ->update(Crud::PAGE_INDEX, Action::EDIT,
+                fn (Action $action) => $action->displayIf(fn ($entity) => true))
+
             // Workflow actions
             ->add(Crud::PAGE_INDEX, Action::new('recover', 'Buybacks.Statuses.Recovered')
                 ->linkToCrudAction('recover')
@@ -362,7 +365,8 @@ class BuybacksCrudController extends AbstractCrudController
             'class' => 'buybacks',
             'document' => 'contract',
             'locale' => $locale,
-            'buyback' => $buyback
+            'buyback' => $buyback,
+            'copy_for' => true
         ]);
 
         $pdfService->generatePdfFile('buyback-contract-' . $locale . '-' . $buyback->getId(), $html);
@@ -381,7 +385,8 @@ class BuybacksCrudController extends AbstractCrudController
             'class' => 'buybacks',
             'document' => 'repossession',
             'locale' => $locale,
-            'buyback' => $buyback
+            'buyback' => $buyback,
+            'copy_for' => true
         ]);
 
         $pdfService->generatePdfFile('buyback-repossession-' . $locale . '-' . $buyback->getId(), $html);

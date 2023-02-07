@@ -10,8 +10,12 @@ $(document).ready(function () {
         control.loadCounter(true);
     });
 
-    $('input, #Controls_controlsPeriod').on('change', function () {
+    $('#Controls_controlsPeriod').on('change', function () {
         control.loadPeriod();
+    });
+
+    $('input').on('change', function () {
+        control.calcResult();
     });
 
     $('#new-Controls-form, #edit-Controls-form').on('submit', function (event) {
@@ -34,7 +38,7 @@ class Control {
      * Initialize controls class
      */
     init() {
-        this.loadCounter();
+        this.loadPeriod();
     }
 
     /**
@@ -48,10 +52,14 @@ class Control {
         this.calcResult();
     }
 
+    /**
+     * Load the period
+     */
     loadPeriod() {
         let isDebit = (typeof $('#Controls_controlsPeriod').find(':selected').attr('data-debit') !== 'undefined');
 
         $('#Controls_turnover').attr('readonly', !isDebit).val(null);
+        console.log(isDebit);
 
         this.calcResult();
     }

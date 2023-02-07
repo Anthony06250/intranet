@@ -88,9 +88,8 @@ class SafesControlsCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets
-            ->addJsFile(Asset::new('assets/js/page/page.safes-controls.js')
-                ->onlyOnForms());
+        $assets->addJsFile(Asset::new('assets/js/page/page.safes-controls.js')
+            ->onlyOnForms());
 
         return $assets;
     }
