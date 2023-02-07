@@ -5,13 +5,9 @@
                 <div class="col-6" hidden></div>
                 {{ form_row(form.user) }}
                 {{ form_row(form.store) }}
-                {{ form_row(form.product) }}
-                {{ form_row(form.barCode) }}
-                {{ form_row(form.status) }}
-                {{ form_row(form.depositAmount) }}
-                {{ form_row(form.advancesPaymentMethods) }}
                 {{ form_row(form.created_at) }}
                 {{ form_row(form.expiredAt) }}
+                {{ form_row(form.status) }}
             </section>
         </article>
     </article>
@@ -19,6 +15,22 @@
         <article class="card-body">
             <section class="row">
                 {{ form_row(form.customer) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.product) }}
+                {{ form_row(form.barCode) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.depositAmount) }}
+                {{ form_row(form.advancesPaymentMethods) }}
             </section>
         </article>
     </article>

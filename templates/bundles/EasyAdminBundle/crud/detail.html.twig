@@ -51,19 +51,20 @@
 {% block content_footer_wrapper '' %}
 
 {% block main %}
-    <article class="card">
-        <article class="card-body">
-            {% set field_layout = ea_create_field_layout(entity.fields) %}
-            {% block detail_fields %}
-                {% if field_layout.hasTabs %}
-                    {{ _self.render_detail_fields_with_tabs(entity, field_layout) }}
-                {% else %}
-                    {{ _self.render_detail_fields(entity, field_layout.fields) }}
-                {% endif %}
-            {% endblock detail_fields %}
+    {% block detail %}
+        <article class="card">
+            <article class="card-body">
+                {% set field_layout = ea_create_field_layout(entity.fields) %}
+                {% block detail_fields %}
+                    {% if field_layout.hasTabs %}
+                        {{ _self.render_detail_fields_with_tabs(entity, field_layout) }}
+                    {% else %}
+                        {{ _self.render_detail_fields(entity, field_layout.fields) }}
+                    {% endif %}
+                {% endblock detail_fields %}
+            </article>
         </article>
-    </article>
-
+    {% endblock detail %}
     {% block delete_form %}
         {{ include('@EasyAdmin/crud/includes/_delete_form.html.twig', { entity_id: entity.primaryKeyValue }, with_context = false) }}
     {% endblock delete_form %}
