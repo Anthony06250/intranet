@@ -75,7 +75,7 @@
                 {% if deposit_sales.store.additionalAddress is not empty %}
                     {{ deposit_sales.store.additionalAddress }}<br>
                 {% endif %}
-                {{ deposit_sales.store.zipcode }} {{ deposit_sales.store.city }}
+                {{ deposit_sales.store.zipcode }} {{ deposit_sales.store.city | upper }}
             </p>
             <p>
                 « Le client » met en dépot-vente auprès « du magasin » les bien ci-après :<br>

@@ -151,8 +151,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepositsSales::class)]
     private Collection|ArrayCollection $depositsSales;
 
+    /**
+     * @var ArrayCollection|Collection
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AdvancesPayments::class)]
-    private Collection $advancesPayments;
+    private Collection|ArrayCollection $advancesPayments;
+
+    /**
+     * @var ArrayCollection|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Invoices::class)]
+    private Collection|ArrayCollection $invoices;
 
     public function __construct()
     {
@@ -163,6 +172,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->buybacks = new ArrayCollection();
         $this->depositsSales = new ArrayCollection();
         $this->advancesPayments = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     /**
@@ -677,6 +687,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->advancesPayments;
     }
 
+    /**
+     * @param AdvancesPayments $advancesPayment
+     * @return $this
+     */
     public function addAdvancesPayment(AdvancesPayments $advancesPayment): self
     {
         if (!$this->advancesPayments->contains($advancesPayment)) {
@@ -687,12 +701,54 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @param AdvancesPayments $advancesPayment
+     * @return $this
+     */
     public function removeAdvancesPayment(AdvancesPayments $advancesPayment): self
     {
         if ($this->advancesPayments->removeElement($advancesPayment)) {
             // set the owning side to null (unless already changed)
             if ($advancesPayment->getUser() === $this) {
                 $advancesPayment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoices>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
+    public function addInvoice(Invoices $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
+    public function removeInvoice(Invoices $invoice): self
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getUser() === $this) {
+                $invoice->setUser(null);
             }
         }
 

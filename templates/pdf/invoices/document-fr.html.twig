@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="utf-8">
+        {% if links is defined %}
+            {{ links }}
+        {% endif %}
+    </head>
+    <body id="pdf-body">
+        <header id="pdf-header">
+            <section class="text-center">
+                <img src="{{ absolute_url('/assets/images/logo-dark.png') }}" alt="logo"><br>
+                <h4 class="fw-bolder mt-2">
+                    {{ invoices.store.city | upper }}
+                </h4>
+            </section>
+        </header>
+        <footer id="pdf-footer">
+            <table class="w-100">
+                <tbody>
+                    <tr>
+                        <td>
+                            {% if invoices.store.phone is not empty %}
+                                Téléphone : {{ invoices.store.phone | phone_number_format('NATIONAL') }}
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if invoices.store.email is not empty %}
+                                Email : {{ invoices.store.email }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <article class="text-center">
+                <small>
+                    {% if invoices.store.commercialRegisterNumber is not empty %}
+                        RCS {{ invoices.store.commercialRegisterNumber }}
+                    {% endif %}
+                </small>
+            </article>
+        </footer>
+        <main>
+            <h3 class="text-center mb-5">
+                FACTURE N°{{ invoices.id }}
+            </h3>
+            <p>
+                « Le client » :<br>
+                {%  if invoices.customer.civility is defined and invoices.customer.firstname is defined and invoices.customer.lastname is defined %}
+                    {{ invoices.customer.civility ~ ' ' ~ invoices.customer.firstname ~ ' ' ~ invoices.customer.lastname }}<br>
+                {% endif %}
+                {%  if invoices.customer.address is defined and invoices.customer.address is not empty %}
+                    {{ invoices.customer.address }}<br>
+                {% endif %}
+                {%  if invoices.customer.additionalAddress is defined and invoices.customer.additionalAddress is not empty %}
+                    {{ invoices.customer.additionalAddress }}<br>
+                {% endif %}
+                {%  if invoices.customer.zipcode is defined or invoices.customer.city is defined %}
+                    {{ invoices.customer.zipcode }} {{ invoices.customer.city }}<br>
+                {% endif %}
+            </p>
+            <p class="text-end">
+                « Le magasin » :<br>
+                AXE CASH {{ invoices.store.city | upper }}<br>
+                {% if invoices.store.address is not empty %}
+                    {{ invoices.store.address }}<br>
+                {% endif %}
+                {% if invoices.store.additionalAddress is not empty %}
+                    {{ invoices.store.additionalAddress }}<br>
+                {% endif %}
+                {{ invoices.store.zipcode }} {{ invoices.store.city | upper }}
+            </p>
+            <p class="text-end mb-5">
+                Fait à
+                {{ invoices.store.city | capitalize }}
+                le
+                {{ invoices.createdAt | date("d/m/Y", false) }}
+                ,
+            </p>
+            <p>
+                {%  if invoices.customer.civility is defined and invoices.customer.lastname is defined %}
+                    {{ invoices.customer.civility ~ ' ' ~ invoices.customer.lastname }}
+                {% endif %}
+                ,
+            </p>
+            <p class="mb-3">
+                Vous trouverez ci-dessous le détail de votre achat du
+                <span class="fw-bold">
+                    {{ invoices.selledAt | date("d/m/Y", false) }}
+                </span>
+                dans notre magasin AXE CASH de
+                <span class="fw-bold">
+                    {{ invoices.store.city | capitalize }}
+                </span>
+                .
+            </p>
+            <table class="w-100 mb-3">
+                <thead>
+                    <tr>
+                        {% if invoices.barCode is defined and invoices.barCode is not empty %}
+                            <th style="border: 1px solid black">
+                                Code barre
+                            </th>
+                        {% endif %}
+                        <th class="text-center" style="border: 1px solid black">
+                            Produit
+                        </th>
+                        {% if invoices.serialNumber is defined and invoices.serialNumber is not empty %}
+                            <th style="border: 1px solid black">
+                                Numéro de série
+                            </th>
+                        {% endif %}
+                        <th class="text-center" style="border: 1px solid black">
+                            Prix H.T.
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% if invoices.barCode is defined and invoices.barCode is not empty %}
+                            <td style="border: 1px solid black">
+                                {{ invoices.barCode }}
+                            </td>
+                        {% endif %}
+                        <td class="text-center" style="border: 1px solid black">
+                            {% if invoices.product is defined %}
+                                {{ invoices.product }}
+                            {% endif %}
+                        </td>
+                        {% if invoices.serialNumber is defined and invoices.serialNumber is not empty %}
+                            <td style="border: 1px solid black">
+                                {{ invoices.serialNumber }}
+                            </td>
+                        {% endif %}
+                        <td class="text-center" style="border: 1px solid black">
+                            {% if invoices.productPrice is defined %}
+                                {{ (invoices.productPrice / 100) | round(2, 'common') | replace({'.' : ','}) }} euros
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-center" style="border: 1px solid black">
+                            Taux de T.V.A.
+                        </th>
+                        <th class="text-center" style="border: 1px solid black">
+                            {{ invoices.taxesRate }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" style="border: 1px solid black">
+                            Montant de la T.V.A.
+                        </th>
+                        <th class="text-center" style="border: 1px solid black">
+                            {{ (invoices.taxesAmount / 100) | round(2, 'common') | replace({'.' : ','}) }} euros
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" style="border: 1px solid black">
+                            Prix T.T.C.
+                        </th>
+                        <th class="text-center" style="border: 1px solid black">
+                            {{ (invoices.totalWithTaxes / 100) | round(2, 'common') | replace({'.' : ','}) }} euros
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+            <p class="mb-5">
+                En espérant vous revoir rapidement dans nos magasins, veuillez agréer
+                {%  if invoices.customer.civility is defined and invoices.customer.lastname is defined %}
+                    {{ invoices.customer.civility ~ ' ' ~ invoices.customer.lastname }}
+                {% endif %}
+                nos sincères remerciements.
+            </p>
+            <p class="text-end">
+                AXE CASH {{ invoices.store.city | upper }}<br>
+                ({{ invoices.user.fullname }})
+            </p>
+        </main>
+    </body>
+</html>

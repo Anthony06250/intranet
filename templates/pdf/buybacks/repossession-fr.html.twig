@@ -75,7 +75,7 @@
                 {% if buyback.store.additionalAddress is not empty %}
                     {{ buyback.store.additionalAddress }}<br>
                 {% endif %}
-                {{ buyback.store.zipcode }} {{ buyback.store.city }}
+                {{ buyback.store.zipcode }} {{ buyback.store.city | upper }}
             </p>
             <p>
                 Désigné ci-après « Le vendeur », déclare exercer la faculté de reprise qui m’a été consentie dans les termes et délais stipulés au contrat de vente à réméré et en donne bonne et valable quittance de « l’acquéreur ».

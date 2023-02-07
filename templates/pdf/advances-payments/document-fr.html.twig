@@ -74,7 +74,7 @@
                 {% if advance_payments.store.additionalAddress is not empty %}
                     {{ advance_payments.store.additionalAddress }}<br>
                 {% endif %}
-                {{ advance_payments.store.zipcode }} {{ advance_payments.store.city }}
+                {{ advance_payments.store.zipcode }} {{ advance_payments.store.city | upper }}
             </p>
             <p>
                 « Le magasin » déclare avoir reçu ce jour, de la part « du client » un acompte non-remboursable pour les bien ci-après :<br>

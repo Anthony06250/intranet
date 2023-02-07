@@ -11,6 +11,8 @@ use App\Entity\ControlsPeriods;
 use App\Entity\Customers;
 use App\Entity\CustomersTypesIds;
 use App\Entity\DepositsSales;
+use App\Entity\Invoices;
+use App\Entity\InvoicesTaxesRates;
 use App\Entity\Safes;
 use App\Entity\SafesControls;
 use App\Entity\SafesMovements;
@@ -24,6 +26,7 @@ use App\Repository\BuybacksRepository;
 use App\Repository\ControlsRepository;
 use App\Repository\CustomersRepository;
 use App\Repository\DepositsSalesRepository;
+use App\Repository\InvoicesRepository;
 use App\Repository\SafesControlsRepository;
 use App\Repository\SafesMovementsRepository;
 use App\Repository\SafesRepository;
@@ -72,7 +75,8 @@ class DashboardController extends AbstractDashboardController
                                 private readonly SafesControlsRepository $safesControlsRepository,
                                 private readonly BuybacksRepository $buybacksRepository,
                                 private readonly DepositsSalesRepository $depositsSalesRepository,
-                                private readonly AdvancesPaymentsRepository $advancesPaymentsRepository)
+                                private readonly AdvancesPaymentsRepository $advancesPaymentsRepository,
+                                private readonly InvoicesRepository $invoicesRepository)
     {
     }
 
@@ -94,6 +98,7 @@ class DashboardController extends AbstractDashboardController
             $countBuybacks = $this->buybacksRepository->countBuybacks();
             $countDepositsSales = $this->depositsSalesRepository->countDepositsSales();
             $countAdvancesPayments = $this->advancesPaymentsRepository->countAdvancesPayments();
+            $countInvoices = $this->invoicesRepository->countInvoices();
         } catch (NoResultException|NonUniqueResultException|Exception) {
         }
 
@@ -108,6 +113,7 @@ class DashboardController extends AbstractDashboardController
             'count_buybacks' => $countBuybacks ?? 0,
             'count_deposits_sales' => $countDepositsSales ?? 0,
             'count_advances_payments' => $countAdvancesPayments ?? 0,
+            'count_invoices' => $countInvoices ?? 0,
             'birthday' => [
                 'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS,
                 'next_birthdays' => $nextBirthdays ?? null,
@@ -129,8 +135,6 @@ class DashboardController extends AbstractDashboardController
      */
     public function configureMenuItems(): iterable
     {
-        // Dashboard menu
-        yield MenuItem::linkToDashboard('Menu.Dashboard', 'uil-dashboard');
         // Users menu
         yield $this->configureUsersMenuItem();
         // Customers menu
@@ -147,6 +151,8 @@ class DashboardController extends AbstractDashboardController
         yield $this->configureDepositsSalesMenuItem();
         // Advances payments menu
         yield $this->configureAdvancesPaymentsMenuItem();
+        // Invoices menu
+        yield $this->configureInvoicesMenuItem();
     }
 
     /**
@@ -354,6 +360,30 @@ class DashboardController extends AbstractDashboardController
         }
 
         return MenuItem::linkToCrud('Menu.AdvancesPayments', 'uil-bill', AdvancesPayments::class)
+            ->setAction(Crud::PAGE_INDEX);
+    }
+
+    /**
+     * @return CrudMenuItem|SubMenuItem
+     */
+    private function configureInvoicesMenuItem(): CrudMenuItem|SubMenuItem
+    {
+        if ($this->isGranted(AdvancesPaymentsCrudController::ROLE_NEW)) {
+            return MenuItem::subMenu('Menu.Invoices', 'uil-receipt')->setSubItems([
+                MenuItem::linkToCrud('Invoices.List of invoices', null, Invoices::class)
+                    ->setAction(Crud::PAGE_INDEX),
+                MenuItem::section(),
+                MenuItem::linkToCrud('Invoices.Create invoice', null, Invoices::class)
+                    ->setAction(Crud::PAGE_NEW),
+                MenuItem::section()
+                    ->setPermission(InvoicesTaxesRatesCrudController::ROLE_INDEX),
+                MenuItem::linkToCrud('InvoicesTaxesRates.List of taxes rates', null, InvoicesTaxesRates::class)
+                    ->setAction(Crud::PAGE_INDEX)
+                    ->setPermission(InvoicesTaxesRatesCrudController::ROLE_INDEX)
+            ]);
+        }
+
+        return MenuItem::linkToCrud('Menu.Invoices', 'uil-receipt', Invoices::class)
             ->setAction(Crud::PAGE_INDEX);
     }
 

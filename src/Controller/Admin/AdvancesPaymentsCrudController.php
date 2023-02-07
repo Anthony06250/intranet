@@ -19,6 +19,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -103,6 +105,18 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
                 'crud/new' => 'bundles/EasyAdminBundle/crud/advances-payments.html.twig',
                 'crud/edit' => 'bundles/EasyAdminBundle/crud/advances-payments.html.twig'
             ]);
+    }
+
+    /**
+     * @param Assets $assets
+     * @return Assets
+     */
+    public function configureAssets(Assets $assets): Assets
+    {
+        $assets->addJsFile(Asset::new('assets/js/page/page.advances-payments.js')
+            ->onlyOnForms());
+
+        return $assets;
     }
 
     /**
@@ -319,7 +333,8 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
             'class' => 'advances-payments',
             'document' => 'document',
             'locale' => $locale,
-            'advance_payments' => $advancePayments
+            'advance_payments' => $advancePayments,
+            'copy_for' => true
         ]);
 
         $pdfService->generatePdfFile('advance-payments-document-' . $locale . '-' . $advancePayments->getId(), $html);

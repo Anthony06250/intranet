@@ -72,7 +72,7 @@ class Safe {
     calcBalanceForRow(row) {
         let total = 0;
 
-        $('#safes-datatable tbody tr:nth-child(' + row + ') a.text-reset:not(:last)').each(function () {
+        $('#safes-datatable tbody tr:nth-child(' + row + ') td:not(:last) a.text-reset').each(function () {
             total += $(this).text().toNumber();
         });
 
