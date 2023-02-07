@@ -15,6 +15,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -88,8 +90,22 @@ class SafesCrudController extends AbstractCrudController
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
             ->overrideTemplates([
+                'crud/new' => 'bundles/EasyAdminBundle/crud/safes.html.twig',
+                'crud/edit' => 'bundles/EasyAdminBundle/crud/safes.html.twig',
                 'crud/detail' => 'bundles/EasyAdminBundle/crud/safes.html.twig'
             ]);
+    }
+
+    /**
+     * @param Assets $assets
+     * @return Assets
+     */
+    public function configureAssets(Assets $assets): Assets
+    {
+        $assets->addJsFile(Asset::new('assets/js/page/page.safes.js')
+            ->onlyOnDetail());
+
+        return $assets;
     }
 
     /**
@@ -138,6 +154,7 @@ class SafesCrudController extends AbstractCrudController
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     private function getControlsForDetail(Safes $safe, IntlDateFormatter $dateFormatter, array $controlsBuffer): array
     {
@@ -158,6 +175,7 @@ class SafesCrudController extends AbstractCrudController
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     private function getSafesMovementsForDetail(Safes $safe, IntlDateFormatter $dateFormatter): array
     {
@@ -181,6 +199,7 @@ class SafesCrudController extends AbstractCrudController
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     private function getSafesControlsForDetail(Safes $safe, IntlDateFormatter $dateFormatter): array
     {

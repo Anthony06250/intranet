@@ -141,8 +141,7 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield TextField::new('product', 'Forms.Labels.Product')
-            ->setColumns('col-12');
+        yield TextField::new('product', 'Forms.Labels.Product');
         yield TextField::new('barCode', 'Forms.Labels.Bar code')
             ->hideOnIndex();
         yield AssociationField::new('customer', 'Forms.Labels.Customer')

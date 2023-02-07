@@ -28,6 +28,12 @@ $(document).ready(function () {
  */
 class Control {
     /**
+     * Save default turnover
+     * @type {*}
+     */
+    default_turnover = $('#Controls_turnover').val();
+
+    /**
      * Construct controls class
      */
     constructor() {
@@ -58,8 +64,7 @@ class Control {
     loadPeriod() {
         let isDebit = (typeof $('#Controls_controlsPeriod').find(':selected').attr('data-debit') !== 'undefined');
 
-        $('#Controls_turnover').attr('readonly', !isDebit).val(null);
-        console.log(isDebit);
+        $('#Controls_turnover').attr('readonly', !isDebit).val(isDebit ? this.default_turnover : null);
 
         this.calcResult();
     }

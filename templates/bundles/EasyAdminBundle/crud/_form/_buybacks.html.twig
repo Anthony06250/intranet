@@ -5,12 +5,13 @@
                 <div class="col-6" hidden></div>
                 {{ form_row(form.user) }}
                 {{ form_row(form.store) }}
-                {{ form_row(form.product) }}
-                {{ form_row(form.serial_number) }}
                 {{ form_row(form.status) }}
-                {{ form_row(form.starting_price) }}
-                {{ form_row(form.increased_percent) }}
-                {{ form_row(form.increased_price) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
                 {{ form_row(form.created_at) }}
                 {{ form_row(form.duration) }}
                 {{ form_row(form.due_at) }}
@@ -21,6 +22,23 @@
         <article class="card-body">
             <section class="row">
                 {{ form_row(form.customer) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.product) }}
+                {{ form_row(form.serial_number) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                {{ form_row(form.starting_price) }}
+                {{ form_row(form.increased_percent) }}
+                {{ form_row(form.increased_price) }}
             </section>
         </article>
     </article>

@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                <div class="col-6" hidden></div>
+                {{ form_row(form.month) }}
+                {{ form_row(form.store) }}
+            </section>
+        </article>
+    </article>
+    <article class="card">
+        <article class="card-body">
+            <section class="row">
+                <div class="col-6" hidden></div>
+                {{ form_row(form.controlsCounters) }}
+                {{ form_row(form.controlsPeriod) }}
+                {{ form_row(form.safesMovementsTypes) }}
+            </section>
+        </article>
+    </article>
+{{ form_end(form) }}
