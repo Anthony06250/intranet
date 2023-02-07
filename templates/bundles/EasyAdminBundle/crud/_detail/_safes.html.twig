@@ -42,9 +42,11 @@
                                 {{ _self.render_safe_item(control[counter.id] ?? null,
                                     control[counter.id][0] is defined
                                     ? (control[counter.id][0].controlsCounter.reverse == false
-                                    ? control[counter.id][0].turnover / 100
-                                    : (control[counter.id][0].turnover / 100) * -1)
-                                : null, 'turnover') }}
+                                        ? control[counter.id][0].turnover / 100
+                                        : control[counter.id][0].turnover
+                                            ? (control[counter.id][0].turnover / 100) * -1
+                                            : 0)
+                                    : null, 'turnover') }}
                                 {{ _self.render_safe_item(control[counter.id] ?? null,
                                     control[counter.id][0] is defined
                                     ? control[counter.id][0].error / 100
