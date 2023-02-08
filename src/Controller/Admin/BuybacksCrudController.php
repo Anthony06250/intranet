@@ -147,8 +147,12 @@ class BuybacksCrudController extends AbstractCrudController
         yield TextField::new('serial_number', 'Forms.Labels.Serial number')
             ->hideOnIndex();
         yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Customers')
-            // TODO: Customer will be necessary
+            ->renderAsEmbeddedForm(CustomersCrudController::class,
+                'embedded_fields',
+                'embedded_fields')
+            ->setFormTypeOption('row_attr', [
+                'accordion' => true
+            ])
             ->setRequired(false)
             ->setColumns('col-12');
         yield ChoiceField::new('status', 'Forms.Labels.Status')

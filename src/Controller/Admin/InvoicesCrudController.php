@@ -23,6 +23,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class InvoicesCrudController extends AbstractCrudController
 {
@@ -132,8 +133,12 @@ class InvoicesCrudController extends AbstractCrudController
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
         yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Customers')
-            // TODO: Customer will be necessary
+            ->renderAsEmbeddedForm(CustomersCrudController::class,
+                'embedded_fields_without_ids_and_contact',
+                'embedded_fields_without_ids_and_contact')
+            ->setFormTypeOption('row_attr', [
+                'accordion' => true
+            ])
             ->setRequired(false)
             ->setColumns('col-12');
         yield TextField::new('product', 'Forms.Labels.Product');

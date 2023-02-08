@@ -94,7 +94,7 @@ class Invoices
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'invoices')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 

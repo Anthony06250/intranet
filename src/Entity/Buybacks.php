@@ -97,7 +97,7 @@ class Buybacks
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(inversedBy: 'buybacks')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'buybacks')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 

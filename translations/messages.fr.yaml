@@ -286,7 +286,9 @@ Forms:
   Placeholders:
     Username: Entrer votre nom d'utilisateur
     Password: Entrer votre mot de passe
+    Civility: Choisissez une civilité
     Customers: Choisissez un client
+    Type id: Choisissez un type de pièce d'identité
   Feedbacks:
     Username: Veuillez entrer un nom d'utilisateur.
     Password: Veuillez entrer un mot de passe.

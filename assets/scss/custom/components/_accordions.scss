@@ -2,6 +2,22 @@
 // accordions.scss
 //
 
+.accordion-association {
+    .accordion-button {
+        @extend .m-0, .p-0, .h4, .bg-white, .text-reset;
+
+        &:not(.collapsed), &:not(.collapsed):focus {
+            box-shadow: rgb(0 0 0 / 0%) 0 0 0;
+        }
+    }
+
+    .accordion-body {
+        @extend .p-0;
+
+        padding-top: 20px !important;
+    }
+}
+
 .accordion-header {
     margin: 0;
 }
