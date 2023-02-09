@@ -157,7 +157,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             'phone' => '0699520517'
         ],
         [
-            'username' => 'toti',
+            'username' => 'toty',
             'civility' => '1',
             'firstname' => 'anthony',
             'lastname' => 'vert-belaiche',

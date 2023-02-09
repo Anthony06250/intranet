@@ -241,9 +241,7 @@ class InvoicesCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, Action::new('generateDocuments', 'Invoices.Generate documents')
                 ->linkToCrudAction('generateInvoicesDocuments'))
             ->update(Crud::PAGE_INDEX, 'generateDocuments',
-                fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                    ->displayIf(fn (Invoices $invoices) => ($this->isGranted('ROLE_ADMIN')
-                            || $this->getUser()->getId() === $invoices->getUser()->getId())))
+                fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1'))
 
             // Permissions
             ->setPermissions([

@@ -417,9 +417,7 @@ class DashboardController extends AbstractDashboardController
             ->update(Crud::PAGE_INDEX, Action::DETAIL,
                 fn (Action $action) => $action->addCssClass('btn btn-outline-info btn-sm py-0 px-1 me-1'))
             ->update(Crud::PAGE_INDEX, Action::EDIT,
-                fn (Action $action) => $action->addCssClass('btn btn-outline-warning btn-sm py-0 px-1 me-1')
-                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $entity->getUser()->getId()))
+                fn (Action $action) => $action->addCssClass('btn btn-outline-warning btn-sm py-0 px-1 me-1'))
             ->update(Crud::PAGE_INDEX, Action::DELETE,
                 fn (Action $action) => $action->setCssClass('action-delete btn btn-outline-danger btn-sm py-0 px-1'))
 
@@ -450,4 +448,5 @@ class DashboardController extends AbstractDashboardController
                 fn (Action $action) => $action->setCssClass('action-edit btn btn-warning')
                     ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
                         || $this->getUser()->getId() === $entity->getId()));
-    }}
+    }
+}
