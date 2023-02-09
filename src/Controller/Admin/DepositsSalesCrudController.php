@@ -146,7 +146,8 @@ class DepositsSalesCrudController extends AbstractCrudController
                 'embedded_fields',
                 'embedded_fields')
             ->setFormTypeOption('row_attr', [
-                'accordion' => true
+                'accordion' => true,
+                'expanded' => true
             ])
             ->setRequired(false)
             ->setColumns('col-12');

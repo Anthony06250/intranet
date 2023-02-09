@@ -136,7 +136,8 @@ class InvoicesCrudController extends AbstractCrudController
                 'embedded_fields_without_ids_and_contact',
                 'embedded_fields_without_ids_and_contact')
             ->setFormTypeOption('row_attr', [
-                'accordion' => true
+                'accordion' => true,
+                'expanded' => true
             ])
             ->setRequired(false)
             ->setColumns('col-12');
