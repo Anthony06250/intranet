@@ -146,7 +146,8 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
                 'embedded_fields_without_ids',
                 'embedded_fields_without_ids')
             ->setFormTypeOption('row_attr', [
-                'accordion' => true
+                'accordion' => true,
+                'expanded' => true
             ])
             ->setRequired(false)
             ->setColumns('col-12');
@@ -234,6 +235,10 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
+            // Index page
+            ->update(Crud::PAGE_INDEX, Action::EDIT,
+                fn (Action $action) => $action->displayIf(fn ($entity) => true))
+
             // Workflow actions
             ->add(Crud::PAGE_INDEX, Action::new('use', 'AdvancesPayments.Statuses.Used')
                 ->linkToCrudAction('use')
