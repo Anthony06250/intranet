@@ -9,7 +9,6 @@ use App\Form\Field\ChoiceField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\TextareaField;
-use App\Form\Field\TextField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -27,6 +26,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -141,13 +141,17 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield TextField::new('product', 'Forms.Labels.Product');
-        yield TextField::new('barCode', 'Forms.Labels.Bar code')
-            ->hideOnIndex();
         yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Customers')
-            // TODO: Customer will be necessary
+            ->renderAsEmbeddedForm(CustomersCrudController::class,
+                'embedded_fields_without_ids',
+                'embedded_fields_without_ids')
+            ->setFormTypeOption('row_attr', [
+                'accordion' => true
+            ])
             ->setRequired(false)
+            ->setColumns('col-12');
+        yield CollectionField::new('products', 'Forms.Labels.Products')
+            ->useEntryCrudForm(ProductsCrudController::class)
             ->setColumns('col-12');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(AdvancesPaymentsStatusesType::getChoices())

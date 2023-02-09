@@ -13,6 +13,13 @@ form .row div[class*="col"] {
     }
 }
 
+// Collection item field form layout
+form .field-collection-item .row div[class*="col"] {
+    &:not(:nth-child(-n+2)) {
+        margin-top: $spacer;
+    }
+}
+
 // Form-control light
 
 .form-control-light {

@@ -6,6 +6,8 @@ use App\DBAL\Types\BuybacksStatusesType;
 use App\Repository\BuybacksRepository;
 use App\Trait\TimeStampTrait;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints\EnumType;
@@ -42,19 +44,11 @@ class Buybacks
     private ?Stores $store = null;
 
     /**
-     * @var string|null
+     * @var ArrayCollection|Collection
      */
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min:2, max: 255)]
-    private ?string $product = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Length(max: 50)]
-    private ?string $serial_number = null;
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'buybacks', cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection|ArrayCollection $products;
 
     /**
      * @var string
@@ -97,7 +91,7 @@ class Buybacks
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(inversedBy: 'buybacks')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'buybacks')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 
@@ -110,6 +104,7 @@ class Buybacks
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -176,39 +171,33 @@ class Buybacks
     }
 
     /**
-     * @return string|null
+     * @return Collection<int, Products>
      */
-    public function getProduct(): ?string
+    public function getProducts(): Collection
     {
-        return $this->product ? ucfirst($this->product) : null;
+        return $this->products;
     }
 
     /**
-     * @param string $product
+     * @param Products $product
      * @return $this
      */
-    public function setProduct(string $product): self
+    public function addProduct(Products $product): self
     {
-        $this->product = strtolower($product);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
 
         return $this;
     }
 
     /**
-     * @return string|null
-     */
-    public function getSerialNumber(): ?string
-    {
-        return $this->serial_number;
-    }
-
-    /**
-     * @param string|null $serial_number
+     * @param Products $product
      * @return $this
      */
-    public function setSerialNumber(?string $serial_number): self
+    public function removeProduct(Products $product): self
     {
-        $this->serial_number = $serial_number;
+        $this->products->removeElement($product);
 
         return $this;
     }

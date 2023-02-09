@@ -47,42 +47,80 @@
             <h3 class="text-center mb-5">
                 ACOMPTE NON-REMBOURSABLE
             </h3>
-            <p>
-                « Le client » :<br>
-                {%  if advance_payments.customer.civility is defined and advance_payments.customer.firstname is defined and advance_payments.customer.lastname is defined %}
-                    {{ advance_payments.customer.civility ~ ' ' ~ advance_payments.customer.firstname ~ ' ' ~ advance_payments.customer.lastname }}<br>
-                {% endif %}
-                {%  if advance_payments.customer.address is defined and advance_payments.customer.address is not empty %}
-                    {{ advance_payments.customer.address }}<br>
-                {% endif %}
-                {%  if advance_payments.customer.additionalAddress is defined and advance_payments.customer.additionalAddress is not empty %}
-                    {{ advance_payments.customer.additionalAddress }}<br>
-                {% endif %}
-                {%  if advance_payments.customer.zipcode is defined or advance_payments.customer.city is defined %}
-                    {{ advance_payments.customer.zipcode }} {{ advance_payments.customer.city }}<br>
-                {% endif %}
-                {%  if advance_payments.customer.idNumber is defined %}
-                    Pièce d'identitée n°: {{ advance_payments.customer.idNumber }}
-                {% endif %}
+            <table class="table table-between mb-5">
+                <tbody>
+                    <tr>
+                        <td>
+                            « Le client » :<br>
+                            {%  if advance_payments.customer.civility is defined and advance_payments.customer.firstname is defined and advance_payments.customer.lastname is defined %}
+                                {{ advance_payments.customer.civility ~ ' ' ~ advance_payments.customer.firstname ~ ' ' ~ advance_payments.customer.lastname }}<br>
+                            {% endif %}
+                            {%  if advance_payments.customer.address is defined and advance_payments.customer.address is not empty %}
+                                {{ advance_payments.customer.address }}<br>
+                            {% endif %}
+                            {%  if advance_payments.customer.additionalAddress is defined and advance_payments.customer.additionalAddress is not empty %}
+                                {{ advance_payments.customer.additionalAddress }}<br>
+                            {% endif %}
+                            {%  if advance_payments.customer.zipcode is defined or advance_payments.customer.city is defined %}
+                                {{ advance_payments.customer.zipcode }} {{ advance_payments.customer.city }}<br>
+                            {% endif %}
+                            {%  if advance_payments.customer.idNumber is defined %}
+                                Pièce d'identitée n°: {{ advance_payments.customer.idNumber }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            « Le magasin » :<br>
+                            AXE CASH {{ advance_payments.store.city | upper }}<br>
+                            {% if advance_payments.store.address is not empty %}
+                                {{ advance_payments.store.address }}<br>
+                            {% endif %}
+                            {% if advance_payments.store.additionalAddress is not empty %}
+                                {{ advance_payments.store.additionalAddress }}<br>
+                            {% endif %}
+                            {{ advance_payments.store.zipcode }} {{ advance_payments.store.city | upper }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mb-4">
+                « Le magasin » déclare avoir reçu ce jour, de la part « du client » un acompte non-remboursable pour les bien ci-après :
             </p>
-            <p class="text-end mb-5">
-                « Le magasin » :<br>
-                AXE CASH {{ advance_payments.store.city | upper }}<br>
-                {% if advance_payments.store.address is not empty %}
-                    {{ advance_payments.store.address }}<br>
-                {% endif %}
-                {% if advance_payments.store.additionalAddress is not empty %}
-                    {{ advance_payments.store.additionalAddress }}<br>
-                {% endif %}
-                {{ advance_payments.store.zipcode }} {{ advance_payments.store.city | upper }}
-            </p>
-            <p>
-                « Le magasin » déclare avoir reçu ce jour, de la part « du client » un acompte non-remboursable pour les bien ci-après :<br>
-                {{ advance_payments.barCode }}
-                <span class="fw-bold">
-                    {{ advance_payments.product }}
-                </span>
-            </p>
+            <table class="table table-bordered mb-4">
+                <thead>
+                    <tr>
+                        <th>
+                            Code barre
+                        </th>
+                        <th>
+                            Produit
+                        </th>
+                        <th>
+                            Numéro de série
+                        </th>
+                        <th>
+                            Prix H.T.
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in advance_payments.products %}
+                        <tr>
+                            <td>
+                                {{ product.barCode }}
+                            </td>
+                            <td>
+                                {{ product.label }}
+                            </td>
+                            <td>
+                                {{ product.serialNumber }}
+                            </td>
+                            <td>
+                                {{ (product.price / 100) | round(2, 'common') | replace({'.' : ','}) }} euros
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             <p>
                 « Le client » verse « au magasin » un acompte d'un montant de
                 <span class="fw-bold">
@@ -119,14 +157,17 @@
                     {{ advance_payments.createdAt | date("d/m/Y", false) }}
                 </span>
             </p>
-            <table class="w-100">
+            <table class="table table-between">
                 <tbody>
                     <tr>
                         <td>
                             « Le client » :<br>
+                            {%  if advance_payments.customer.civility is defined and advance_payments.customer.firstname is defined and advance_payments.customer.lastname is defined %}
+                                {{ advance_payments.customer.civility ~ ' ' ~ advance_payments.customer.firstname ~ ' ' ~ advance_payments.customer.lastname }}<br>
+                            {% endif %}
                             Lu et approuvé – Bon pour accord
                         </td>
-                        <td class="text-end">
+                        <td>
                             « Le magasin » :<br>
                             AXE CASH {{ advance_payments.store.city | upper }}<br>
                             ({{ advance_payments.user.fullname }})

@@ -80,6 +80,7 @@ class CustomersCrudController extends AbstractCrudController
     {
         yield AssociationField::new('civility', 'Forms.Labels.Civility')
             ->hideOnIndex()
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Civility')
             ->setColumns('col-2');
         yield TextField::new('firstname', 'Forms.Labels.Firstname')
             ->addCssClass('fw-bold')
@@ -91,20 +92,34 @@ class CustomersCrudController extends AbstractCrudController
         yield TextField::new('fullname', 'Forms.Labels.Fullname')
             ->addCssClass('fw-bold')
             ->onlyOnIndex();
-        yield DateField::new('birthday_date', 'Forms.Labels.Birthday')
-            ->hideOnIndex();
-        yield AssociationField::new('customersTypesId', 'Forms.Labels.Types ID')
-            ->hideOnIndex();
-        yield TextField::new('id_number', 'Forms.Labels.ID number')
-            ->hideOnIndex();
         yield TextField::new('address', 'Forms.Labels.Address');
         yield TextField::new('additional_address', 'Forms.Labels.AdditionalAddress')
             ->hideOnIndex();
-        yield TextField::new('city', 'Forms.Labels.City');
         yield TextField::new('zipcode', 'Forms.Labels.Zipcode');
-        yield TelephoneField::new('phone', 'Forms.Labels.Phone');
-        yield EmailField::new('email', 'Forms.Labels.Email')
-            ->hideOnIndex();
+        yield TextField::new('city', 'Forms.Labels.City');
+
+        if ($pageName !== 'embedded_fields'
+            && $pageName !== 'embedded_fields_without_ids'
+            && $pageName !== 'embedded_fields_without_ids_and_contact') {
+            yield DateField::new('birthday_date', 'Forms.Labels.Birthday')
+                ->hideOnIndex();
+        }
+
+        if ($pageName !== 'embedded_fields_without_ids'
+            && $pageName !== 'embedded_fields_without_ids_and_contact') {
+            yield AssociationField::new('customersTypesId', 'Forms.Labels.Types ID')
+                ->hideOnIndex()
+                ->setFormTypeOption('placeholder', 'Forms.Placeholders.Type id');
+            yield TextField::new('id_number', 'Forms.Labels.ID number')
+                ->hideOnIndex();
+        }
+
+        if ($pageName !== 'embedded_fields_without_contact'
+            && $pageName !== 'embedded_fields_without_ids_and_contact') {
+            yield TelephoneField::new('phone', 'Forms.Labels.Phone');
+            yield EmailField::new('email', 'Forms.Labels.Email')
+                ->hideOnIndex();
+        }
     }
 
     /**

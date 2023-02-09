@@ -6,16 +6,16 @@ $(document).ready(function () {
 
     let invoice = new Invoice();
 
-    $('#Invoices_productPrice').on('change', function () {
-        invoice.updateTotalWithTaxes();
+    document.addEventListener('ea.collection.item-added', function () {
+        invoice.initCollection();
+    });
+
+    document.addEventListener('ea.collection.item-removed', function () {
+        invoice.calcTotalWithTaxes();
     });
 
     $('#Invoices_taxesRate').on('change', function () {
         invoice.calcTotalWithoutTaxes();
-    });
-
-    $('#Invoices_customer').select2({
-        minimumResultsForSearch: 1
     });
 });
 
@@ -24,17 +24,42 @@ $(document).ready(function () {
  */
 class Invoice {
     /**
-     * Update the total with taxes value
+     * Construct invoice class
      */
-    updateTotalWithTaxes() {
-        let price = $('#Invoices_productPrice').val().toNumber();
+    constructor () {
+        this.initCollection();
+    }
 
-        $('#Invoices_totalWithTaxes').val(price ? price.toCurrency() : null);
+    /**
+     * Init invoice collection
+     */
+    initCollection() {
+        let invoice = this;
+
+        $('.field-collection-item input[id$=\'_price\']').on('change', function () {
+            let value = $(this).val().toNumber();
+
+            $(this).val(value ? value.toCurrency() : null);
+            invoice.calcTotalWithTaxes();
+        });
+    }
+
+    /**
+     * Calculate the total with taxes value
+     */
+    calcTotalWithTaxes() {
+        let total = 0;
+
+        $('.field-collection-item input[id$=\'_price\']').each(function () {
+            total += $(this).val().toNumber();
+        });
+
+        $('#Invoices_totalWithTaxes').val(total ? total.toCurrency() : null);
         this.calcTotalWithoutTaxes();
     }
 
     /**
-     * Calculate price without taxes
+     * Calculate the price without taxes
      */
     calcTotalWithoutTaxes() {
         let priceWithTaxes = $('#Invoices_totalWithTaxes').val().toNumber();

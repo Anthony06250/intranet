@@ -33,7 +33,7 @@ class Customers
      * @var UsersCivilities|null
      */
     #[ORM\ManyToOne(inversedBy: 'customers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?UsersCivilities $civility = null;
 
     /**
@@ -62,13 +62,13 @@ class Customers
      * @var CustomersTypesIds|null
      */
     #[ORM\ManyToOne(inversedBy: 'customers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?CustomersTypesIds $customersTypesId = null;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 20, nullable: false)]
+    #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(max: 20)]
     private ?string $id_number = null;
 
@@ -268,10 +268,10 @@ class Customers
     }
 
     /**
-     * @param string $id_number
+     * @param string|null $id_number
      * @return $this
      */
-    public function setIdNumber(string $id_number): self
+    public function setIdNumber(?string $id_number): self
     {
         $this->id_number = strtolower($id_number);
 

@@ -47,45 +47,75 @@
             <h3 class="text-center mb-5">
                 DÉPÔT-VENTE
             </h3>
-            <p>
-                « Le client » :<br>
-                {%  if deposit_sales.customer.civility is defined and deposit_sales.customer.firstname is defined and deposit_sales.customer.lastname is defined %}
-                    {{ deposit_sales.customer.civility ~ ' ' ~ deposit_sales.customer.firstname ~ ' ' ~ deposit_sales.customer.lastname }}<br>
-                {% endif %}
-                {%  if deposit_sales.customer.address is defined and deposit_sales.customer.address is not empty %}
-                    {{ deposit_sales.customer.address }}<br>
-                {% endif %}
-                {%  if deposit_sales.customer.additionalAddress is defined and deposit_sales.customer.additionalAddress is not empty %}
-                    {{ deposit_sales.customer.additionalAddress }}<br>
-                {% endif %}
-                {%  if deposit_sales.customer.zipcode is defined or deposit_sales.customer.city is defined %}
-                    {{ deposit_sales.customer.zipcode }} {{ deposit_sales.customer.city }}<br>
-                {% endif %}
-                {%  if deposit_sales.customer.idNumber is defined and deposit_sales.customer.customersTypesId is defined %}
-                    {{ deposit_sales.customer.customersTypesId }}
-                    n°: {{ deposit_sales.customer.idNumber }}
-                {% endif %}
-            </p>
-            <p class="text-end mb-5">
-                « Le magasin » :<br>
-                AXE CASH {{ deposit_sales.store.city | upper }}<br>
-                {% if deposit_sales.store.address is not empty %}
-                    {{ deposit_sales.store.address }}<br>
-                {% endif %}
-                {% if deposit_sales.store.additionalAddress is not empty %}
-                    {{ deposit_sales.store.additionalAddress }}<br>
-                {% endif %}
-                {{ deposit_sales.store.zipcode }} {{ deposit_sales.store.city | upper }}
-            </p>
-            <p>
+            <table class="table table-between mb-5">
+                <tbody>
+                    <tr>
+                        <td>
+                            « Le client » :<br>
+                            {%  if deposit_sales.customer.civility is defined and deposit_sales.customer.firstname is defined and deposit_sales.customer.lastname is defined %}
+                                {{ deposit_sales.customer.civility ~ ' ' ~ deposit_sales.customer.firstname ~ ' ' ~ deposit_sales.customer.lastname }}<br>
+                            {% endif %}
+                            {%  if deposit_sales.customer.address is defined and deposit_sales.customer.address is not empty %}
+                                {{ deposit_sales.customer.address }}<br>
+                            {% endif %}
+                            {%  if deposit_sales.customer.additionalAddress is defined and deposit_sales.customer.additionalAddress is not empty %}
+                                {{ deposit_sales.customer.additionalAddress }}<br>
+                            {% endif %}
+                            {%  if deposit_sales.customer.zipcode is defined or deposit_sales.customer.city is defined %}
+                                {{ deposit_sales.customer.zipcode }} {{ deposit_sales.customer.city }}<br>
+                            {% endif %}
+                            {%  if deposit_sales.customer.idNumber is defined and deposit_sales.customer.customersTypesId is defined %}
+                                {{ deposit_sales.customer.customersTypesId }}
+                                n°: {{ deposit_sales.customer.idNumber }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            « Le magasin » :<br>
+                            AXE CASH {{ deposit_sales.store.city | upper }}<br>
+                            {% if deposit_sales.store.address is not empty %}
+                                {{ deposit_sales.store.address }}<br>
+                            {% endif %}
+                            {% if deposit_sales.store.additionalAddress is not empty %}
+                                {{ deposit_sales.store.additionalAddress }}<br>
+                            {% endif %}
+                            {{ deposit_sales.store.zipcode }} {{ deposit_sales.store.city | upper }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mb-4">
                 « Le client » met en dépot-vente auprès « du magasin » les bien ci-après :<br>
-                <span class="fw-bold">
-                    {{ deposit_sales.product }}<br>
-                </span>
-                {% if deposit_sales.serialNumber is not empty %}
-                    Numéro de série : {{ deposit_sales.serialNumber }}<br>
-                {% endif %}
             </p>
+            <table class="table table-bordered mb-4">
+                <thead>
+                    <tr>
+                        <th>
+                            Produit
+                        </th>
+                        <th>
+                            Numéro de série
+                        </th>
+                        <th>
+                            Prix H.T.
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in deposit_sales.products %}
+                        <tr>
+                            <td>
+                                {{ product.label }}
+                            </td>
+                            <td>
+                                {{ product.serialNumber }}
+                            </td>
+                            <td>
+                                {{ (product.price / 100) | round(2, 'common') | replace({'.' : ','}) }} euros
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             <p>
                 Il a été convenue entre « le client » et « le magasin » un prix de réserve pour les produits de
                 <span class="fw-bold">
@@ -119,14 +149,17 @@
                     {{ deposit_sales.createdAt | date("d/m/Y", false) }}
                 </span>
             </p>
-            <table class="w-100">
+            <table class="table table-between">
                 <tbody>
                     <tr>
                         <td>
                             « Le client » :<br>
+                            {%  if deposit_sales.customer.civility is defined and deposit_sales.customer.firstname is defined and deposit_sales.customer.lastname is defined %}
+                                {{ deposit_sales.customer.civility ~ ' ' ~ deposit_sales.customer.firstname ~ ' ' ~ deposit_sales.customer.lastname }}<br>
+                            {% endif %}
                             Lu et approuvé – Bon pour accord
                         </td>
-                        <td class="text-end">
+                        <td>
                             « Le magasin » :<br>
                             AXE CASH {{ deposit_sales.store.city | upper }}<br>
                             ({{ deposit_sales.user.fullname }})

@@ -6,7 +6,6 @@ use App\Entity\Invoices;
 use App\Form\Field\AssociationField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
-use App\Form\Field\TextField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -23,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class InvoicesCrudController extends AbstractCrudController
 {
@@ -132,17 +132,17 @@ class InvoicesCrudController extends AbstractCrudController
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
         yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Customers')
-            // TODO: Customer will be necessary
+            ->renderAsEmbeddedForm(CustomersCrudController::class,
+                'embedded_fields_without_ids_and_contact',
+                'embedded_fields_without_ids_and_contact')
+            ->setFormTypeOption('row_attr', [
+                'accordion' => true
+            ])
             ->setRequired(false)
             ->setColumns('col-12');
-        yield TextField::new('product', 'Forms.Labels.Product');
-        yield TextField::new('serialNumber', 'Forms.Labels.Serial number')
-            ->hideOnIndex();
-        yield TextField::new('barCode', 'Forms.Labels.Bar code')
-            ->hideOnIndex();
-        yield MoneyField::new('productPrice', 'Forms.Labels.Product price')
-            ->hideOnIndex();
+        yield CollectionField::new('products', 'Forms.Labels.Products')
+            ->useEntryCrudForm(ProductsCrudController::class)
+            ->setColumns('col-12');
         yield MoneyField::new('totalWithoutTaxes', 'Forms.Labels.Total without taxes')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
@@ -266,7 +266,7 @@ class InvoicesCrudController extends AbstractCrudController
             'class' => 'invoices',
             'document' => 'document',
             'locale' => $locale,
-            'invoices' => $invoices
+            'invoice' => $invoices
         ]);
 
         $pdfService->generatePdfFile('invoices-document-' . $locale . '-' . $invoices->getId(), $html);
