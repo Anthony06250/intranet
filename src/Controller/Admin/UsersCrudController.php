@@ -125,9 +125,8 @@ class UsersCrudController extends AbstractCrudController
         return $actions
             // Index page
             ->update(Crud::PAGE_INDEX, Action::EDIT,
-                fn (Action $action) => $action->addCssClass('btn btn-outline-warning btn-sm py-0 px-1 me-1')
-                    ->displayIf(fn ($entity) => $this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $entity->getId()))
+                fn (Action $action) => $action->displayIf(fn ($entity) => $this->isGranted(self::ROLE_NEW)
+                    || $this->getUser()->getId() === $entity->getId()))
 
             // Permissions
             ->setPermissions([

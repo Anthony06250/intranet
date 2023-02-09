@@ -235,21 +235,15 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            // Index page
-            ->update(Crud::PAGE_INDEX, Action::EDIT,
-                fn (Action $action) => $action->displayIf(fn ($entity) => true))
-
             // Workflow actions
             ->add(Crud::PAGE_INDEX, Action::new('use', 'AdvancesPayments.Statuses.Used')
                 ->linkToCrudAction('use')
-                ->displayIf(fn (AdvancesPayments $advancesPayments) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $advancesPayments->getUser()->getId())
+                ->displayIf(fn (AdvancesPayments $advancesPayments) => $this->isGranted(self::ROLE_NEW)
                     && $this->advancesPaymentsStateMachine->canUse($advancesPayments))
                 ->setCssClass('btn btn-outline-success btn-sm py-0 px-1 me-1'))
             ->add(Crud::PAGE_INDEX, Action::new('expire', 'AdvancesPayments.Statuses.Expired')
                 ->linkToCrudAction('expire')
-                ->displayIf(fn (AdvancesPayments $advancesPayments) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $advancesPayments->getUser()->getId())
+                ->displayIf(fn (AdvancesPayments $advancesPayments) => $this->isGranted(self::ROLE_NEW)
                     && $this->advancesPaymentsStateMachine->canExpire($advancesPayments))
                 ->setCssClass('btn btn-outline-primary btn-sm py-0 px-1 me-1'))
 
@@ -258,9 +252,7 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
                 ->linkToCrudAction('generateAdvancesPaymentsDocuments'))
             ->update(Crud::PAGE_INDEX, 'generateDocuments',
                 fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                    ->displayIf(fn (AdvancesPayments $advancesPayments) => ($this->isGranted('ROLE_ADMIN')
-                            || $this->getUser()->getId() === $advancesPayments->getUser()->getId())
-                        && $this->advancesPaymentsStateMachine->canUse($advancesPayments)))
+                    ->displayIf(fn (AdvancesPayments $advancesPayments) => $this->advancesPaymentsStateMachine->canUse($advancesPayments)))
 
             // Reorder
             ->reorder(Crud::PAGE_INDEX, [

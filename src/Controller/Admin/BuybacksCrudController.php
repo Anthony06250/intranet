@@ -259,21 +259,15 @@ class BuybacksCrudController extends AbstractCrudController
     {
 
         return $actions
-            // Index page
-            ->update(Crud::PAGE_INDEX, Action::EDIT,
-                fn (Action $action) => $action->displayIf(fn ($entity) => true))
-
             // Workflow actions
             ->add(Crud::PAGE_INDEX, Action::new('recover', 'Buybacks.Statuses.Recovered')
                 ->linkToCrudAction('recover')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
+                ->displayIf(fn (Buybacks $buyback) => $this->isGranted(self::ROLE_NEW)
                     && $this->buybacksStateMachine->canRecover($buyback))
                 ->setCssClass('btn btn-outline-success btn-sm py-0 px-1 me-1'))
             ->add(Crud::PAGE_INDEX, Action::new('expire', 'Buybacks.Statuses.Expired')
                 ->linkToCrudAction('expire')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
+                ->displayIf(fn (Buybacks $buyback) => $this->isGranted(self::ROLE_NEW)
                     && $this->buybacksStateMachine->canExpire($buyback))
                 ->setCssClass('btn btn-outline-primary btn-sm py-0 px-1 me-1'))
 
@@ -282,16 +276,12 @@ class BuybacksCrudController extends AbstractCrudController
                 ->linkToCrudAction('generateBuybacksContracts'))
             ->update(Crud::PAGE_INDEX, 'generateContracts',
                 fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
-                    && $this->buybacksStateMachine->canRecover($buyback)))
+                ->displayIf(fn (Buybacks $buyback) => $this->buybacksStateMachine->canRecover($buyback)))
             ->add(Crud::PAGE_INDEX, Action::new('generateRepossessions', 'Buybacks.Generate repossessions')
                 ->linkToCrudAction('generateBuybacksRepossessions'))
             ->update(Crud::PAGE_INDEX, 'generateRepossessions',
                 fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                ->displayIf(fn (Buybacks $buyback) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $buyback->getUser()->getId())
-                    && !$this->buybacksStateMachine->isExpire($buyback)
+                ->displayIf(fn (Buybacks $buyback) => !$this->buybacksStateMachine->isExpire($buyback)
                     && !$this->buybacksStateMachine->canRecover($buyback)))
 
             // Reorder

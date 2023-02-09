@@ -235,25 +235,21 @@ class DepositsSalesCrudController extends AbstractCrudController
      */
     public function configureActions(Actions $actions): Actions
     {
-
         return $actions
             // Workflow actions
             ->add(Crud::PAGE_INDEX, Action::new(DepositsSalesWorkflow::TRANSITION_SOLD, 'DepositsSales.Statuses.' . ucfirst(DepositsSalesStatusesType::STATE_SOLDED))
                 ->linkToCrudAction(DepositsSalesWorkflow::TRANSITION_SOLD)
-                ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                ->displayIf(fn (DepositsSales $depositsSales) => $this->isGranted(self::ROLE_NEW)
                     && $this->depositsSalesStateMachine->canSold($depositsSales))
                 ->setCssClass('btn btn-outline-success btn-sm py-0 px-1 me-1'))
             ->add(Crud::PAGE_INDEX, Action::new(DepositsSalesWorkflow::TRANSITION_PAID, 'DepositsSales.Statuses.' . ucfirst(DepositsSalesStatusesType::STATE_PAYED))
                 ->linkToCrudAction(DepositsSalesWorkflow::TRANSITION_PAID)
-                ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                ->displayIf(fn (DepositsSales $depositsSales) => $this->isGranted(self::ROLE_NEW)
                     && $this->depositsSalesStateMachine->canPaid($depositsSales))
                 ->setCssClass('btn btn-outline-primary btn-sm py-0 px-1 me-1'))
             ->add(Crud::PAGE_INDEX, Action::new(DepositsSalesWorkflow::TRANSITION_RECOVER, 'DepositsSales.Statuses.' . ucfirst(DepositsSalesStatusesType::STATE_RECOVERED))
                 ->linkToCrudAction(DepositsSalesWorkflow::TRANSITION_RECOVER)
-                ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
-                        || $this->getUser()->getId() === $depositsSales->getUser()->getId())
+                ->displayIf(fn (DepositsSales $depositsSales) => $this->isGranted(self::ROLE_NEW)
                     && $this->depositsSalesStateMachine->canRecover($depositsSales))
                 ->setCssClass('btn btn-outline-primary btn-sm py-0 px-1 me-1'))
 
@@ -262,10 +258,8 @@ class DepositsSalesCrudController extends AbstractCrudController
                 ->linkToCrudAction('generateDepositsSalesContracts'))
             ->update(Crud::PAGE_INDEX, 'generateContracts',
                 fn (Action $action) => $action->addCssClass('btn btn-outline-secondary btn-sm py-0 px-1 me-1')
-                    ->displayIf(fn (DepositsSales $depositsSales) => ($this->isGranted('ROLE_ADMIN')
-                            || $this->getUser()->getId() === $depositsSales->getUser()->getId())
-                        && ($this->depositsSalesStateMachine->canSold($depositsSales)
-                            || $this->depositsSalesStateMachine->canPaid($depositsSales))))
+                    ->displayIf(fn (DepositsSales $depositsSales) => $this->depositsSalesStateMachine->canSold($depositsSales)
+                            || $this->depositsSalesStateMachine->canPaid($depositsSales)))
 
             // Reorder
             ->reorder(Crud::PAGE_INDEX, [
