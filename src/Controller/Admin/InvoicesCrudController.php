@@ -6,7 +6,6 @@ use App\Entity\Invoices;
 use App\Form\Field\AssociationField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
-use App\Form\Field\TextField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -141,13 +140,9 @@ class InvoicesCrudController extends AbstractCrudController
             ])
             ->setRequired(false)
             ->setColumns('col-12');
-        yield TextField::new('product', 'Forms.Labels.Product');
-        yield TextField::new('serialNumber', 'Forms.Labels.Serial number')
-            ->hideOnIndex();
-        yield TextField::new('barCode', 'Forms.Labels.Bar code')
-            ->hideOnIndex();
-        yield MoneyField::new('productPrice', 'Forms.Labels.Product price')
-            ->hideOnIndex();
+        yield CollectionField::new('products', 'Forms.Labels.Products')
+            ->useEntryCrudForm(ProductsCrudController::class)
+            ->setColumns('col-12');
         yield MoneyField::new('totalWithoutTaxes', 'Forms.Labels.Total without taxes')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
@@ -271,7 +266,7 @@ class InvoicesCrudController extends AbstractCrudController
             'class' => 'invoices',
             'document' => 'document',
             'locale' => $locale,
-            'invoices' => $invoices
+            'invoice' => $invoices
         ]);
 
         $pdfService->generatePdfFile('invoices-document-' . $locale . '-' . $invoices->getId(), $html);

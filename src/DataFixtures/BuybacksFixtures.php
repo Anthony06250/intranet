@@ -33,7 +33,7 @@ class BuybacksFixtures extends Fixture implements DependentFixtureInterface
 
             $object->setUser($this->getReference('user-' . mt_rand(1, count(UsersFixtures::USERS))))
                 ->setStore($this->getReference('store-' . mt_rand(1, count(StoresFixtures::STORES))))
-                ->setProduct($faker->realText(50))
+                // TODO: Add products
                 ->setStatus(BuybacksStatusesType::TYPES[mt_rand(0, 2)])
                 ->setStartingPrice($startingPrice)
                 ->setIncreasedPercent($percent)

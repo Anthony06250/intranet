@@ -47,45 +47,75 @@
             <h3 class="text-center mb-5">
                 VENTE AVEC OPTION DE RACHAT
             </h3>
-            <p>
-                « Le vendeur » :<br>
-                {%  if buyback.customer.civility is defined and buyback.customer.firstname is defined and buyback.customer.lastname is defined %}
-                    {{ buyback.customer.civility ~ ' ' ~ buyback.customer.firstname ~ ' ' ~ buyback.customer.lastname }}<br>
-                {% endif %}
-                {%  if buyback.customer.address is defined and buyback.customer.address is not empty %}
-                    {{ buyback.customer.address }}<br>
-                {% endif %}
-                {%  if buyback.customer.additionalAddress is defined and buyback.customer.additionalAddress is not empty %}
-                    {{ buyback.customer.additionalAddress }}<br>
-                {% endif %}
-                {%  if buyback.customer.zipcode is defined or buyback.customer.city is defined %}
-                    {{ buyback.customer.zipcode }} {{ buyback.customer.city }}<br>
-                {% endif %}
-                {%  if buyback.customer.idNumber is defined and buyback.customer.customersTypesId is defined %}
-                    {{ buyback.customer.customersTypesId }}
-                    n°: {{ buyback.customer.idNumber }}
-                {% endif %}
-            </p>
-            <p class="text-end mb-5">
-                « L’acquéreur » :<br>
-                AXE CASH {{ buyback.store.city | upper }}<br>
-                {% if buyback.store.address is not empty %}
-                    {{ buyback.store.address }}<br>
-                {% endif %}
-                {% if buyback.store.additionalAddress is not empty %}
-                    {{ buyback.store.additionalAddress }}<br>
-                {% endif %}
-                {{ buyback.store.zipcode }} {{ buyback.store.city | upper }}
-            </p>
-            <p>
+            <table class="table table-between mb-5">
+                <tbody>
+                    <tr>
+                        <td>
+                            « Le vendeur » :<br>
+                            {%  if buyback.customer.civility is defined and buyback.customer.firstname is defined and buyback.customer.lastname is defined %}
+                                {{ buyback.customer.civility ~ ' ' ~ buyback.customer.firstname ~ ' ' ~ buyback.customer.lastname }}<br>
+                            {% endif %}
+                            {%  if buyback.customer.address is defined and buyback.customer.address is not empty %}
+                                {{ buyback.customer.address }}<br>
+                            {% endif %}
+                            {%  if buyback.customer.additionalAddress is defined and buyback.customer.additionalAddress is not empty %}
+                                {{ buyback.customer.additionalAddress }}<br>
+                            {% endif %}
+                            {%  if buyback.customer.zipcode is defined or buyback.customer.city is defined %}
+                                {{ buyback.customer.zipcode }} {{ buyback.customer.city }}<br>
+                            {% endif %}
+                            {%  if buyback.customer.idNumber is defined and buyback.customer.customersTypesId is defined %}
+                                {{ buyback.customer.customersTypesId }}
+                                n°: {{ buyback.customer.idNumber }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            « L’acquéreur » :<br>
+                            AXE CASH {{ buyback.store.city | upper }}<br>
+                            {% if buyback.store.address is not empty %}
+                                {{ buyback.store.address }}<br>
+                            {% endif %}
+                            {% if buyback.store.additionalAddress is not empty %}
+                                {{ buyback.store.additionalAddress }}<br>
+                            {% endif %}
+                            {{ buyback.store.zipcode }} {{ buyback.store.city | upper }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mb-4">
                 « Le vendeur » vend à réméré à « l’acquéreur » les bien ci-après :<br>
-                <span class="fw-bold">
-                    {{ buyback.product }}<br>
-                </span>
-                {% if buyback.serialNumber is not empty %}
-                    Numéro de série : {{ buyback.serialNumber }}<br>
-                {% endif %}
             </p>
+            <table class="table table-bordered mb-4">
+                <thead>
+                    <tr>
+                        <th>
+                            Produit
+                        </th>
+                        <th>
+                            Numéro de série
+                        </th>
+                        <th>
+                            Prix H.T.
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in buyback.products %}
+                        <tr>
+                            <td>
+                                {{ product.label }}
+                            </td>
+                            <td>
+                                {{ product.serialNumber }}
+                            </td>
+                            <td>
+                                {{ (product.price / 100) | round(2, 'common') | replace({'.' : ','}) }} euros
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             <p>
                 Moyennant un prix de :
                 <span class="fw-bold">
@@ -140,19 +170,22 @@
                     {{ buyback.createdAt | date("d/m/Y", false) }}
                 </span>
             </p>
-            <table class="w-100">
+            <table class="table table-between">
                 <tbody>
-                <tr>
-                    <td>
-                        « Le vendeur » :<br>
-                        Lu et approuvé – Bon pour accord
-                    </td>
-                    <td class="text-end">
-                        « L’acquéreur » :<br>
-                        AXE CASH {{ buyback.store.city | upper }}<br>
-                        ({{ buyback.user.fullname }})
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            « Le vendeur » :<br>
+                            {%  if buyback.customer.civility is defined and buyback.customer.firstname is defined and buyback.customer.lastname is defined %}
+                                {{ buyback.customer.civility ~ ' ' ~ buyback.customer.firstname ~ ' ' ~ buyback.customer.lastname }}<br>
+                            {% endif %}
+                            Lu et approuvé – Bon pour accord
+                        </td>
+                        <td>
+                            « L’acquéreur » :<br>
+                            AXE CASH {{ buyback.store.city | upper }}<br>
+                            ({{ buyback.user.fullname }})
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </main>

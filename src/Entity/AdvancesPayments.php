@@ -6,15 +6,15 @@ use App\DBAL\Types\AdvancesPaymentsStatusesType;
 use App\Repository\AdvancesPaymentsRepository;
 use App\Trait\TimeStampTrait;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints\EnumType;
 use IntlDateFormatter;
 use Locale;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueEntity('barCode')]
 #[ORM\Entity(repositoryClass: AdvancesPaymentsRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class AdvancesPayments
@@ -44,20 +44,11 @@ class AdvancesPayments
     private ?Stores $store = null;
 
     /**
-     * @var string|null
+     * @var ArrayCollection|Collection
      */
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min:2, max: 255)]
-    private ?string $product = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 20, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min:2, max: 20)]
-    private ?string $barCode = null;
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'advancesPayments', cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection|ArrayCollection $products;
 
     /**
      * @var string
@@ -101,6 +92,7 @@ class AdvancesPayments
     public function __construct()
     {
         $this->created_at = new DateTimeImmutable();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -167,39 +159,33 @@ class AdvancesPayments
     }
 
     /**
-     * @return string|null
+     * @return Collection<int, Products>
      */
-    public function getProduct(): ?string
+    public function getProducts(): Collection
     {
-        return $this->product ? ucfirst($this->product) : null;
+        return $this->products;
     }
 
     /**
-     * @param string $product
+     * @param Products $product
      * @return $this
      */
-    public function setProduct(string $product): self
+    public function addProduct(Products $product): self
     {
-        $this->product = strtolower($product);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
 
         return $this;
     }
 
     /**
-     * @return string|null
-     */
-    public function getBarCode(): ?string
-    {
-        return $this->barCode;
-    }
-
-    /**
-     * @param string $barCode
+     * @param Products $product
      * @return $this
      */
-    public function setBarCode(string $barCode): self
+    public function removeProduct(Products $product): self
     {
-        $this->barCode = $barCode;
+        $this->products->removeElement($product);
 
         return $this;
     }

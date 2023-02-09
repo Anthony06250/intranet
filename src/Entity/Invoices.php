@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\InvoicesRepository;
 use App\Trait\TimeStampTrait;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use IntlDateFormatter;
 use Locale;
@@ -39,32 +41,11 @@ class Invoices
     private ?Stores $store = null;
 
     /**
-     * @var string|null
+     * @var ArrayCollection|Collection
      */
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min:2, max: 255)]
-    private ?string $product = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Length(max: 50)]
-    private ?string $serialNumber = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 20, nullable: true)]
-    #[Assert\Length(max: 20)]
-    private ?string $barCode = null;
-
-    /**
-     * @var float|null
-     */
-    #[ORM\Column(nullable: false)]
-    private ?float $productPrice = null;
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'invoices', cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection|ArrayCollection $products;
 
     /**
      * @var float|null
@@ -113,6 +94,7 @@ class Invoices
 
     public function __construct()
     {
+        $this->products = new ArrayCollection();
         $this->selledAt = new DateTimeImmutable();
         $this->created_at = new DateTimeImmutable();
     }
@@ -181,77 +163,33 @@ class Invoices
     }
 
     /**
-     * @return string|null
+     * @return Collection<int, Products>
      */
-    public function getProduct(): ?string
+    public function getProducts(): Collection
     {
-        return $this->product ? ucfirst($this->product) : null;
+        return $this->products;
     }
 
     /**
-     * @param string $product
+     * @param Products $product
      * @return $this
      */
-    public function setProduct(string $product): self
+    public function addProduct(Products $product): self
     {
-        $this->product = strtolower($product);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
 
         return $this;
     }
 
     /**
-     * @return string|null
-     */
-    public function getSerialNumber(): ?string
-    {
-        return $this->serialNumber;
-    }
-
-    /**
-     * @param string|null $serialNumber
+     * @param Products $product
      * @return $this
      */
-    public function setSerialNumber(?string $serialNumber): self
+    public function removeProduct(Products $product): self
     {
-        $this->serialNumber = $serialNumber;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getBarCode(): ?string
-    {
-        return $this->barCode;
-    }
-
-    /**
-     * @param string|null $barCode
-     * @return $this
-     */
-    public function setBarCode(?string $barCode): self
-    {
-        $this->barCode = $barCode;
-
-        return $this;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getProductPrice(): ?float
-    {
-        return $this->productPrice;
-    }
-
-    /**
-     * @param float $productPrice
-     * @return $this
-     */
-    public function setProductPrice(float $productPrice): self
-    {
-        $this->productPrice = $productPrice;
+        $this->products->removeElement($product);
 
         return $this;
     }

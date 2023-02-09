@@ -6,7 +6,15 @@ $(document).ready(function () {
 
     let buyback = new Buyback();
 
-    $('#Buybacks_starting_price, #Buybacks_increased_percent').on('change', function () {
+    document.addEventListener('ea.collection.item-added', function () {
+        buyback.initCollection();
+    });
+
+    document.addEventListener('ea.collection.item-removed', function () {
+        buyback.calcStartingPrice();
+    });
+
+    $('#Buybacks_increased_percent').on('change', function () {
         buyback.calcInterests();
     })
 
@@ -17,10 +25,6 @@ $(document).ready(function () {
     $('#Buybacks_created_at, #Buybacks_duration').on('change', function () {
         buyback.calcDueDate();
     })
-
-    $('#Buybacks_customer').select2({
-        minimumResultsForSearch: 1
-    });
 });
 
 /**
@@ -32,6 +36,7 @@ class Buyback {
      */
     constructor () {
         this.init();
+        this.initCollection();
     }
 
     /**
@@ -39,6 +44,34 @@ class Buyback {
      */
     init() {
         this.calcDueDate();
+    }
+
+    /**
+     * Init buybacks collection
+     */
+    initCollection() {
+        let buyback = this;
+
+        $('.field-collection-item input[id$=\'_price\']').on('change', function () {
+            let value = $(this).val().toNumber();
+
+            $(this).val(value ? value.toCurrency() : null);
+            buyback.calcStartingPrice();
+        });
+    }
+
+    /**
+     * Calculate the starting price
+     */
+    calcStartingPrice() {
+        let total = 0;
+
+        $('.field-collection-item input[id$=\'_price\']').each(function () {
+            total += $(this).val().toNumber();
+        });
+
+        $('#Buybacks_starting_price').val(total ? total.toCurrency() : null);
+        this.calcInterests();
     }
 
     /**

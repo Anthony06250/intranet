@@ -11,7 +11,6 @@ use App\Form\Field\IntegerField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\PercentField;
 use App\Form\Field\TextareaField;
-use App\Form\Field\TextField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -29,6 +28,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -143,9 +143,6 @@ class BuybacksCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield TextField::new('product', 'Forms.Labels.Product');
-        yield TextField::new('serial_number', 'Forms.Labels.Serial number')
-            ->hideOnIndex();
         yield AssociationField::new('customer', 'Forms.Labels.Customer')
             ->renderAsEmbeddedForm(CustomersCrudController::class,
                 'embedded_fields',
@@ -155,12 +152,20 @@ class BuybacksCrudController extends AbstractCrudController
             ])
             ->setRequired(false)
             ->setColumns('col-12');
+        yield CollectionField::new('products', 'Forms.Labels.Products')
+            ->useEntryCrudForm(ProductsCrudController::class,
+                'embedded_fields_without_barcode',
+                'embedded_fields_without_barcode')
+            ->setColumns('col-12');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(BuybacksStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
         yield MoneyField::new('starting_price', 'Forms.Labels.Starting price')
             ->hideOnIndex()
+            ->setFormTypeOption('attr', [
+                'readonly' => true
+            ])
             ->setColumns('col-5');
         yield PercentField::new('increased_percent', 'Forms.Labels.Increased percent')
             ->hideOnIndex()

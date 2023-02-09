@@ -9,7 +9,6 @@ use App\Form\Field\ChoiceField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\TextareaField;
-use App\Form\Field\TextField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -27,6 +26,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -141,9 +141,6 @@ class DepositsSalesCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield TextField::new('product', 'Forms.Labels.Product');
-        yield TextField::new('serial_number', 'Forms.Labels.Serial number')
-            ->hideOnIndex();
         yield AssociationField::new('customer', 'Forms.Labels.Customer')
             ->renderAsEmbeddedForm(CustomersCrudController::class,
                 'embedded_fields',
@@ -153,12 +150,20 @@ class DepositsSalesCrudController extends AbstractCrudController
             ])
             ->setRequired(false)
             ->setColumns('col-12');
+        yield CollectionField::new('products', 'Forms.Labels.Products')
+            ->useEntryCrudForm(ProductsCrudController::class,
+                'embedded_fields_without_barcode',
+                'embedded_fields_without_barcode')
+            ->setColumns('col-12');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(DepositsSalesStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
         yield MoneyField::new('reserved_price', 'Forms.Labels.Reserved price')
-            ->hideOnIndex();
+            ->hideOnIndex()
+            ->setFormTypeOption('attr', [
+                'readonly' => true
+            ]);
         yield DateField::new('created_at', 'Forms.Labels.Created at')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
