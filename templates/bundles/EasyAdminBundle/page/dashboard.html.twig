@@ -125,8 +125,8 @@
         {% set url = ea_url()
             .setController('App\\Controller\\Admin\\ControlsCrudController')
             .setAction('new')
-            .set('controlsCounter', counter)
-            .set('controlsPeriod', period) %}
+            .set('counter', counter)
+            .set('period', period) %}
         <a href="{{ url }}" class="card cta-box {{ period == 1 ? 'bg-warning' : 'bg-primary' }} text-white">
             <article class="card-body">
                 <h3 class="m-0 fw-normal cta-box-title">

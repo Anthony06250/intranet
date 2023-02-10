@@ -3,22 +3,24 @@
 namespace App\Entity;
 
 use App\Repository\CustomersRepository;
+use App\Trait\AddressTrait;
+use App\Trait\ContactTrait;
 use App\Trait\TimeStampTrait;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 
-#[UniqueEntity('id_number')]
+#[UniqueEntity('idNumber')]
 #[ORM\Entity(repositoryClass: CustomersRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Customers
 {
+    use AddressTrait;
+    use ContactTrait;
     use TimeStampTrait;
 
     /**
@@ -56,63 +58,21 @@ class Customers
      * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $birthday_date = null;
+    private ?DateTimeInterface $birthdayDate = null;
 
     /**
      * @var CustomersTypesIds|null
      */
     #[ORM\ManyToOne(inversedBy: 'customers')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?CustomersTypesIds $customersTypesId = null;
+    private ?CustomersTypesIds $typesId = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(max: 20)]
-    private ?string $id_number = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    private ?string $address = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    private ?string $additional_address = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Length(max: 50)]
-    private ?string $city = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 20, nullable: true)]
-    #[Assert\Length(max: 20)]
-    private ?string $zipcode = null;
-
-    /**
-     * @var PhoneNumber|null
-     */
-    #[ORM\Column(type: 'phone_number', nullable: true)]
-    #[AssertPhoneNumber]
-    private ?PhoneNumber $phone = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 180, nullable: true)]
-    #[Assert\Length(max: 180)]
-    private ?string $email = null;
+    private ?string $idNumber = null;
 
     /**
      * @var ArrayCollection|Collection
@@ -226,16 +186,16 @@ class Customers
      */
     public function getBirthdayDate(): ?DateTimeInterface
     {
-        return $this->birthday_date;
+        return $this->birthdayDate;
     }
 
     /**
-     * @param DateTimeInterface|null $birthday_date
+     * @param DateTimeInterface|null $birthdayDate
      * @return $this
      */
-    public function setBirthdayDate(?DateTimeInterface $birthday_date): self
+    public function setBirthdayDate(?DateTimeInterface $birthdayDate): self
     {
-        $this->birthday_date = $birthday_date;
+        $this->birthdayDate = $birthdayDate;
 
         return $this;
     }
@@ -243,18 +203,18 @@ class Customers
     /**
      * @return CustomersTypesIds|null
      */
-    public function getCustomersTypesId(): ?CustomersTypesIds
+    public function getTypesId(): ?CustomersTypesIds
     {
-        return $this->customersTypesId;
+        return $this->typesId;
     }
 
     /**
-     * @param CustomersTypesIds|null $customersTypesId
+     * @param CustomersTypesIds|null $typesId
      * @return $this
      */
-    public function setCustomersTypesId(?CustomersTypesIds $customersTypesId): self
+    public function setTypesId(?CustomersTypesIds $typesId): self
     {
-        $this->customersTypesId = $customersTypesId;
+        $this->typesId = $typesId;
 
         return $this;
     }
@@ -264,130 +224,16 @@ class Customers
      */
     public function getIdNumber(): ?string
     {
-        return $this->id_number ? strtoupper($this->id_number) : null;
+        return $this->idNumber ? strtoupper($this->idNumber) : null;
     }
 
     /**
-     * @param string|null $id_number
+     * @param string|null $idNumber
      * @return $this
      */
-    public function setIdNumber(?string $id_number): self
+    public function setIdNumber(?string $idNumber): self
     {
-        $this->id_number = strtolower($id_number);
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param string|null $address
-     * @return $this
-     */
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAdditionalAddress(): ?string
-    {
-        return $this->additional_address;
-    }
-
-    /**
-     * @param string|null $additional_address
-     * @return $this
-     */
-    public function setAdditionalAddress(?string $additional_address): self
-    {
-        $this->additional_address = $additional_address;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city ? ucfirst($this->city) : null;
-    }
-
-    /**
-     * @param string|null $city
-     * @return $this
-     */
-    public function setCity(?string $city): self
-    {
-        $this->city = strtolower($city);
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getZipcode(): ?string
-    {
-        return $this->zipcode ? strtoupper($this->zipcode) : null;
-    }
-
-    /**
-     * @param string|null $zipcode
-     * @return $this
-     */
-    public function setZipcode(?string $zipcode): self
-    {
-        $this->zipcode = strtolower($zipcode);
-
-        return $this;
-    }
-
-    /**
-     * @return PhoneNumber|null
-     */
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param PhoneNumber|null $phone
-     * @return $this
-     */
-    public function setPhone(?PhoneNumber $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string|null $email
-     * @return $this
-     */
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
+        $this->idNumber = strtolower($idNumber);
 
         return $this;
     }

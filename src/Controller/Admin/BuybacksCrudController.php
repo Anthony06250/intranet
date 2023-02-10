@@ -99,7 +99,7 @@ class BuybacksCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'Buybacks.Edit buyback')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Buybacks.View buyback')
             ->setDefaultSort([
-                'due_at' => 'DESC'
+                'dueAt' => 'DESC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -162,19 +162,19 @@ class BuybacksCrudController extends AbstractCrudController
             ->setChoices(BuybacksStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
-        yield MoneyField::new('starting_price', 'Forms.Labels.Starting price')
+        yield MoneyField::new('startingPrice', 'Forms.Labels.Starting price')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ])
             ->setColumns('col-5');
-        yield PercentField::new('increased_percent', 'Forms.Labels.Increased percent')
+        yield PercentField::new('increasedPercent', 'Forms.Labels.Increased percent')
             ->hideOnIndex()
             ->setColumns('col-2');
-        yield MoneyField::new('increased_price', 'Forms.Labels.Increased price')
+        yield MoneyField::new('increasedPrice', 'Forms.Labels.Increased price')
             ->hideOnIndex()
             ->setColumns('col-5');
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
@@ -186,7 +186,7 @@ class BuybacksCrudController extends AbstractCrudController
                 'min' => 1
             ])
             ->setColumns('col-2');
-        yield DateField::new('due_at', 'Forms.Labels.Due at')
+        yield DateField::new('dueAt', 'Forms.Labels.Due at')
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ])

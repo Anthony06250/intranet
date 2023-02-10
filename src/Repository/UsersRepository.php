@@ -105,7 +105,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
             ->addFieldResult('u', 'username', 'username')
             ->addFieldResult('u', 'firstname', 'firstname')
             ->addFieldResult('u', 'lastname', 'lastname')
-            ->addFieldResult('u', 'birthday_date', 'birthday_date')
+            ->addFieldResult('u', 'birthday_date', 'birthdayDate')
             ->addFieldResult('u', 'email', 'email');
         $sql = 'SELECT *
             FROM users u

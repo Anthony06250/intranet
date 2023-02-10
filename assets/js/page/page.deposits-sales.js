@@ -50,6 +50,6 @@ class DepositSales {
             total += $(this).val().toNumber();
         });
 
-        $('#DepositsSales_reserved_price').val(total ? total.toCurrency() : null);
+        $('#DepositsSales_reservedPrice').val(total ? total.toCurrency() : null);
     }
 }

@@ -93,7 +93,7 @@ class CustomersCrudController extends AbstractCrudController
             ->addCssClass('fw-bold')
             ->onlyOnIndex();
         yield TextField::new('address', 'Forms.Labels.Address');
-        yield TextField::new('additional_address', 'Forms.Labels.AdditionalAddress')
+        yield TextField::new('additionalAddress', 'Forms.Labels.AdditionalAddress')
             ->hideOnIndex();
         yield TextField::new('zipcode', 'Forms.Labels.Zipcode');
         yield TextField::new('city', 'Forms.Labels.City');
@@ -101,16 +101,16 @@ class CustomersCrudController extends AbstractCrudController
         if ($pageName !== 'embedded_fields'
             && $pageName !== 'embedded_fields_without_ids'
             && $pageName !== 'embedded_fields_without_ids_and_contact') {
-            yield DateField::new('birthday_date', 'Forms.Labels.Birthday')
+            yield DateField::new('birthdayDate', 'Forms.Labels.Birthday')
                 ->hideOnIndex();
         }
 
         if ($pageName !== 'embedded_fields_without_ids'
             && $pageName !== 'embedded_fields_without_ids_and_contact') {
-            yield AssociationField::new('customersTypesId', 'Forms.Labels.Types ID')
+            yield AssociationField::new('typesId', 'Forms.Labels.Types ID')
                 ->hideOnIndex()
                 ->setFormTypeOption('placeholder', 'Forms.Placeholders.Type id');
-            yield TextField::new('id_number', 'Forms.Labels.ID number')
+            yield TextField::new('idNumber', 'Forms.Labels.ID number')
                 ->hideOnIndex();
         }
 

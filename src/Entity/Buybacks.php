@@ -61,19 +61,19 @@ class Buybacks
      * @var float|null
      */
     #[ORM\Column(nullable: false)]
-    private ?float $starting_price = null;
+    private ?float $startingPrice = null;
 
     /**
      * @var float|null
      */
     #[ORM\Column(nullable: false)]
-    private ?float $increased_percent = 0.3;
+    private ?float $increasedPercent = 0.3;
 
     /**
      * @var float|null
      */
     #[ORM\Column(nullable: false)]
-    private ?float $increased_price = null;
+    private ?float $increasedPrice = null;
 
     /**
      * @var int|null
@@ -86,7 +86,7 @@ class Buybacks
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(nullable: false)]
-    private ?DateTimeImmutable $due_at = null;
+    private ?DateTimeImmutable $dueAt = null;
 
     /**
      * @var Customers|null
@@ -103,7 +103,7 @@ class Buybacks
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         $this->products = new ArrayCollection();
     }
 
@@ -226,16 +226,16 @@ class Buybacks
      */
     public function getStartingPrice(): ?float
     {
-        return $this->starting_price;
+        return $this->startingPrice;
     }
 
     /**
-     * @param float $starting_price
+     * @param float $startingPrice
      * @return $this
      */
-    public function setStartingPrice(float $starting_price): self
+    public function setStartingPrice(float $startingPrice): self
     {
-        $this->starting_price = $starting_price;
+        $this->startingPrice = $startingPrice;
 
         return $this;
     }
@@ -245,16 +245,16 @@ class Buybacks
      */
     public function getIncreasedPercent(): ?float
     {
-        return $this->increased_percent;
+        return $this->increasedPercent;
     }
 
     /**
-     * @param float $increased_percent
+     * @param float $increasedPercent
      * @return $this
      */
-    public function setIncreasedPercent(float $increased_percent): self
+    public function setIncreasedPercent(float $increasedPercent): self
     {
-        $this->increased_percent = $increased_percent;
+        $this->increasedPercent = $increasedPercent;
 
         return $this;
     }
@@ -264,16 +264,16 @@ class Buybacks
      */
     public function getIncreasedPrice(): ?float
     {
-        return $this->increased_price;
+        return $this->increasedPrice;
     }
 
     /**
-     * @param float $increased_price
+     * @param float $increasedPrice
      * @return $this
      */
-    public function setIncreasedPrice(float $increased_price): self
+    public function setIncreasedPrice(float $increasedPrice): self
     {
-        $this->increased_price = $increased_price;
+        $this->increasedPrice = $increasedPrice;
 
         return $this;
     }
@@ -302,16 +302,16 @@ class Buybacks
      */
     public function getDueAt(): ?DateTimeImmutable
     {
-        return $this->due_at;
+        return $this->dueAt;
     }
 
     /**
-     * @param DateTimeImmutable $due_at
+     * @param DateTimeImmutable $dueAt
      * @return $this
      */
-    public function setDueAt(DateTimeImmutable $due_at): self
+    public function setDueAt(DateTimeImmutable $dueAt): self
     {
-        $this->due_at = $due_at;
+        $this->dueAt = $dueAt;
 
         return $this;
     }

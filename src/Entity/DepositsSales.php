@@ -77,7 +77,7 @@ class DepositsSales
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         $this->products = new ArrayCollection();
     }
 

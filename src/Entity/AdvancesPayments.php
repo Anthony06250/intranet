@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Fresh\DoctrineEnumBundle\Validator\Constraints\EnumType;
 use IntlDateFormatter;
 use Locale;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AdvancesPaymentsRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -68,7 +67,7 @@ class AdvancesPayments
      */
     #[ORM\ManyToOne(inversedBy: 'advancesPayments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AdvancesPaymentsMethods $advancesPaymentMethods = null;
+    private ?AdvancesPaymentsMethods $paymentsMethod = null;
 
     /**
      * @var DateTimeImmutable|null
@@ -91,7 +90,7 @@ class AdvancesPayments
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         $this->products = new ArrayCollection();
     }
 
@@ -231,18 +230,18 @@ class AdvancesPayments
     /**
      * @return AdvancesPaymentsMethods|null
      */
-    public function getAdvancesPaymentMethods(): ?AdvancesPaymentsMethods
+    public function getPaymentsMethod(): ?AdvancesPaymentsMethods
     {
-        return $this->advancesPaymentMethods;
+        return $this->paymentsMethod;
     }
 
     /**
-     * @param AdvancesPaymentsMethods|null $advancesPaymentMethods
+     * @param AdvancesPaymentsMethods|null $paymentsMethod
      * @return $this
      */
-    public function setAdvancesPaymentMethods(?AdvancesPaymentsMethods $advancesPaymentMethods): self
+    public function setPaymentsMethod(?AdvancesPaymentsMethods $paymentsMethod): self
     {
-        $this->advancesPaymentMethods = $advancesPaymentMethods;
+        $this->paymentsMethod = $paymentsMethod;
 
         return $this;
     }

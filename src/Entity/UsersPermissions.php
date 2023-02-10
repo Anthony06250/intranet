@@ -44,7 +44,7 @@ class UsersPermissions
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'usersPermission', targetEntity: Users::class)]
+    #[ORM\OneToMany(mappedBy: 'permission', targetEntity: Users::class)]
     private Collection|ArrayCollection $users;
 
     public function __construct()
@@ -114,7 +114,7 @@ class UsersPermissions
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->setUsersPermission($this);
+            $user->setPermission($this);
         }
 
         return $this;
@@ -128,8 +128,8 @@ class UsersPermissions
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getUsersPermission() === $this) {
-                $user->setUsersPermission(null);
+            if ($user->getPermission() === $this) {
+                $user->setPermission(null);
             }
         }
 

@@ -97,7 +97,7 @@ class DepositsSalesCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'DepositsSales.Edit deposit sales')
             ->setPageTitle(Crud::PAGE_DETAIL, 'DepositsSales.View deposit sales')
             ->setDefaultSort([
-                'created_at' => 'ASC'
+                'createdAt' => 'ASC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -160,12 +160,12 @@ class DepositsSalesCrudController extends AbstractCrudController
             ->setChoices(DepositsSalesStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
-        yield MoneyField::new('reserved_price', 'Forms.Labels.Reserved price')
+        yield MoneyField::new('reservedPrice', 'Forms.Labels.Reserved price')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ]);
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);

@@ -120,20 +120,20 @@ class SafesRepository extends ServiceEntityRepository
     private function createMissingSafeForCurrentMonth(Stores $store): void
     {
         $safe = new Safes();
-        $controlsPeriod = $this->getEntityManager()->getRepository(ControlsPeriods::class)->find(2);
-        $controlsCounters = $this->getEntityManager()->getRepository(ControlsCounters::class)->findAll();
-        $safesMovementsTypes = $this->getEntityManager()->getRepository(SafesMovementsTypes::class)->findAll();
+        $period = $this->getEntityManager()->getRepository(ControlsPeriods::class)->find(2);
+        $counters = $this->getEntityManager()->getRepository(ControlsCounters::class)->findAll();
+        $movementsTypes = $this->getEntityManager()->getRepository(SafesMovementsTypes::class)->findAll();
 
         $safe->setMonth((new DateTimeImmutable())->format('Y-m') . '-01');
         $safe->setStore($store);
-        $safe->setControlsPeriod($controlsPeriod);
+        $safe->setPeriod($period);
 
-        foreach ($controlsCounters as $controlsCounter) {
-            $safe->addControlsCounters($controlsCounter);
+        foreach ($counters as $counter) {
+            $safe->addCounter($counter);
         }
 
-        foreach ($safesMovementsTypes as $safesMovementsType) {
-            $safe->addSafesMovementsTypes($safesMovementsType);
+        foreach ($movementsTypes as $movementsType) {
+            $safe->addMovementsType($movementsType);
         }
 
         $safe->setCreatedAt(new DateTimeImmutable());

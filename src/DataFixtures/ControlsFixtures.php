@@ -52,8 +52,8 @@ class ControlsFixtures extends Fixture implements DependentFixtureInterface
 
         return $object->setUser($this->getReference('user-' . mt_rand(1, count(UsersFixtures::USERS))))
             ->setStore($this->getReference('store-' . $store))
-            ->setControlsCounter($counter)
-            ->setControlsPeriod($this->getReference('controlsPeriod-' . $controlsPeriod))
+            ->setCounter($counter)
+            ->setPeriod($this->getReference('controlsPeriod-' . $controlsPeriod))
             ->setTurnover($turnover)
             ->setCashFund($cashFund)
             ->setOneCent($currencies['one_cent'])

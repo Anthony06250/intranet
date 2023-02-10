@@ -7,7 +7,6 @@ use App\Trait\CurrenciesTrait;
 use App\Trait\TimeStampTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use IntlDateFormatter;
 use Locale;
 
@@ -45,14 +44,14 @@ class Controls
      */
     #[ORM\ManyToOne(inversedBy: 'controls')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ControlsCounters $controlsCounter = null;
+    private ?ControlsCounters $counter = null;
 
     /**
      * @var ControlsPeriods|null
      */
     #[ORM\ManyToOne(inversedBy: 'controls')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ControlsPeriods $controlsPeriod = null;
+    private ?ControlsPeriods $period = null;
 
     /**
      * @var float|null
@@ -64,7 +63,7 @@ class Controls
      * @var float|null
      */
     #[ORM\Column(nullable: false)]
-    private ?float $cash_fund = null;
+    private ?float $cashFund = null;
 
     /**
      * @var float|null
@@ -80,7 +79,7 @@ class Controls
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     /**
@@ -96,7 +95,7 @@ class Controls
             IntlDateFormatter::GREGORIAN,
         );
 
-        return $this->getStore() . ' - (' . $this->getControlsCounter() . ' / ' . $this->getControlsPeriod() . ') - '
+        return $this->getStore() . ' - (' . $this->getCounter() . ' / ' . $this->getPeriod() . ') - '
             . $dateFormatter->format($this->getCreatedAt()->getTimestamp());
     }
 
@@ -149,18 +148,18 @@ class Controls
     /**
      * @return ControlsCounters|null
      */
-    public function getControlsCounter(): ?ControlsCounters
+    public function getCounter(): ?ControlsCounters
     {
-        return $this->controlsCounter;
+        return $this->counter;
     }
 
     /**
-     * @param ControlsCounters|null $controlsCounter
+     * @param ControlsCounters|null $counter
      * @return $this
      */
-    public function setControlsCounter(?ControlsCounters $controlsCounter): self
+    public function setCounter(?ControlsCounters $counter): self
     {
-        $this->controlsCounter = $controlsCounter;
+        $this->counter = $counter;
 
         return $this;
     }
@@ -168,18 +167,18 @@ class Controls
     /**
      * @return ControlsPeriods|null
      */
-    public function getControlsPeriod(): ?ControlsPeriods
+    public function getPeriod(): ?ControlsPeriods
     {
-        return $this->controlsPeriod;
+        return $this->period;
     }
 
     /**
-     * @param ControlsPeriods|null $controlsPeriod
+     * @param ControlsPeriods|null $period
      * @return $this
      */
-    public function setControlsPeriod(?ControlsPeriods $controlsPeriod): self
+    public function setPeriod(?ControlsPeriods $period): self
     {
-        $this->controlsPeriod = $controlsPeriod;
+        $this->period = $period;
 
         return $this;
     }
@@ -208,16 +207,16 @@ class Controls
      */
     public function getCashFund(): ?float
     {
-        return $this->cash_fund;
+        return $this->cashFund;
     }
 
     /**
-     * @param float $cash_fund
+     * @param float $cashFund
      * @return $this
      */
-    public function setCashFund(float $cash_fund): self
+    public function setCashFund(float $cashFund): self
     {
-        $this->cash_fund = $cash_fund;
+        $this->cashFund = $cashFund;
 
         return $this;
     }

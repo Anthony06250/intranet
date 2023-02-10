@@ -36,7 +36,7 @@ class CustomersTypesIds
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'customersTypesId', targetEntity: Customers::class)]
+    #[ORM\OneToMany(mappedBy: 'typesId', targetEntity: Customers::class)]
     private Collection|ArrayCollection $customers;
 
     public function __construct()
@@ -95,7 +95,7 @@ class CustomersTypesIds
     {
         if (!$this->customers->contains($customer)) {
             $this->customers->add($customer);
-            $customer->setCustomersTypesId($this);
+            $customer->setTypesId($this);
         }
 
         return $this;
@@ -109,8 +109,8 @@ class CustomersTypesIds
     {
         if ($this->customers->removeElement($customer)) {
             // set the owning side to null (unless already changed)
-            if ($customer->getCustomersTypesId() === $this) {
-                $customer->setCustomersTypesId(null);
+            if ($customer->getTypesId() === $this) {
+                $customer->setTypesId(null);
             }
         }
 

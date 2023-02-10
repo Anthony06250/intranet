@@ -37,7 +37,7 @@ class CustomersFixtures extends Fixture implements DependentFixtureInterface
                 ->setFirstname($faker->firstName)
                 ->setLastname($faker->lastName)
                 ->setBirthdayDate($faker->dateTime)
-                ->setCustomersTypesId($this->getReference('customersTypesId-' . $faker->numberBetween(1, count(CustomersTypesIdsFixtures::TYPES_ID))))
+                ->setTypesId($this->getReference('customersTypesId-' . $faker->numberBetween(1, count(CustomersTypesIdsFixtures::TYPES_ID))))
                 ->setIdNumber($faker->postcode . $faker->postcode)
                 ->setAddress($faker->address)
                 ->setCity($faker->city)

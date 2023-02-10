@@ -287,9 +287,12 @@ Forms:
   Placeholders:
     Username: Entrer votre nom d'utilisateur
     Password: Entrer votre mot de passe
+    Permission: Choisissez une permission
     Civility: Choisissez une civilité
     Customers: Choisissez un client
     Type id: Choisissez un type de pièce d'identité
+    Movements type: Choisissez un type de mouvement
+    Payment method: Choisissez un mode de paiement
   Feedbacks:
     Username: Veuillez entrer un nom d'utilisateur.
     Password: Veuillez entrer un mot de passe.

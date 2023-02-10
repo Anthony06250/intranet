@@ -81,7 +81,7 @@ class InvoicesCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'Invoices.Edit invoice')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Invoices.View invoice')
             ->setDefaultSort([
-                'created_at' => 'ASC'
+                'createdAt' => 'ASC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -126,7 +126,7 @@ class InvoicesCrudController extends AbstractCrudController
         yield $this->getStoresField();
 
         yield DateField::new('selledAt', 'Forms.Labels.Selled at');
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
@@ -171,8 +171,9 @@ class InvoicesCrudController extends AbstractCrudController
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ]);
-        yield AssociationField::new('paymentMethods', 'Forms.Labels.Payment method')
-            ->hideOnIndex();
+        yield AssociationField::new('paymentsMethod', 'Forms.Labels.Payment method')
+            ->hideOnIndex()
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Payment method');
     }
 
     /**

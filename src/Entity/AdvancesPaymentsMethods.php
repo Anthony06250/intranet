@@ -33,10 +33,10 @@ class AdvancesPaymentsMethods
     #[Assert\Length(min:2, max: 50)]
     private ?string $label = null;
 
-    #[ORM\OneToMany(mappedBy: 'advancesPaymentMethods', targetEntity: AdvancesPayments::class)]
+    #[ORM\OneToMany(mappedBy: 'paymentsMethod', targetEntity: AdvancesPayments::class)]
     private Collection $advancesPayments;
 
-    #[ORM\OneToMany(mappedBy: 'paymentMethods', targetEntity: Invoices::class)]
+    #[ORM\OneToMany(mappedBy: 'paymentsMethod', targetEntity: Invoices::class)]
     private Collection $invoices;
 
     public function __construct()
@@ -88,22 +88,30 @@ class AdvancesPaymentsMethods
         return $this->advancesPayments;
     }
 
+    /**
+     * @param AdvancesPayments $advancesPayment
+     * @return $this
+     */
     public function addAdvancesPayment(AdvancesPayments $advancesPayment): self
     {
         if (!$this->advancesPayments->contains($advancesPayment)) {
             $this->advancesPayments->add($advancesPayment);
-            $advancesPayment->setAdvancesPaymentMethods($this);
+            $advancesPayment->setPaymentMethods($this);
         }
 
         return $this;
     }
 
+    /**
+     * @param AdvancesPayments $advancesPayment
+     * @return $this
+     */
     public function removeAdvancesPayment(AdvancesPayments $advancesPayment): self
     {
         if ($this->advancesPayments->removeElement($advancesPayment)) {
             // set the owning side to null (unless already changed)
-            if ($advancesPayment->getAdvancesPaymentMethods() === $this) {
-                $advancesPayment->setAdvancesPaymentMethods(null);
+            if ($advancesPayment->getPaymentMethods() === $this) {
+                $advancesPayment->setPaymentMethods(null);
             }
         }
 
