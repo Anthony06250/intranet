@@ -45,7 +45,7 @@ class AdvancesPayments
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'advancesPayments', cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'advancesPayments', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection|ArrayCollection $products;
 
@@ -78,7 +78,7 @@ class AdvancesPayments
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'advancesPayments')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'advancesPayments')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 

@@ -46,7 +46,7 @@ class Buybacks
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'buybacks', cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'buybacks', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection|ArrayCollection $products;
 
@@ -91,7 +91,7 @@ class Buybacks
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'buybacks')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'buybacks')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 

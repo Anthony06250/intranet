@@ -3,6 +3,7 @@
 namespace App\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait AddressTrait
@@ -12,6 +13,7 @@ trait AddressTrait
      */
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
+    #[Groups(['search'])]
     private ?string $address = null;
 
     /**
@@ -19,6 +21,7 @@ trait AddressTrait
      */
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
+    #[Groups(['search'])]
     private ?string $additionalAddress = null;
 
     /**
@@ -26,6 +29,7 @@ trait AddressTrait
      */
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Length(max: 50)]
+    #[Groups(['search'])]
     private ?string $city = null;
 
     /**
@@ -33,6 +37,7 @@ trait AddressTrait
      */
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(max: 20)]
+    #[Groups(['search'])]
     private ?string $zipcode = null;
 
     /**

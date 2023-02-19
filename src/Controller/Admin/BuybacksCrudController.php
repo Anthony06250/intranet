@@ -6,6 +6,7 @@ use App\DBAL\Types\BuybacksStatusesType;
 use App\Entity\Buybacks;
 use App\Form\Field\AssociationField;
 use App\Form\Field\ChoiceField;
+use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\IntegerField;
 use App\Form\Field\MoneyField;
@@ -143,16 +144,7 @@ class BuybacksCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->renderAsEmbeddedForm(CustomersCrudController::class,
-                'embedded_fields',
-                'embedded_fields')
-            ->setFormTypeOption('row_attr', [
-                'accordion' => true,
-                'expanded' => true
-            ])
-            ->setRequired(false)
-            ->setColumns('col-12');
+        yield CustomerField::new('customer', 'Forms.Labels.Customer');
         yield CollectionField::new('products', 'Forms.Labels.Products')
             ->useEntryCrudForm(ProductsCrudController::class,
                 'embedded_fields_without_barcode',

@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Invoices;
 use App\Form\Field\AssociationField;
+use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
 use App\Repository\StoresRepository;
@@ -131,16 +132,7 @@ class InvoicesCrudController extends AbstractCrudController
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
-        yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->renderAsEmbeddedForm(CustomersCrudController::class,
-                'embedded_fields_without_ids_and_contact',
-                'embedded_fields_without_ids_and_contact')
-            ->setFormTypeOption('row_attr', [
-                'accordion' => true,
-                'expanded' => true
-            ])
-            ->setRequired(false)
-            ->setColumns('col-12');
+        yield CustomerField::new('customer', 'Forms.Labels.Customer');
         yield CollectionField::new('products', 'Forms.Labels.Products')
             ->useEntryCrudForm(ProductsCrudController::class)
             ->setColumns('col-12');

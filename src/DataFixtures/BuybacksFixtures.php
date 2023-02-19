@@ -38,7 +38,7 @@ class BuybacksFixtures extends Fixture implements DependentFixtureInterface
                 ->setStartingPrice($startingPrice)
                 ->setIncreasedPercent($percent)
                 ->setIncreasedPrice($increasedPrice)
-                ->setCustomer($this->getReference('customer-' . mt_rand(1, CustomersCrudController::MAX_RESULTS_REQUEST)))
+                ->setCustomer($this->getReference('customer-' . mt_rand(1, CustomersFixtures::NBR_CUSTOMERS_GENERATE)))
                 ->setComments($faker->realText())
                 ->setCreatedAt(new DateTimeImmutable())
                 ->setDuration($duration)

@@ -42,7 +42,7 @@ class Invoices
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'invoices', cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'invoices', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection|ArrayCollection $products;
 
@@ -74,7 +74,7 @@ class Invoices
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'invoices')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'invoices')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 

@@ -12,9 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class CustomersCrudController extends AbstractCrudController
+class CustomersCrudController extends AjaxAbstractCrudController
 {
     /**
      * Index page settings
@@ -36,6 +35,14 @@ class CustomersCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Customers::class;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAjaxTemplate(): string
+    {
+        return 'bundles/EasyAdminBundle/crud/_ajax/_customers.html.twig';
     }
 
     /**
@@ -97,29 +104,16 @@ class CustomersCrudController extends AbstractCrudController
             ->hideOnIndex();
         yield TextField::new('zipcode', 'Forms.Labels.Zipcode');
         yield TextField::new('city', 'Forms.Labels.City');
-
-        if ($pageName !== 'embedded_fields'
-            && $pageName !== 'embedded_fields_without_ids'
-            && $pageName !== 'embedded_fields_without_ids_and_contact') {
-            yield DateField::new('birthdayDate', 'Forms.Labels.Birthday')
-                ->hideOnIndex();
-        }
-
-        if ($pageName !== 'embedded_fields_without_ids'
-            && $pageName !== 'embedded_fields_without_ids_and_contact') {
-            yield AssociationField::new('typesId', 'Forms.Labels.Types ID')
-                ->hideOnIndex()
-                ->setFormTypeOption('placeholder', 'Forms.Placeholders.Type id');
-            yield TextField::new('idNumber', 'Forms.Labels.ID number')
-                ->hideOnIndex();
-        }
-
-        if ($pageName !== 'embedded_fields_without_contact'
-            && $pageName !== 'embedded_fields_without_ids_and_contact') {
-            yield TelephoneField::new('phone', 'Forms.Labels.Phone');
-            yield EmailField::new('email', 'Forms.Labels.Email')
-                ->hideOnIndex();
-        }
+        yield DateField::new('birthdayDate', 'Forms.Labels.Birthday')
+            ->hideOnIndex();
+        yield AssociationField::new('typesId', 'Forms.Labels.Types ID')
+            ->hideOnIndex()
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Type id');
+        yield TextField::new('idNumber', 'Forms.Labels.ID number')
+            ->hideOnIndex();
+        yield TelephoneField::new('phone', 'Forms.Labels.Phone');
+        yield EmailField::new('email', 'Forms.Labels.Email')
+            ->hideOnIndex();
     }
 
     /**

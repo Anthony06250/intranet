@@ -55,6 +55,7 @@ Customers:
   Create customer: Créer un client
   Edit customer: Éditer un client
   View customer: Voir un client
+  Delete customer: Supprimer le client
 
 CustomersTypesIds:
   CustomersTypesId: un type de pièce d'identité

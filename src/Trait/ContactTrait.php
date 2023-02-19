@@ -3,6 +3,7 @@
 namespace App\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -14,6 +15,7 @@ trait ContactTrait
      */
     #[ORM\Column(type: 'phone_number', nullable: true)]
     #[AssertPhoneNumber]
+    #[Groups(['search'])]
     private ?PhoneNumber $phone = null;
 
     /**
@@ -21,6 +23,7 @@ trait ContactTrait
      */
     #[ORM\Column(length: 180, nullable: true)]
     #[Assert\Length(max: 180)]
+    #[Groups(['search'])]
     private ?string $email = null;
 
     /**
