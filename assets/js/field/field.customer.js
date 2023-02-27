@@ -7,7 +7,8 @@ $(document).ready(function () {
     let customer = new Customer();
 
     $('select[id$="_customer"]').select2({
-        minimumResultsForSearch: 1
+        minimumResultsForSearch: 1,
+        templateSelection: customer.formatCustomerSelection
     });
 
     $('button[class*="field-customer-add-button"]').on('click', function () {
@@ -21,7 +22,7 @@ $(document).ready(function () {
     $('button[class*="action-save"]').on('click', function (event) {
         if ($('#new-Customers-form').length) {
             event.preventDefault();
-            customer.submitNewCustomer();
+            customer.preSubmitNewCustomer();
         }
     });
 });
@@ -30,13 +31,12 @@ $(document).ready(function () {
  * Customer class
  */
 class Customer {
-    url = '/' + $('html').attr('lang') + '/admin?crudAction=new&crudControllerFqcn=App%5CController%5CAdmin%5CCustomersCrudController';
-    form_prototype = null;
-
     /**
      * Construct customer class
      */
     constructor() {
+        this.newUrl = '/admin?crudAction=new&crudControllerFqcn=App%5CController%5CAdmin%5CCustomersCrudController';
+        this.formPrototype = null;
         this.init();
     }
 
@@ -54,18 +54,37 @@ class Customer {
         let customer = this;
 
         $.ajax({
-            url: this.url,
+            url: '/' + $('html').attr('lang') + this.newUrl,
             type: 'GET',
             async: true,
 
             success: function(data) {
-                customer.form_prototype = data;
+                customer.formPrototype = data;
                 customer.displayAddButton();
             },
             error : function() {
                 console.log('Fail to request new customer form');
             }
         });
+    }
+
+    /**
+     * Format customer selection list with edit button
+     * @param customer
+     * @returns {*|jQuery|HTMLElement}
+     */
+    formatCustomerSelection(customer) {
+        if (customer.id) {
+            let editUrl = '/admin?crudAction=edit&crudControllerFqcn=App%5CController%5CAdmin%5CCustomersCrudController&entityId=';
+            let url = '/' + $('html').attr('lang') + editUrl + customer.id;
+            let editButton = '<a href="' + url + '" target="_blank" class="btn btn-outline-warning float-end py-0 px-1 mt-1 me-3">\n' +
+                '<i class="uil-pen"></i>\n' +
+                '</a>';
+
+            return $('<span>' + customer.text + editButton + '</span>');
+        }
+
+        return customer.text;
     }
 
     /**
@@ -106,33 +125,49 @@ class Customer {
      * Generate new customer form
      */
     generateNewCustomerForm() {
-        $(this.form_prototype).insertBefore('select[id$="_customer"]');
+        let customer = this;
+
+        $(this.formPrototype).insertBefore('select[id$="_customer"]');
         $('#new-Customers-form .select2').select2({
             minimumResultsForSearch: Infinity
         });
+        $('#button-select-customer').on('click', function () {
+            customer.selectExistingCustomer(customer.isExistCustomer());
+        });
+    }
+
+    /**
+     * Make verification before submitting a new customer
+     */
+    preSubmitNewCustomer() {
+        if (this.isValidCustomer()) {
+            if (this.isExistCustomer()) {
+                return this.showExistingCustomerModal();
+            }
+
+            return this.submitNewCustomer();
+        }
     }
 
     /**
      * Submit new customer form with ajax
      */
     submitNewCustomer() {
-        if (this.isValidCustomer()) {
-            let customer = this;
+        let customer = this;
 
-            $.ajax({
-                url: this.url,
-                type: 'POST',
-                data: $('#new-Customers-form').serialize(),
+        $.ajax({
+            url: '/' + $('html').attr('lang') + this.newUrl,
+            type: 'POST',
+            data: $('#new-Customers-form').serialize(),
 
-                success: function (data) {
-                    customer.updateCustomersList(data);
-                    customer.submitParentForm();
-                },
-                error: function() {
-                    console.log('Fail to create new customer');
-                }
-            });
-        }
+            success: function (data) {
+                customer.updateCustomersList(data);
+                customer.submitParentForm();
+            },
+            error: function() {
+                console.log('Fail to create new customer');
+            }
+        });
     }
 
     /**
@@ -143,6 +178,44 @@ class Customer {
         return !!($('#Customers_civility').find(':selected').val()
             && $('#Customers_firstname').val()
             && $('#Customers_lastname').val());
+    }
+
+    /**
+     * Check if the new customer already exist
+     * @returns {boolean}
+     */
+    isExistCustomer()
+    {
+        let customerName = this.getNewCustomerName();
+        let response = null;
+
+        $('select[id$="_customer"] option').each(function () {
+            if ($(this).text() === customerName) {
+                response = $(this).val();
+            }
+        });
+
+        return response;
+    }
+
+    /**
+     * Show alert modal if customer already exist
+     */
+    showExistingCustomerModal() {
+        let modalBodyElement = $('#modal-body-customer');
+
+        modalBodyElement.html(modalBodyElement.html().replace('__FULLNAME__', this.getNewCustomerName()));
+        $('#customer-edit-modal').modal('show');
+    }
+
+    /**
+     * Select an existing customer in customer list
+     * @param customerId
+     */
+    selectExistingCustomer(customerId) {
+        $('select[id$="_customer"]').val(customerId).change();
+        this.removeNewCustomer();
+        this.submitParentForm();
     }
 
     /**
@@ -174,7 +247,7 @@ class Customer {
      * Submit parent form after create new customer
      */
     submitParentForm() {
-        $('button[class*="action-save"]').unbind('click').click();
+        $('button[class*="action-save"]').click();
     }
 }
 

@@ -56,6 +56,10 @@ Customers:
   Edit customer: Éditer un client
   View customer: Voir un client
   Delete customer: Supprimer le client
+  Existing modal:
+    Title: Cet utilisateur existe déjà !
+    Text: L'utilisateur __FULLNAME__ est déjà présent dans la liste des clients.</br>Que souhaitez-vous faire ?
+    Select button: Utiliser l'utilisateur existant
 
 CustomersTypesIds:
   CustomersTypesId: un type de pièce d'identité
@@ -400,10 +404,10 @@ Errors:
   Return: Retour à l'accueil
   404:
     Label: Page non trouvée
-    Message: Il semble que vous ayez pris un mauvais virage.</br> Ne vous inquiétez pas... cela arrive aux meilleurs d'entre nous.</br> Voici une petite astuce qui pourrait vous aider à vous remettre sur la bonne voie.
+    Message: Il semble que vous ayez pris un mauvais virage.<br>Ne vous inquiétez pas... cela arrive aux meilleurs d'entre nous.<br>Voici une petite astuce qui pourrait vous aider à vous remettre sur la bonne voie.
   500:
     Label: Erreur interne du serveur
-    Message: Pourquoi ne pas essayer de rafraîchir votre page ?</br> Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.
+    Message: Pourquoi ne pas essayer de rafraîchir votre page ?<br>Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.
 
 Pdf:
   Customer copy: Exemplaire client

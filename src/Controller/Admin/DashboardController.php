@@ -53,7 +53,7 @@ class DashboardController extends AbstractDashboardController
     /**
      * Dashboard page settings
      */
-    public const DAYS_UNTIL_BIRTHDAYS = 90;
+    public const DAYS_UNTIL_BIRTHDAYS = 60;
 
     /**
      * @param UsersRepository $usersRepository

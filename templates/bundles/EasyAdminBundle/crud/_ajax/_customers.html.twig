@@ -14,4 +14,28 @@
     {{ form_row(form.city) }}
     {{ form_row(form.phone) }}
     {{ form_row(form.email) }}
+
+    <article id="customer-edit-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <article class="modal-dialog">
+            <article class="modal-content">
+                <article class="modal-body p-4">
+                    <section class="text-center">
+                        <i class="ri-alert-line h1 text-warning"></i>
+                        <h4 class="mt-2">
+                            {{ 'Customers.Existing modal.Title' | trans({}, 'messages') }}
+                        </h4>
+                        <p id="modal-body-customer" class="mt-3">
+                            {{ 'Customers.Existing modal.Text' | trans({}, 'messages') | raw }}
+                        </p>
+                        <button type="button" class="btn btn-secondary my-2" data-bs-dismiss="modal">
+                            {{ 'action.cancel' | trans({}, 'EasyAdminBundle') }}
+                        </button>
+                        <button id="button-select-customer" type="button" class="btn btn-warning my-2" data-bs-dismiss="modal">
+                            {{ 'Customers.Existing modal.Select button' | trans({}, 'messages') }}
+                        </button>
+                    </section>
+                </article>
+            </article>
+        </article>
+    </article>
 {{ form_end(form) }}
