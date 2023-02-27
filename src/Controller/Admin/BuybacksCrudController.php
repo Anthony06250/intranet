@@ -11,6 +11,7 @@ use App\Form\Field\DateField;
 use App\Form\Field\IntegerField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\PercentField;
+use App\Form\Field\ProductField;
 use App\Form\Field\TextareaField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
@@ -29,7 +30,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -145,11 +145,8 @@ class BuybacksCrudController extends AbstractCrudController
         yield $this->getStoresField();
 
         yield CustomerField::new('customer', 'Forms.Labels.Customer');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class,
-                'embedded_fields_without_barcode',
-                'embedded_fields_without_barcode')
-            ->setColumns('col-12');
+        yield ProductField::new('products', 'Forms.Labels.Products')
+            ->setEntryCrudPageName('embedded_fields_without_barcode');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(BuybacksStatusesType::getChoices())
             ->setRequired(true)

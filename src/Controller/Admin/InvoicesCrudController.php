@@ -7,6 +7,7 @@ use App\Form\Field\AssociationField;
 use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
+use App\Form\Field\ProductField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -23,7 +24,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class InvoicesCrudController extends AbstractCrudController
 {
@@ -133,9 +133,7 @@ class InvoicesCrudController extends AbstractCrudController
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
         yield CustomerField::new('customer', 'Forms.Labels.Customer');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class)
-            ->setColumns('col-12');
+        yield ProductField::new('products', 'Forms.Labels.Products');
         yield MoneyField::new('totalWithoutTaxes', 'Forms.Labels.Total without taxes')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [

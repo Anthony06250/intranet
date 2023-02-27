@@ -69,6 +69,10 @@ CustomersTypesIds:
   Edit customers types id: Éditer un type de pièce d'identité
   View customers types id: Voir un type de pièce d'identité
 
+Products:
+  Add product: Ajouter un produit
+  Remove product: Supprimer un produit
+
 Stores:
   Store: un magasin
   Stores: des magasins

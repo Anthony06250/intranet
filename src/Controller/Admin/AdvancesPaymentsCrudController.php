@@ -9,6 +9,7 @@ use App\Form\Field\ChoiceField;
 use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
+use App\Form\Field\ProductField;
 use App\Form\Field\TextareaField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
@@ -27,7 +28,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -143,9 +143,7 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
         yield $this->getStoresField();
 
         yield CustomerField::new('customer', 'Forms.Labels.Customer');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class)
-            ->setColumns('col-12');
+        yield ProductField::new('products', 'Forms.Labels.Products');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(AdvancesPaymentsStatusesType::getChoices())
             ->setRequired(true)
