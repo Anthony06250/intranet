@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Repository\SafesRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,6 +41,7 @@ class CreateSafesCommand extends Command
      * @return int
      * @throws NoResultException
      * @throws NonUniqueResultException
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

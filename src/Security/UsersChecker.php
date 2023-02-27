@@ -8,12 +8,12 @@ use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UsersChecker implements UserCheckerInterface
+readonly class UsersChecker implements UserCheckerInterface
 {
     /**
      * @param TranslatorInterface $translator
      */
-    public function __construct(private readonly TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
     }
 
@@ -28,7 +28,7 @@ class UsersChecker implements UserCheckerInterface
         }
 
         if (!$user->isActive()) {
-            throw new CustomUserMessageAccountStatusException($this->translator->trans('Flash.Users.Inactive', [
+            throw new CustomUserMessageAccountStatusException($this->translator->trans('Flashes.Users.Inactive', [
                 '%user%' => (string) $user
             ]));
         }
@@ -40,8 +40,5 @@ class UsersChecker implements UserCheckerInterface
      */
     public function checkPostAuth(UserInterface $user): void
     {
-        if (!$user instanceof Users) {
-            return;
-        }
     }
 }

@@ -35,7 +35,7 @@ class PdfService
         $this->domPdf->loadHtml($html);
         $this->domPdf->render();
         $this->domPdf->stream($filename, [
-            'Attachement' => false
+            'Attachment' => true
         ]);
     }
 }

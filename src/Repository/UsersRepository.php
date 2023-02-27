@@ -3,9 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Users;
-use App\Entity\UsersCivilities;
-use DateInterval;
-use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

@@ -33,11 +33,17 @@ class AdvancesPaymentsMethods
     #[Assert\Length(min:2, max: 50)]
     private ?string $label = null;
 
+    /**
+     * @var ArrayCollection|Collection
+     */
     #[ORM\OneToMany(mappedBy: 'paymentsMethod', targetEntity: AdvancesPayments::class)]
-    private Collection $advancesPayments;
+    private Collection|ArrayCollection $advancesPayments;
 
+    /**
+     * @var ArrayCollection|Collection
+     */
     #[ORM\OneToMany(mappedBy: 'paymentsMethod', targetEntity: Invoices::class)]
-    private Collection $invoices;
+    private Collection|ArrayCollection $invoices;
 
     public function __construct()
     {
@@ -96,7 +102,7 @@ class AdvancesPaymentsMethods
     {
         if (!$this->advancesPayments->contains($advancesPayment)) {
             $this->advancesPayments->add($advancesPayment);
-            $advancesPayment->setPaymentMethods($this);
+            $advancesPayment->setPaymentsMethod($this);
         }
 
         return $this;
@@ -110,8 +116,8 @@ class AdvancesPaymentsMethods
     {
         if ($this->advancesPayments->removeElement($advancesPayment)) {
             // set the owning side to null (unless already changed)
-            if ($advancesPayment->getPaymentMethods() === $this) {
-                $advancesPayment->setPaymentMethods(null);
+            if ($advancesPayment->getPaymentsMethod() === $this) {
+                $advancesPayment->setPaymentsMethod(null);
             }
         }
 
@@ -126,22 +132,30 @@ class AdvancesPaymentsMethods
         return $this->invoices;
     }
 
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
     public function addInvoice(Invoices $invoice): self
     {
         if (!$this->invoices->contains($invoice)) {
             $this->invoices->add($invoice);
-            $invoice->setPaymentMethods($this);
+            $invoice->setPaymentsMethod($this);
         }
 
         return $this;
     }
 
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
     public function removeInvoice(Invoices $invoice): self
     {
         if ($this->invoices->removeElement($invoice)) {
             // set the owning side to null (unless already changed)
-            if ($invoice->getPaymentMethods() === $this) {
-                $invoice->setPaymentMethods(null);
+            if ($invoice->getPaymentsMethod() === $this) {
+                $invoice->setPaymentsMethod(null);
             }
         }
 
