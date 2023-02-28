@@ -1,9 +1,4 @@
 /**
- * Import app css
- */
-import('../scss/app.scss')
-
-/**
  * Import app js
  */
 const $ = require('jquery');

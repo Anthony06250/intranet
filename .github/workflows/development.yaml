@@ -39,7 +39,9 @@ jobs:
           sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           'BIGreen="\033[1;92m" && cd /var/www/intranet_dev/html/ &&
   
+          rm -rf ./public/build/ &&
           rm -rf ./public/bundles/ &&
+          rm -rf ./public/node_modules/ &&
           rm -rf ./var/ &&
           rm -rf ./vendor/ &&
           export COMPOSER_ALLOW_SUPERUSER=1 &&

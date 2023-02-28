@@ -16,7 +16,7 @@
             {{ block('page_title') | striptags | raw }}
         </title>
         {% block head_stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('css/app') }}
             {{ encore_entry_link_tags('component/notification') }}
             {{ encore_entry_link_tags('css/icons') }}
         {% endblock %}

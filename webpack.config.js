@@ -46,6 +46,7 @@ Encore
     .addEntry('component/datatables', './assets/js/ui/component.datatables.js')
 
     // Css file
+    .addStyleEntry('css/app', './assets/scss/app.scss')
     .addStyleEntry('css/app-pdf', './assets/scss/app-pdf.scss')
     .addStyleEntry('css/icons', './assets/scss/icons.scss')
 
