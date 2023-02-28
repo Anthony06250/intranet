@@ -1,4 +1,18 @@
 /**
+ * Import datatables css
+ */
+import('datatables.net-bs5/css/dataTables.bootstrap5.min.css');
+import('datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css');
+
+/**
+ * Import datatables js
+ */
+require('datatables.net');
+require('datatables.net-bs5');
+require('datatables.net-responsive');
+require('datatables.net-responsive-bs5');
+
+/**
  * Init datatables component
  */
 $(document).ready(function () {

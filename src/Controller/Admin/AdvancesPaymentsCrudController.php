@@ -114,7 +114,7 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.advances-payments.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/advances-payments')
             ->onlyOnForms());
 
         return $assets;

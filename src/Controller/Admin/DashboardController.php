@@ -129,7 +129,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->SetFaviconPath('assets/images/favicon.png');
+            ->SetFaviconPath('build/images/favicon.png');
     }
 
     /**

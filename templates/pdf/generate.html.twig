@@ -1,5 +1,6 @@
 {% set links %}
-    <link href="{{ absolute_url('/assets/css/app-modern-pdf.min.css') }}" rel="stylesheet" type="text/css">
+    {{ encore_entry_link_tags('css/app-pdf') }}
+{#    <link href="{{ absolute_url('/assets/css/app-pdf.min.css') }}" rel="stylesheet" type="text/css">#}
 {% endset %}
 
 {% if copy_for is defined %}

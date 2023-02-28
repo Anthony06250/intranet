@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -20,10 +21,36 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.js')
+    .addEntry('app', './assets/js/app.js')
+    .addEntry('hyper-config', './assets/js/hyper-config.js')
+
+    // Page js files
+    .addEntry('page/advances-payments', './assets/js/page/page.advances-payments.js')
+    .addEntry('page/buybacks', './assets/js/page/page.buybacks.js')
+    .addEntry('page/controls', './assets/js/page/page.controls.js')
+    .addEntry('page/deposits-sales', './assets/js/page/page.deposits-sales.js')
+    .addEntry('page/invoices', './assets/js/page/page.invoices.js')
+    .addEntry('page/safes', './assets/js/page/page.safes.js')
+    .addEntry('page/safes-controls', './assets/js/page/page.safes-controls.js')
+
+    // Field js file
+    .addEntry('field/boolean', './assets/js/field/field.boolean.js')
+    .addEntry('field/customer', './assets/js/field/field.customer.js')
+    .addEntry('field/integer', './assets/js/field/field.integer.js')
+    .addEntry('field/money', './assets/js/field/field.money.js')
+    .addEntry('field/percent', './assets/js/field/field.percent.js')
+    .addEntry('field/select2', './assets/js/field/field.select2.js')
+
+    // Component js file
+    .addEntry('component/notification', './assets/js/ui/component.notification.js')
+    .addEntry('component/datatables', './assets/js/ui/component.datatables.js')
+
+    // Css file
+    .addStyleEntry('css/app-pdf', './assets/scss/app-pdf.scss')
+    .addStyleEntry('css/icons', './assets/scss/icons.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
+    //.enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -57,7 +84,8 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
+    .enablePostCssLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -67,10 +95,24 @@ Encore
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
-    //.enableIntegrityHashes(Encore.isProduction())
+    .enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
+
+    // you can use this method to provide other common global variables,
+    // such as '_' for the 'underscore' library
+    .autoProvideVariables({
+        bootstrap: 'bootstrap',
+        'window.bootstrap': 'bootstrap',
+    })
+
+    // Add webpack plugin
+    .addPlugin(new CopyWebpackPlugin({
+        patterns: [
+            {from: './assets/images', to: 'images'}
+        ]
+    }))
 ;
 
 module.exports = Encore.getWebpackConfig();

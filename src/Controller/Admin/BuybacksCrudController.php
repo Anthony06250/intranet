@@ -116,7 +116,7 @@ class BuybacksCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.buybacks.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/buybacks')
             ->onlyOnForms());
 
         return $assets;

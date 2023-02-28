@@ -36,7 +36,7 @@ final class BooleanField implements FieldInterface
             ->setColumns('col-6')
             ->setCustomOption(self::OPTION_RENDER_AS_SWITCH, true)
             // Add boolean field js file
-            ->addJsFiles(Asset::new('assets/js/field/field.boolean.js')
+            ->addWebpackEncoreEntries(Asset::new('field/boolean')
                 ->onlyOnIndex());
     }
 

@@ -88,7 +88,7 @@ class SafesControlsCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.safes-controls.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/safes-controls')
             ->onlyOnForms());
 
         return $assets;

@@ -30,7 +30,7 @@
                                             {{ 'Widgets.Support.Message' | trans({}, 'messages') | raw }}
                                         </h3>
                                     </div>
-                                    <img class="ms-3" src="{{ asset('assets/images/svg/email-campaign.svg') }}" width="120" alt="Generic placeholder image">
+                                    <img class="ms-3" src="{{ asset('build/images/svg/email-campaign.svg') }}" width="120" alt="Generic placeholder image">
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                     {{ 'Widgets.Birthday.Title' | trans({'%days%': birthday.days_until_birthdays}, 'messages') }}
                                 </h3>
                             </article>
-                            <img class="ms-3" src="{{ asset('assets/images/svg/birthday.svg')}}" width="100" alt="Birthday image">
+                            <img class="ms-3" src="{{ asset('build/images/svg/birthday.svg')}}" width="100" alt="Birthday image">
                         </header>
                         <section>
                             {% if birthday.next_birthdays | length %}

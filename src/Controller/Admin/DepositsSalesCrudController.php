@@ -114,7 +114,7 @@ class DepositsSalesCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.deposits-sales.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/deposits-sales')
             ->onlyOnForms());
 
         return $assets;

@@ -98,7 +98,7 @@ class InvoicesCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.invoices.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/invoices')
             ->onlyOnForms());
 
         return $assets;

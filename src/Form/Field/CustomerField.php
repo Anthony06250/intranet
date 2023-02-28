@@ -61,13 +61,8 @@ final class CustomerField implements FieldInterface
                     'data-toggle' => 'select2'
                 ]
             ])
-            // Add select2 css file
-            ->addCssFiles(Asset::new('assets/vendor/select2/css/select2.min.css')
-                ->onlyOnForms())
-            // Add select2 js file
-            ->addJsFiles(Asset::new('assets/vendor/select2/js/select2.min.js')
-                ->onlyOnForms())
-            ->addJsFiles(Asset::new('assets/js/field/field.customer.js')
+            // Add customer js file
+            ->addWebpackEncoreEntries(Asset::new('field/customer')
                 ->onlyOnForms());
     }
 

@@ -4,18 +4,18 @@
             <section class="logo-topbar">
                 <a href="{{ path('admin') }}" class="logo-light">
                 <span class="logo-lg">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo" height="22">
+                    <img src="{{ asset('build/images/logo.png') }}" alt="logo" height="22">
                 </span>
                     <span class="logo-sm">
-                    <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo" height="22">
+                    <img src="{{ asset('build/images/logo-sm.png') }}" alt="small logo" height="22">
                 </span>
                 </a>
                 <a href="{{ path('admin') }}" class="logo-dark">
                 <span class="logo-lg">
-                    <img src="{{ asset('assets/images/logo-dark.png') }}" alt="dark logo" height="22">
+                    <img src="{{ asset('build/images/logo-dark.png') }}" alt="dark logo" height="22">
                 </span>
                     <span class="logo-sm">
-                    <img src="{{ asset('assets/images/logo-dark-sm.png') }}" alt="small logo" height="22">
+                    <img src="{{ asset('build/images/logo-dark-sm.png') }}" alt="small logo" height="22">
                 </span>
                 </a>
             </section>
@@ -95,7 +95,7 @@
 {#            </li>#}
             <li class="dropdown">
                 <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="{{ asset('assets/images/flags/' ~ app.request.locale ~ '.jpg') }}" alt="user-image" class="me-0 me-sm-1" height="12">
+                    <img src="{{ asset('bundles/easyadmin/images/flags/' ~ (app.request.locale == 'en' ? 'us' : app.request.locale) | upper ~ '.svg') }}" alt="user-image" class="me-0 me-sm-1" height="12">
                     <span class="align-middle d-none d-lg-inline-block">
                         {{ app.request.locale | locale_name | capitalize }}
                     </span>
@@ -105,7 +105,7 @@
                     {% for supported_locale in supported_locales %}
                         {% if app.request.locale != supported_locale %}
                             <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params') | merge(app.request.query.all | merge({'_locale': supported_locale }))) }}" class="dropdown-item notify-item">
-                                <img src="{{ asset('assets/images/flags/' ~ supported_locale ~'.jpg') }}" alt="user-image" class="me-1" height="12">
+                                <img src="{{ asset('bundles/easyadmin/images/flags/' ~ (supported_locale == 'en' ? 'us' : supported_locale) | upper ~ '.svg') }}" alt="user-image" class="me-1" height="12">
                                 <span class="align-middle">
                                     {{ supported_locale | locale_name | capitalize }}
                                 </span>
@@ -136,105 +136,105 @@
                             </article>
                         </section>
                     </article>
-                    <section class="px-3" style="max-height: 300px;" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0 -24px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0; bottom: 0;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;"><div class="simplebar-content" style="padding: 0 24px;">
-                        <h5 class="text-muted font-13 fw-normal mt-2">
-                            Today
-                        </h5>
-                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-2">
-                            <section class="card-body">
-                                <span class="float-end noti-close-btn text-muted">
-                                    <i class="mdi mdi-close"></i>
-                                </span>
-                                <section class="d-flex align-items-center">
-                                    <article class="flex-shrink-0">
-                                        <article class="notify-icon bg-primary">
-                                            <i class="mdi mdi-comment-account-outline"></i>
-                                        </article>
-                                    </article>
-                                    <section class="flex-grow-1 text-truncate ms-2">
-                                        <h5 class="noti-item-title fw-semibold font-14">
-                                            Datacorp
-                                            <small class="fw-normal text-muted ms-1">
-                                                1 min ago
-                                            </small>
-                                        </h5>
-                                        <small class="noti-item-subtitle text-muted">
-                                            Caleb Flakelar commented on Admin
-                                        </small>
-                                    </section>
-                                </section>
-                            </section>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">
-                            <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="notify-icon bg-info">
-                                            <i class="mdi mdi-account-plus"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-truncate ms-2">
-                                        <h5 class="noti-item-title fw-semibold font-14">Admin <small class="fw-normal text-muted ms-1">1 hours ago</small></h5>
-                                        <small class="noti-item-subtitle text-muted">New user registered</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <h5 class="text-muted font-13 fw-normal mt-0">Yesterday</h5>
-                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">
-                            <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="notify-icon">
-                                            <img src="{{ asset('assets/images/users/avatar-2.jpg') }}" class="img-fluid rounded-circle" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-truncate ms-2">
-                                        <h5 class="noti-item-title fw-semibold font-14">Cristina Pride <small class="fw-normal text-muted ms-1">1 day ago</small></h5>
-                                        <small class="noti-item-subtitle text-muted">Hi, How are you? What about our next meeting</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <h5 class="text-muted font-13 fw-normal mt-0">30 Dec 2021</h5>
-                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">
-                            <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="notify-icon bg-primary">
-                                            <i class="mdi mdi-comment-account-outline"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-truncate ms-2">
-                                        <h5 class="noti-item-title fw-semibold font-14">Datacorp</h5>
-                                        <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">
-                            <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="notify-icon">
-                                            <img src="{{ asset('assets/images/users/avatar-4.jpg') }}" class="img-fluid rounded-circle" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-truncate ms-2">
-                                        <h5 class="noti-item-title fw-semibold font-14">Karen Robinson</h5>
-                                        <small class="noti-item-subtitle text-muted">Wow ! this admin looks good and awesome design</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="text-center">
-                            <i class="mdi mdi-dots-circle mdi-spin text-muted h3 mt-0"></i>
-                        </div>
-                    </div></div></div></div><div class="simplebar-placeholder" style="width: 0; height: 0;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0; display: none;"></div></div></section>
+{#                    <section class="px-3" style="max-height: 300px;" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0 -24px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0; bottom: 0;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;"><div class="simplebar-content" style="padding: 0 24px;">#}
+{#                        <h5 class="text-muted font-13 fw-normal mt-2">#}
+{#                            Today#}
+{#                        </h5>#}
+{#                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-2">#}
+{#                            <section class="card-body">#}
+{#                                <span class="float-end noti-close-btn text-muted">#}
+{#                                    <i class="mdi mdi-close"></i>#}
+{#                                </span>#}
+{#                                <section class="d-flex align-items-center">#}
+{#                                    <article class="flex-shrink-0">#}
+{#                                        <article class="notify-icon bg-primary">#}
+{#                                            <i class="mdi mdi-comment-account-outline"></i>#}
+{#                                        </article>#}
+{#                                    </article>#}
+{#                                    <section class="flex-grow-1 text-truncate ms-2">#}
+{#                                        <h5 class="noti-item-title fw-semibold font-14">#}
+{#                                            Datacorp#}
+{#                                            <small class="fw-normal text-muted ms-1">#}
+{#                                                1 min ago#}
+{#                                            </small>#}
+{#                                        </h5>#}
+{#                                        <small class="noti-item-subtitle text-muted">#}
+{#                                            Caleb Flakelar commented on Admin#}
+{#                                        </small>#}
+{#                                    </section>#}
+{#                                </section>#}
+{#                            </section>#}
+{#                        </a>#}
+{#                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">#}
+{#                            <div class="card-body">#}
+{#                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>#}
+{#                                <div class="d-flex align-items-center">#}
+{#                                    <div class="flex-shrink-0">#}
+{#                                        <div class="notify-icon bg-info">#}
+{#                                            <i class="mdi mdi-account-plus"></i>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="flex-grow-1 text-truncate ms-2">#}
+{#                                        <h5 class="noti-item-title fw-semibold font-14">Admin <small class="fw-normal text-muted ms-1">1 hours ago</small></h5>#}
+{#                                        <small class="noti-item-subtitle text-muted">New user registered</small>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </a>#}
+{#                        <h5 class="text-muted font-13 fw-normal mt-0">Yesterday</h5>#}
+{#                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">#}
+{#                            <div class="card-body">#}
+{#                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>#}
+{#                                <div class="d-flex align-items-center">#}
+{#                                    <div class="flex-shrink-0">#}
+{#                                        <div class="notify-icon">#}
+{#                                            <img src="{{ asset('assets/images/users/avatar-2.jpg') }}" class="img-fluid rounded-circle" alt="">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="flex-grow-1 text-truncate ms-2">#}
+{#                                        <h5 class="noti-item-title fw-semibold font-14">Cristina Pride <small class="fw-normal text-muted ms-1">1 day ago</small></h5>#}
+{#                                        <small class="noti-item-subtitle text-muted">Hi, How are you? What about our next meeting</small>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </a>#}
+{#                        <h5 class="text-muted font-13 fw-normal mt-0">30 Dec 2021</h5>#}
+{#                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">#}
+{#                            <div class="card-body">#}
+{#                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>#}
+{#                                <div class="d-flex align-items-center">#}
+{#                                    <div class="flex-shrink-0">#}
+{#                                        <div class="notify-icon bg-primary">#}
+{#                                            <i class="mdi mdi-comment-account-outline"></i>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="flex-grow-1 text-truncate ms-2">#}
+{#                                        <h5 class="noti-item-title fw-semibold font-14">Datacorp</h5>#}
+{#                                        <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </a>#}
+{#                        <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card read-noti shadow-none mb-2">#}
+{#                            <div class="card-body">#}
+{#                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>#}
+{#                                <div class="d-flex align-items-center">#}
+{#                                    <div class="flex-shrink-0">#}
+{#                                        <div class="notify-icon">#}
+{#                                            <img src="{{ asset('assets/images/users/avatar-4.jpg') }}" class="img-fluid rounded-circle" alt="">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="flex-grow-1 text-truncate ms-2">#}
+{#                                        <h5 class="noti-item-title fw-semibold font-14">Karen Robinson</h5>#}
+{#                                        <small class="noti-item-subtitle text-muted">Wow ! this admin looks good and awesome design</small>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </a>#}
+{#                        <div class="text-center">#}
+{#                            <i class="mdi mdi-dots-circle mdi-spin text-muted h3 mt-0"></i>#}
+{#                        </div>#}
+{#                    </div></div></div></div><div class="simplebar-placeholder" style="width: 0; height: 0;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0; display: none;"></div></div></section>#}
                     <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item border-top border-light py-2">
                         View All
                     </a>
@@ -249,7 +249,7 @@
                         <section class="row g-0">
                             <article class="col">
                                 <a class="dropdown-icon-item" href="https://github.com/Anthony06250/intranet" target="_blank">
-                                    <img src="{{ asset('assets/images/brands/github.png') }}" alt="Github">
+                                    <img src="{{ asset('build/images/brands/github.png') }}" alt="Github">
                                     <span>
                                         GitHub
                                     </span>
@@ -257,7 +257,7 @@
                             </article>
                             <article class="col">
                                 <a class="dropdown-icon-item" href="https://www.dropbox.com/login" target="_blank">
-                                    <img src="{{ asset('assets/images/brands/dropbox.png') }}" alt="dropbox">
+                                    <img src="{{ asset('build/images/brands/dropbox.png') }}" alt="dropbox">
                                     <span>
                                         Dropbox
                                     </span>
@@ -288,7 +288,7 @@
                 <a class="nav-link dropdown-toggle nav-user arrow-none px-2" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <span class="account-user-avatar">
                         {% if null == ea.userMenu.avatarUrl %}
-                            <img src="{{ asset('assets/images/users/avatar.jpg') }}" alt="user-image" height="32px" class="rounded-circle">
+                            <img src="{{ asset('build/images/users/avatar.jpg') }}" alt="user-image" height="32px" class="rounded-circle">
                         {% else %}
                             <img src="{{ ea.userMenu.avatarUrl }}" alt="user-avatar" height="32px" class="rounded-circle">
                         {% endif %}

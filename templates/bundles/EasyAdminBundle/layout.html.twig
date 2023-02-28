@@ -25,16 +25,16 @@
             {{ page_title_block_output | striptags | raw }}
         </title>
         {% block head_stylesheets %}
-            <link href="{{ asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css">
-            <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
-            <link href="{{ asset('assets/css/app-modern.min.css') }}" rel="stylesheet" type="text/css" id="app-style">
+            {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('component/notification') }}
+            {{ encore_entry_link_tags('css/icons') }}
         {% endblock %}
         {% block configured_stylesheets %}
             {{ include('@EasyAdmin/includes/_css_assets.html.twig', {assets: ea.assets.cssAssets ?? []}, with_context = false) }}
             {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', {assets: ea.assets.webpackEncoreAssets ?? []}, with_context = false) }}
         {% endblock %}
         {% block head_javascript %}
-            <script src="{{ asset('assets/js/hyper-config.js') }}"></script>
+            {{ encore_entry_script_tags('hyper-config') }}
         {% endblock head_javascript %}
         {% block configured_head_contents %}
             {% for htmlContent in ea.assets.headContents ?? [] %}
@@ -119,9 +119,8 @@
             {% include 'bundles/EasyAdminBundle/_layout/_theme-settings.html.twig' %}
         {% endif %}
         {% block body_javascript %}
-            <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
-            <script src="{{ asset('assets/vendor/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
-            <script src="{{ asset('assets/js/app.min.js') }}"></script>
+            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('component/notification') }}
         {% endblock body_javascript %}
         {% block configured_javascripts %}
             {{ include('@EasyAdmin/includes/_js_assets.html.twig', {assets: ea.assets.jsAssets ?? []}, with_context = false) }}
