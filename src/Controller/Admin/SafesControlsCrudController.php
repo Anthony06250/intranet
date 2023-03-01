@@ -257,7 +257,7 @@ class SafesControlsCrudController extends AbstractCrudController
         $counters = $counterRepository->findAll();
 
         foreach ($counters as $counter) {
-            $safesControl->addCounters($counter);
+            $safesControl->addCounter($counter);
         }
 
         return $safesControl;
