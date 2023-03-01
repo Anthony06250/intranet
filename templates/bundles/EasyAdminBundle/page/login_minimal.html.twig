@@ -17,7 +17,7 @@
         </title>
         {% block head_stylesheets %}
             {{ encore_entry_link_tags('css/app') }}
-            {{ encore_entry_link_tags('component/notification') }}
+            {{ encore_entry_link_tags('plugin/notification') }}
             {{ encore_entry_link_tags('css/icons') }}
         {% endblock %}
         {% block head_javascript %}
@@ -28,7 +28,7 @@
         {% block wrapper_wrapper %}{% endblock wrapper_wrapper %}
         {% block body_javascript %}
             {{ encore_entry_script_tags('app') }}
-            {{ encore_entry_script_tags('component/notification') }}
+            {{ encore_entry_script_tags('plugin/notification') }}
         {% endblock body_javascript %}
         {% block flash_messages %}
             {% include '@EasyAdmin/flash_messages.html.twig' %}

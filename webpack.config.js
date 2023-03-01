@@ -33,19 +33,19 @@ Encore
     .addEntry('page/safes', './assets/js/page/page.safes.js')
     .addEntry('page/safes-controls', './assets/js/page/page.safes-controls.js')
 
-    // Field js file
+    // Field js files
     .addEntry('field/boolean', './assets/js/field/field.boolean.js')
     .addEntry('field/customer', './assets/js/field/field.customer.js')
     .addEntry('field/integer', './assets/js/field/field.integer.js')
     .addEntry('field/money', './assets/js/field/field.money.js')
     .addEntry('field/percent', './assets/js/field/field.percent.js')
-    .addEntry('field/select2', './assets/js/field/field.select2.js')
 
-    // Component js file
-    .addEntry('component/notification', './assets/js/ui/component.notification.js')
-    .addEntry('component/datatables', './assets/js/ui/component.datatables.js')
+    // Plugin js files
+    .addEntry('plugin/notification', './assets/js/plugin/plugin.notification.js')
+    .addEntry('plugin/datatables', './assets/js/plugin/plugin.datatables.js')
+    .addEntry('plugin/select2', './assets/js/plugin/plugin.select2.js')
 
-    // Css file
+    // Css files
     .addStyleEntry('css/app', './assets/scss/app.scss')
     .addStyleEntry('css/app-pdf', './assets/scss/app-pdf.scss')
     .addStyleEntry('css/icons', './assets/scss/icons.scss')

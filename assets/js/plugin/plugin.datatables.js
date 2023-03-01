@@ -13,16 +13,16 @@ require('datatables.net-responsive');
 require('datatables.net-responsive-bs5');
 
 /**
- * Init datatables component
+ * Init datatables plugin
  */
 $(document).ready(function () {
     'use strict';
 
     let translations_url = {
-        'fr': 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/fr-FR.json',
-        'it': 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/it-IT.json',
-        'es': 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/es-ES.json',
-        'de': 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/de-DE.json'
+        'fr': 'https://cdn.datatables.net/plug-ins/1.13.3/i18n/fr-FR.json',
+        'it': 'https://cdn.datatables.net/plug-ins/1.13.3/i18n/it-IT.json',
+        'es': 'https://cdn.datatables.net/plug-ins/1.13.3/i18n/es-ES.json',
+        'de': 'https://cdn.datatables.net/plug-ins/1.13.3/i18n/de-DE.json'
     };
     let page_limit = $('table[data-page-limit]').attr('data-page-limit') ?? 10;
     let table = $("#index-datatable").DataTable({

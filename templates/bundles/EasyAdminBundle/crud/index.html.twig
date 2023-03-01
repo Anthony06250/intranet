@@ -27,14 +27,14 @@
     {{ parent() }}
     {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea_field_assets.cssAssets }, with_context = false) }}
     {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
-    {{ encore_entry_link_tags('component/datatables') }}
+    {{ encore_entry_link_tags('plugin/datatables') }}
 {% endblock %}
 
 {% block body_javascript %}
     {{ parent() }}
     {{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea_field_assets.jsAssets }, with_context = false) }}
     {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea_field_assets.webpackEncoreAssets }, with_context = false) }}
-    {{ encore_entry_script_tags('component/datatables') }}
+    {{ encore_entry_script_tags('plugin/datatables') }}
 {% endblock %}
 
 {% block content_title %}

@@ -59,7 +59,7 @@ final class AssociationField implements FieldInterface
                 'data-toggle' => 'select2'
             ])
             // Add select2 js file
-            ->addWebpackEncoreEntries(Asset::new('field/select2')
+            ->addWebpackEncoreEntries(Asset::new('plugin/select2')
                 ->onlyOnForms());
     }
 

@@ -9,12 +9,12 @@ import('select2/dist/css/select2.min.css');
 require('select2');
 
 /**
- * Init select2 field
+ * Init select2 plugin
  */
 $(document).ready(function () {
     'use strict';
 
-    $('.select2').select2({
+    $('[data-toggle="select2"]').select2({
         minimumResultsForSearch: Infinity
     });
 });

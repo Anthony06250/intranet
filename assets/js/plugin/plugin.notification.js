@@ -9,7 +9,7 @@ import('jquery-toast-plugin/dist/jquery.toast.min.css');
 require('jquery-toast-plugin');
 
 /**
- * Init notification component
+ * Init notification plugin
  */
 !function (c) {
     function t() {}

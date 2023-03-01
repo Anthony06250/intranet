@@ -26,7 +26,7 @@
         </title>
         {% block head_stylesheets %}
             {{ encore_entry_link_tags('css/app') }}
-            {{ encore_entry_link_tags('component/notification') }}
+            {{ encore_entry_link_tags('plugin/notification') }}
             {{ encore_entry_link_tags('css/icons') }}
         {% endblock %}
         {% block configured_stylesheets %}
@@ -120,7 +120,7 @@
         {% endif %}
         {% block body_javascript %}
             {{ encore_entry_script_tags('app') }}
-            {{ encore_entry_script_tags('component/notification') }}
+            {{ encore_entry_script_tags('plugin/notification') }}
         {% endblock body_javascript %}
         {% block configured_javascripts %}
             {{ include('@EasyAdmin/includes/_js_assets.html.twig', {assets: ea.assets.jsAssets ?? []}, with_context = false) }}
