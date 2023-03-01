@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     let safesControl = new SafesControl();
 
-    $('#SafesControls_controlsCounters').on('change', function () {
+    $('#SafesControls_counters').on('change', function () {
         safesControl.calcTotal();
     });
 
@@ -54,7 +54,7 @@ class SafesControl {
         let counters = 0;
         let result = $('#SafesControls_result').val().toNumber();
 
-        $('#SafesControls_controlsCounters').find(':selected').each(function () {
+        $('#SafesControls_counters').find(':selected').each(function () {
             counters += $(this).attr('data-cash-fund').toNumber() / 100;
         });
 

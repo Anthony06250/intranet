@@ -6,10 +6,12 @@ use App\DBAL\Types\BuybacksStatusesType;
 use App\Entity\Buybacks;
 use App\Form\Field\AssociationField;
 use App\Form\Field\ChoiceField;
+use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\IntegerField;
 use App\Form\Field\MoneyField;
 use App\Form\Field\PercentField;
+use App\Form\Field\ProductField;
 use App\Form\Field\TextareaField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
@@ -28,7 +30,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -99,7 +100,7 @@ class BuybacksCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'Buybacks.Edit buyback')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Buybacks.View buyback')
             ->setDefaultSort([
-                'due_at' => 'DESC'
+                'dueAt' => 'DESC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -115,7 +116,7 @@ class BuybacksCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.buybacks.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/buybacks')
             ->onlyOnForms());
 
         return $assets;
@@ -143,38 +144,26 @@ class BuybacksCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->renderAsEmbeddedForm(CustomersCrudController::class,
-                'embedded_fields',
-                'embedded_fields')
-            ->setFormTypeOption('row_attr', [
-                'accordion' => true,
-                'expanded' => true
-            ])
-            ->setRequired(false)
-            ->setColumns('col-12');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class,
-                'embedded_fields_without_barcode',
-                'embedded_fields_without_barcode')
-            ->setColumns('col-12');
+        yield CustomerField::new('customer', 'Forms.Labels.Customer');
+        yield ProductField::new('products', 'Forms.Labels.Products')
+            ->setEntryCrudPageName('embedded_fields_without_barcode');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(BuybacksStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
-        yield MoneyField::new('starting_price', 'Forms.Labels.Starting price')
+        yield MoneyField::new('startingPrice', 'Forms.Labels.Starting price')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ])
             ->setColumns('col-5');
-        yield PercentField::new('increased_percent', 'Forms.Labels.Increased percent')
+        yield PercentField::new('increasedPercent', 'Forms.Labels.Increased percent')
             ->hideOnIndex()
             ->setColumns('col-2');
-        yield MoneyField::new('increased_price', 'Forms.Labels.Increased price')
+        yield MoneyField::new('increasedPrice', 'Forms.Labels.Increased price')
             ->hideOnIndex()
             ->setColumns('col-5');
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
@@ -186,7 +175,7 @@ class BuybacksCrudController extends AbstractCrudController
                 'min' => 1
             ])
             ->setColumns('col-2');
-        yield DateField::new('due_at', 'Forms.Labels.Due at')
+        yield DateField::new('dueAt', 'Forms.Labels.Due at')
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ])

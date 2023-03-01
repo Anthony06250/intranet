@@ -78,43 +78,36 @@
     <div class="{{ form.vars.ea_crud_form.ea_field.columns ?? form.vars.ea_crud_form.ea_field.defaultColumns ?? '' }}">
         <div {% with { attr: row_attr } %}{{ block('attributes') }}{% endwith %}>
 
-            {# Custom layout for field assciation embedded accordion #}
-            {% if 'field-association' in row_attr.class and form.children is not empty
-                and row_attr.accordion is defined and row_attr.accordion is same as true %}
-                <div class="accordion accordion-association" id="accordion_{{ form.vars.name }}">
-                    <h2 class="accordion-header" id="heading_{{ form.vars.name }}">
-                        <button class="accordion-button header-title
-                                    {% if row_attr.expanded is not defined or row_attr.expanded is same as false %}
-                                        collapsed
-                                    {% endif %}" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#collapse_{{ form.vars.name }}"
-                                aria-expanded="false" aria-controls="collapse_{{ form.vars.name }}"
-                        >
-                            {{ form.vars.label | trans({}, 'messages') }}
-                        </button>
-                    </h2>
-                    <div id="collapse_{{ form.vars.name }}" class="accordion-collapse collapse
-                            {% if row_attr.expanded is defined and row_attr.expanded is same as true %}
-                                show
-                            {% endif %}"
-                         aria-labelledby="heading_{{ form.vars.name }}"
-                         data-bs-parent="#accordion_{{ form.vars.name }}"
-                    >
-                        <div class="accordion-body">
-                            <div class="form-widget row">
-            {% elseif 'field-association' in row_attr.class and form.children is not empty %}
+            {% if 'field-association' in row_attr.class and form.children is not empty %}
                 <h4 class="header-title">
                     {{ form.vars.label | trans({}, 'messages') }}
                 </h4>
                 <div class="form-widget row pt-2">
-            {% elseif 'field-collection' in row_attr.class %}
+            {% elseif 'field-customer' in row_attr.class %}
                 <h4 class="header-title m-0">
                     {{ form.vars.label | trans({}, 'messages') }}
                 </h4>
-                {% if allow_add|default(false) %}
+                <button type="button" class="btn btn-link field-customer-add-button p-0 d-none" style="position: absolute; top: 1.3rem; right: 2.3rem;">
+                    <i class="uil-plus me-1"></i>
+                    {{ 'Customers.Create customer' | trans({}, 'messages') }}
+                </button>
+                <button type="button" class="btn btn-link field-customer-remove-button p-0 d-none" style="position: absolute; top: 1.3rem; right: 2.3rem;">
+                    <i class="uil-minus me-1"></i>
+                    {{ 'Customers.Delete customer' | trans({}, 'messages') }}
+                </button>
+                <div class="form-widget pt-3">
+            {% elseif 'field-collection' in row_attr.class or 'field-product' in row_attr.class %}
+                <h4 class="header-title m-0">
+                    {{ form.vars.label | trans({}, 'messages') }}
+                </h4>
+                {% if allow_add | default(false) %}
                     <button type="button" class="btn btn-link field-collection-add-button p-0" style="position: absolute; top: 1.3rem; right: 2.3rem;">
                         <i class="uil-plus me-1"></i>
-                        {{ 'action.add_new_item' | trans({}, 'EasyAdminBundle') }}
+                        {% if 'field-product' in row_attr.class %}
+                            {{ 'Products.Add product' | trans({}, 'messages') }}
+                        {% else %}
+                            {{ 'action.add_new_item' | trans({}, 'EasyAdminBundle') }}
+                        {% endif %}
                     </button>
                 {% endif %}
                 <div class="form-widget row">
@@ -157,12 +150,6 @@
 
                 {{- form_errors(form) -}}
             </div>
-
-            {% if 'field-association' in row_attr.class and form.children is not empty
-                and row_attr.accordion is defined and row_attr.accordion is same as true %}
-                    </div>
-                </div>
-            {% endif %}
 
         </div>
     </div>
@@ -231,8 +218,11 @@
     {% set allows_deleting_items = form_parent(form).vars.allow_delete|default(false) %}
     {% set render_expanded = form_parent(form).vars.ea_crud_form.ea_field.customOptions.get('renderExpanded') ?? false %}
     {% set delete_item_button %}
+        {% set title = ('field-product' in form_parent(form).vars.ea_crud_form.ea_field.cssClass)
+            ? 'Products.Remove product' | trans({}, 'messages')
+            : 'action.remove_item' | trans({}, 'EasyAdminBundle') %}
         <button type="button" class="btn btn-outline-danger field-collection-delete-button py-0 px-1"
-                title="{{ 'action.remove_item' | trans({}, 'EasyAdminBundle') }}" style="position: absolute; top: 0.8rem; right: 3rem; z-index: 3">
+                title="{{ title }}" style="position: absolute; top: 0.8rem; right: 3rem; z-index: 3">
             <i class="uil-trash-alt"></i>
         </button>
     {% endset %}
@@ -250,6 +240,8 @@
                         <i class="fas fw fa-chevron-right form-collection-item-collapse-marker"></i>
                         {% if value is not null %}
                             {{ value | ea_as_string }}
+                        {% elseif 'field-product' in form_parent(form).vars.ea_crud_form.ea_field.cssClass %}
+                            {{ 'Products.Add product' | trans({}, 'messages') }}
                         {% else %}
                             {{ 'action.add_new_item' | trans({}, 'EasyAdminBundle') }}
                         {% endif %}

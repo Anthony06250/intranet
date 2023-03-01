@@ -3,16 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use App\Trait\ContactTrait;
 use App\Trait\TimeStampTrait;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -21,6 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\HasLifecycleCallbacks]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use ContactTrait;
     use TimeStampTrait;
 
     /**
@@ -66,7 +66,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
-    private ?UsersPermissions $usersPermission = null;
+    private ?UsersPermissions $permission = null;
 
     /**
      * The hashed password
@@ -92,28 +92,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $birthday_date = null;
+    private ?DateTimeInterface $birthdayDate = null;
 
     /**
      * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $hiring_date = null;
-
-    /**
-     * @var PhoneNumber|null
-     */
-    #[ORM\Column(type: 'phone_number', nullable: true)]
-    #[AssertPhoneNumber]
-    private ?PhoneNumber $phone = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 180, nullable: true)]
-    #[Assert\Email]
-    #[Assert\Length(max: 180)]
-    private ?string $email = null;
+    private ?DateTimeInterface $hiringDate = null;
 
     /**
      * @var bool|null
@@ -288,18 +273,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return UsersPermissions|null
      */
-    public function getUsersPermission(): ?UsersPermissions
+    public function getPermission(): ?UsersPermissions
     {
-        return $this->usersPermission;
+        return $this->permission;
     }
 
     /**
-     * @param UsersPermissions|null $usersPermission
+     * @param UsersPermissions|null $permission
      * @return $this
      */
-    public function setUsersPermission(?UsersPermissions $usersPermission): self
+    public function setPermission(?UsersPermissions $permission): self
     {
-        $this->usersPermission = $usersPermission;
+        $this->permission = $permission;
 
         return $this;
     }
@@ -310,7 +295,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         return [
-            $this->usersPermission->getRole()
+            $this->permission->getRole()
         ];
     }
 
@@ -399,16 +384,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getBirthdayDate(): ?DateTimeInterface
     {
-        return $this->birthday_date;
+        return $this->birthdayDate;
     }
 
     /**
-     * @param DateTimeInterface|null $birthday_date
+     * @param DateTimeInterface|null $birthdayDate
      * @return $this
      */
-    public function setBirthdayDate(?DateTimeInterface $birthday_date): self
+    public function setBirthdayDate(?DateTimeInterface $birthdayDate): self
     {
-        $this->birthday_date = $birthday_date;
+        $this->birthdayDate = $birthdayDate;
 
         return $this;
     }
@@ -418,54 +403,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getHiringDate(): ?DateTimeInterface
     {
-        return $this->hiring_date;
+        return $this->hiringDate;
     }
 
     /**
-     * @param DateTimeInterface|null $hiring_date
+     * @param DateTimeInterface|null $hiringDate
      * @return $this
      */
-    public function setHiringDate(?DateTimeInterface $hiring_date): self
+    public function setHiringDate(?DateTimeInterface $hiringDate): self
     {
-        $this->hiring_date = $hiring_date;
-
-        return $this;
-    }
-
-    /**
-     * @return PhoneNumber|null
-     */
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param PhoneNumber|null $phone
-     * @return $this
-     */
-    public function setPhone(?PhoneNumber $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string|null $email
-     * @return $this
-     */
-    public function setEmail(?string $email): self
-    {
-        $this->email = strtolower($email);
+        $this->hiringDate = $hiringDate;
 
         return $this;
     }

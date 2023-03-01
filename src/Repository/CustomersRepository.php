@@ -67,6 +67,26 @@ class CustomersRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @param array $fields
+     * @return array
+     */
+    public function searchCustomersByFields(array $fields): array
+    {
+        $query = $this->createQueryBuilder('c');
+
+        foreach ($fields as $field => $value) {
+            if ($value) {
+                $query->andWhere('c.' . $field . (is_numeric($value) ? ' = :' : ' LIKE :') . $field)
+                    ->setParameter($field, is_numeric($value) ? $value : '%' . $value . '%');
+            }
+        }
+
+        return $query->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Customers[] Returns an array of Customers objects
 //     */

@@ -3,18 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\StoresRepository;
+use App\Trait\AddressTrait;
+use App\Trait\ContactTrait;
 use App\Trait\TimeStampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use libphonenumber\PhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 
 #[ORM\Entity(repositoryClass: StoresRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Stores
 {
+    use AddressTrait;
+    use ContactTrait;
     use TimeStampTrait;
 
     /**
@@ -28,59 +30,16 @@ class Stores
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    private ?string $address = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    private ?string $additional_address = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 50, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min:2, max: 50)]
-    private ?string $city = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 10, nullable: true)]
-    #[Assert\Length(max: 10)]
-    private ?string $zipcode = null;
-
-    /**
-     * @var PhoneNumber|null
-     */
-    #[ORM\Column(type: 'phone_number', nullable: true)]
-    #[AssertPhoneNumber]
-    private ?PhoneNumber $phone = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 180, nullable: true)]
-    #[Assert\Length(max: 180)]
-    private ?string $email = null;
-
-    /**
-     * @var string|null
-     */
     #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Length(max: 50)]
-    private ?string $plus_code = null;
+    private ?string $plusCode = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(max: 20)]
-    private ?string $commercial_register_number = null;
+    private ?string $commercialRegisterNumber = null;
 
     /**
      * @var ArrayCollection|Collection
@@ -186,132 +145,18 @@ class Stores
     /**
      * @return string|null
      */
-    public function getAddress(): ?string
-    {
-        return $this->address ?: null;
-    }
-
-    /**
-     * @param string|null $address
-     * @return $this
-     */
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAdditionalAddress(): ?string
-    {
-        return $this->additional_address ?: null;
-    }
-
-    /**
-     * @param string|null $additional_address
-     * @return $this
-     */
-    public function setAdditionalAddress(?string $additional_address): self
-    {
-        $this->additional_address = $additional_address;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city ? ucfirst($this->city) : null;
-    }
-
-    /**
-     * @param string $city
-     * @return $this
-     */
-    public function setCity(string $city): self
-    {
-        $this->city = strtolower($city);
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getZipcode(): ?string
-    {
-        return $this->zipcode ? strtoupper($this->zipcode) : null;
-    }
-
-    /**
-     * @param string|null $zipcode
-     * @return $this
-     */
-    public function setZipcode(?string $zipcode): self
-    {
-        $this->zipcode = strtolower($zipcode);
-
-        return $this;
-    }
-
-    /**
-     * @return PhoneNumber|null
-     */
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param PhoneNumber|null $phone
-     * @return $this
-     */
-    public function setPhone(?PhoneNumber $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string|null $email
-     * @return $this
-     */
-    public function setEmail(?string $email): self
-    {
-        $this->email = strtolower($email);
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getPlusCode(): ?string
     {
-        return $this->plus_code;
+        return $this->plusCode;
     }
 
     /**
-     * @param string|null $plus_code
+     * @param string|null $plusCode
      * @return $this
      */
-    public function setPlusCode(?string $plus_code): self
+    public function setPlusCode(?string $plusCode): self
     {
-        $this->plus_code = $plus_code;
+        $this->plusCode = $plusCode;
 
         return $this;
     }
@@ -321,16 +166,16 @@ class Stores
      */
     public function getCommercialRegisterNumber(): ?string
     {
-        return $this->commercial_register_number;
+        return $this->commercialRegisterNumber;
     }
 
     /**
-     * @param string|null $commercial_register_number
+     * @param string|null $commercialRegisterNumber
      * @return $this
      */
-    public function setCommercialRegisterNumber(?string $commercial_register_number): self
+    public function setCommercialRegisterNumber(?string $commercialRegisterNumber): self
     {
-        $this->commercial_register_number = $commercial_register_number;
+        $this->commercialRegisterNumber = $commercialRegisterNumber;
 
         return $this;
     }

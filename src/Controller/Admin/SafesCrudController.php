@@ -2,9 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Controls;
 use App\Entity\ControlsCounters;
 use App\Entity\ControlsPeriods;
 use App\Entity\Safes;
+use App\Entity\SafesControls;
+use App\Entity\SafesMovements;
 use App\Entity\SafesMovementsTypes;
 use App\Form\Field\AssociationField;
 use App\Form\Field\MonthField;
@@ -102,7 +105,7 @@ class SafesCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.safes.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/safes')
             ->onlyOnDetail());
 
         return $assets;
@@ -158,12 +161,12 @@ class SafesCrudController extends AbstractCrudController
      */
     private function getControlsForDetail(Safes $safe, IntlDateFormatter $dateFormatter, array $controlsBuffer): array
     {
-        $controlsRepository = $this->container->get('doctrine')->getRepository('App\Entity\Controls');
-        $controls = $controlsRepository->findControlsForSafe(new DateTimeImmutable($safe->getMonth()), $safe->getStore(), $safe->getControlsPeriod());
+        $controlsRepository = $this->container->get('doctrine')->getRepository(Controls::class);
+        $controls = $controlsRepository->findControlsForSafe(new DateTimeImmutable($safe->getMonth()), $safe->getStore(), $safe->getPeriod());
 
         foreach ($controls as $control) {
             $controlsBuffer[$dateFormatter->format($control->getCreatedAt()->getTimestamp())]
-            [$control->getControlsCounter()->getId()][] = $control;
+            [$control->getCounter()->getId()][] = $control;
         }
 
         return $controlsBuffer;
@@ -179,13 +182,13 @@ class SafesCrudController extends AbstractCrudController
      */
     private function getSafesMovementsForDetail(Safes $safe, IntlDateFormatter $dateFormatter): array
     {
-        $safesMovementsRepository = $this->container->get('doctrine')->getRepository('App\Entity\SafesMovements');
+        $safesMovementsRepository = $this->container->get('doctrine')->getRepository(SafesMovements::class);
         $safesMovements = $safesMovementsRepository->findSafesMovementsForSafe(new DateTimeImmutable($safe->getMonth()), $safe->getStore());
         $safesMovementsBuffer = [];
 
         foreach ($safesMovements as $safesMovement) {
             $safesMovementsBuffer[$dateFormatter->format($safesMovement->getCreatedAt()->getTimestamp())]
-            [$safesMovement->getSafesMovementsType()->getLabel()][] = $safesMovement;
+            [$safesMovement->getMovementsType()->getLabel()][] = $safesMovement;
         }
 
         ksort($safesMovementsBuffer);
@@ -203,7 +206,7 @@ class SafesCrudController extends AbstractCrudController
      */
     private function getSafesControlsForDetail(Safes $safe, IntlDateFormatter $dateFormatter): array
     {
-        $safesControlsRepository = $this->container->get('doctrine')->getRepository('App\Entity\SafesControls');
+        $safesControlsRepository = $this->container->get('doctrine')->getRepository(SafesControls::class);
         $safesControls = $safesControlsRepository->findSafesControlsForSafe(new DateTimeImmutable($safe->getMonth()), $safe->getStore());
         $safesControlsBuffer = [];
 
@@ -227,9 +230,9 @@ class SafesCrudController extends AbstractCrudController
 
         yield $this->getStoresField();
 
-        yield AssociationField::new('controlsCounters', 'Forms.Labels.Counters');
-        yield AssociationField::new('controlsPeriod', 'Forms.Labels.Period');
-        yield AssociationField::new('safesMovementsTypes', 'Forms.Labels.Movements types');
+        yield AssociationField::new('counters', 'Forms.Labels.Counters');
+        yield AssociationField::new('period', 'Forms.Labels.Period');
+        yield AssociationField::new('movementsTypes', 'Forms.Labels.Movements types');
     }
 
     /**
@@ -291,18 +294,18 @@ class SafesCrudController extends AbstractCrudController
     {
         $safe = parent::createEntity($entityFqcn);
         $entityManager = $this->container->get('doctrine')->getManager();
-        $controlsPeriod = $entityManager->getRepository(ControlsPeriods::class)->find(2);
-        $controlsCounters = $entityManager->getRepository(ControlsCounters::class)->findAll();
-        $safesMovementsTypes = $entityManager->getRepository(SafesMovementsTypes::class)->findAll();
+        $period = $entityManager->getRepository(ControlsPeriods::class)->find(2);
+        $counters = $entityManager->getRepository(ControlsCounters::class)->findAll();
+        $movementsTypes = $entityManager->getRepository(SafesMovementsTypes::class)->findAll();
 
-        $safe->setControlsPeriod($controlsPeriod);
+        $safe->setPeriod($period);
 
-        foreach ($controlsCounters as $controlsCounter) {
-            $safe->addControlsCounters($controlsCounter);
+        foreach ($counters as $counter) {
+            $safe->addCounter($counter);
         }
 
-        foreach ($safesMovementsTypes as $safesMovementsType) {
-            $safe->addSafesMovementsTypes($safesMovementsType);
+        foreach ($movementsTypes as $movementsType) {
+            $safe->addMovementsType($movementsType);
         }
 
         return $safe;

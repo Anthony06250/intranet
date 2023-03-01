@@ -11,29 +11,29 @@ trait TimeStampTrait
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(nullable: false)]
-    private ?DateTimeImmutable $created_at = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(nullable: false)]
-    private ?DateTimeImmutable $updated_at = null;
+    private ?DateTimeImmutable $updatedAt = null;
 
     /**
      * @return DateTimeImmutable|null
      */
     public function getCreatedAt(): ?DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
-     * @param ?DateTimeImmutable $created_at
+     * @param ?DateTimeImmutable $createdAt
      * @return $this
      */
-    public function setCreatedAt(?DateTimeImmutable $created_at): self
+    public function setCreatedAt(?DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -43,16 +43,16 @@ trait TimeStampTrait
      */
     public function getUpdatedAt(): ?DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
-     * @param ?DateTimeImmutable $updated_at
+     * @param ?DateTimeImmutable $updatedAt
      * @return $this
      */
-    public function setUpdatedAt(?DateTimeImmutable $updated_at): self
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -63,8 +63,8 @@ trait TimeStampTrait
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = $this->created_at ?? new DateTimeImmutable();
-        $this->updated_at = new DateTimeImmutable();
+        $this->createdAt = $this->createdAt ?? new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     /**
@@ -73,6 +73,6 @@ trait TimeStampTrait
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

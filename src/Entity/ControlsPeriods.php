@@ -42,13 +42,13 @@ class ControlsPeriods
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'controlsPeriod', targetEntity: Controls::class)]
+    #[ORM\OneToMany(mappedBy: 'period', targetEntity: Controls::class)]
     private Collection|ArrayCollection $controls;
 
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'controlsPeriod', targetEntity: Safes::class)]
+    #[ORM\OneToMany(mappedBy: 'period', targetEntity: Safes::class)]
     private Collection|ArrayCollection $safes;
 
     public function __construct()
@@ -127,7 +127,7 @@ class ControlsPeriods
     {
         if (!$this->controls->contains($control)) {
             $this->controls->add($control);
-            $control->setControlsPeriod($this);
+            $control->setPeriod($this);
         }
 
         return $this;
@@ -141,8 +141,8 @@ class ControlsPeriods
     {
         if ($this->controls->removeElement($control)) {
             // set the owning side to null (unless already changed)
-            if ($control->getControlsPeriod() === $this) {
-                $control->setControlsPeriod(null);
+            if ($control->getPeriod() === $this) {
+                $control->setPeriod(null);
             }
         }
 
@@ -165,7 +165,7 @@ class ControlsPeriods
     {
         if (!$this->safes->contains($safe)) {
             $this->safes->add($safe);
-            $safe->setControlsPeriod($this);
+            $safe->setPeriod($this);
         }
 
         return $this;
@@ -179,8 +179,8 @@ class ControlsPeriods
     {
         if ($this->safes->removeElement($safe)) {
             // set the owning side to null (unless already changed)
-            if ($safe->getControlsPeriod() === $this) {
-                $safe->setControlsPeriod(null);
+            if ($safe->getPeriod() === $this) {
+                $safe->setPeriod(null);
             }
         }
 

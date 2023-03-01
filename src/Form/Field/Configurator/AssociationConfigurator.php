@@ -3,6 +3,7 @@
 namespace App\Form\Field\Configurator;
 
 use App\Form\Field\AssociationField;
+use App\Form\Field\CustomerField;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\PersistentCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -54,7 +55,7 @@ final class AssociationConfigurator implements FieldConfiguratorInterface
      */
     public function supports(FieldDto $field, EntityDto $entityDto): bool
     {
-        return AssociationField::class === $field->getFieldFqcn();
+        return in_array($field->getFieldFqcn(), [AssociationField::class, CustomerField::class], true);
     }
 
     /**

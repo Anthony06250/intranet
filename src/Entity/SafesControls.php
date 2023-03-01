@@ -45,7 +45,7 @@ class SafesControls
      * @var ArrayCollection|Collection
      */
     #[ORM\ManyToMany(targetEntity: ControlsCounters::class, inversedBy: 'safesControls')]
-    private Collection|ArrayCollection $controlsCounters;
+    private Collection|ArrayCollection $counters;
 
     /**
      * @var float|null
@@ -61,8 +61,8 @@ class SafesControls
 
     public function __construct()
     {
-        $this->controlsCounters = new ArrayCollection();
-        $this->created_at = new DateTimeImmutable();
+        $this->counters = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     /**
@@ -129,19 +129,19 @@ class SafesControls
     /**
      * @return Collection<int, ControlsCounters>
      */
-    public function getControlsCounters(): Collection
+    public function getCounters(): Collection
     {
-        return $this->controlsCounters;
+        return $this->counters;
     }
 
     /**
      * @param ControlsCounters $controlsCounter
      * @return $this
      */
-    public function addControlsCounters(ControlsCounters $controlsCounter): self
+    public function addCounter(ControlsCounters $controlsCounter): self
     {
-        if (!$this->controlsCounters->contains($controlsCounter)) {
-            $this->controlsCounters->add($controlsCounter);
+        if (!$this->counters->contains($controlsCounter)) {
+            $this->counters->add($controlsCounter);
         }
 
         return $this;
@@ -151,9 +151,9 @@ class SafesControls
      * @param ControlsCounters $controlsCounter
      * @return $this
      */
-    public function removeControlsCounters(ControlsCounters $controlsCounter): self
+    public function removeCounter(ControlsCounters $controlsCounter): self
     {
-        $this->controlsCounters->removeElement($controlsCounter);
+        $this->counters->removeElement($controlsCounter);
 
         return $this;
     }

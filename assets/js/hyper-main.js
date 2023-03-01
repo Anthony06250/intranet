@@ -68,9 +68,9 @@
         }
 
         // RTL Layout
-        if (document.getElementById('app-style').href.includes('rtl.min.css')) {
-            document.getElementsByTagName('html')[0].dir = "rtl";
-        }
+        // if (document.getElementById('app-style').href.includes('rtl.min.css')) {
+        //     document.getElementsByTagName('html')[0].dir = "rtl";
+        // }
     }
 
     // Portlet Widget (Card Reload, Collapse, and Delete)
@@ -308,9 +308,9 @@
     // Form Advance
     function initFormAdvance() {
         // Select2
-        if (jQuery().select2) {
-            $('[data-toggle="select2"]').select2();
-        }
+        // if (jQuery().select2) {
+        //     $('[data-toggle="select2"]').select2();
+        // }
 
         // Input Mask
         if (jQuery().mask) {

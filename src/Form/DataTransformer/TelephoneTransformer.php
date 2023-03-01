@@ -9,14 +9,14 @@ use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class TelephoneTransformer implements DataTransformerInterface
+readonly class TelephoneTransformer implements DataTransformerInterface
 {
     /**
      * @param RequestStack $request
      * @param PhoneNumberUtil $phoneNumberUtil
      */
-    public function __construct(private readonly RequestStack $request,
-                                private readonly PhoneNumberUtil $phoneNumberUtil)
+    public function __construct(private RequestStack    $request,
+                                private PhoneNumberUtil $phoneNumberUtil)
     {
     }
 

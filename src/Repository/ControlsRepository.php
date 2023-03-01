@@ -83,14 +83,14 @@ class ControlsRepository extends ServiceEntityRepository
         $to = $month->add(new DateInterval('P1M'))->format('Y-m-d') . ' 00:00:00';
 
         return $this->createQueryBuilder('c')
-            ->andWhere('c.controlsPeriod = :period')
+            ->andWhere('c.period = :period')
             ->setParameter('period', $controlsPeriods->getId())
-            ->andWhere('c.created_at BETWEEN :from AND :to')
+            ->andWhere('c.createdAt BETWEEN :from AND :to')
             ->setParameter('from', $from)
             ->setParameter('to', $to)
             ->andWhere('c.store = :store')
             ->setParameter('store', $store->getId())
-            ->orderBy('c.created_at', 'DESC')
+            ->orderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

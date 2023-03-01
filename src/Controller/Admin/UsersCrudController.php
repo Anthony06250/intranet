@@ -89,6 +89,7 @@ class UsersCrudController extends AbstractCrudController
             ->setRequired(($pageName === Action::NEW ?? false));
         yield AssociationField::new('civility', 'Forms.Labels.Civility')
             ->hideOnIndex()
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Civility')
             ->setColumns('col-2');
         yield TextField::new('firstname', 'Forms.Labels.Firstname')
             ->hideOnIndex()
@@ -98,7 +99,8 @@ class UsersCrudController extends AbstractCrudController
             ->setColumns('col-5');
         yield TextField::new('fullname', 'Forms.Labels.Fullname')
             ->onlyOnIndex();
-        yield AssociationField::new('usersPermission', 'Forms.Labels.Role')
+        yield AssociationField::new('permission', 'Forms.Labels.Role')
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Permission')
             ->setFormTypeOption('disabled', !$this->isGranted('ROLE_ADMIN'));
         yield AssociationField::new('stores', 'Menu.Stores')
             ->setFormTypeOption('disabled', !$this->isGranted('ROLE_ADMIN'));

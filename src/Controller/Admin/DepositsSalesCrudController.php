@@ -6,8 +6,10 @@ use App\DBAL\Types\DepositsSalesStatusesType;
 use App\Entity\DepositsSales;
 use App\Form\Field\AssociationField;
 use App\Form\Field\ChoiceField;
+use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
+use App\Form\Field\ProductField;
 use App\Form\Field\TextareaField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
@@ -26,7 +28,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -97,7 +98,7 @@ class DepositsSalesCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'DepositsSales.Edit deposit sales')
             ->setPageTitle(Crud::PAGE_DETAIL, 'DepositsSales.View deposit sales')
             ->setDefaultSort([
-                'created_at' => 'ASC'
+                'createdAt' => 'ASC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -113,7 +114,7 @@ class DepositsSalesCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.deposits-sales.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/deposits-sales')
             ->onlyOnForms());
 
         return $assets;
@@ -141,31 +142,19 @@ class DepositsSalesCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->renderAsEmbeddedForm(CustomersCrudController::class,
-                'embedded_fields',
-                'embedded_fields')
-            ->setFormTypeOption('row_attr', [
-                'accordion' => true,
-                'expanded' => true
-            ])
-            ->setRequired(false)
-            ->setColumns('col-12');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class,
-                'embedded_fields_without_barcode',
-                'embedded_fields_without_barcode')
-            ->setColumns('col-12');
+        yield CustomerField::new('customer', 'Forms.Labels.Customer');
+        yield ProductField::new('products', 'Forms.Labels.Products')
+            ->setEntryCrudPageName('embedded_fields_without_barcode');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(DepositsSalesStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
-        yield MoneyField::new('reserved_price', 'Forms.Labels.Reserved price')
+        yield MoneyField::new('reservedPrice', 'Forms.Labels.Reserved price')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ]);
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);

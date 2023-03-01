@@ -40,7 +40,7 @@ final class MoneyField implements FieldInterface
             ->setCustomOption(self::OPTION_NUM_DECIMALS, 2)
             ->setCustomOption(self::OPTION_STORED_AS_CENTS, true)
             // Add money field js file
-            ->addJsFiles(Asset::new('assets/js/field/field.money.js')
+            ->addWebpackEncoreEntries(Asset::new('field/money')
                 ->onlyOnForms());
     }
 

@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use IntlDateFormatter;
 use Locale;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InvoicesRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -43,7 +42,7 @@ class Invoices
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'invoices', cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'invoices', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection|ArrayCollection $products;
 
@@ -75,7 +74,7 @@ class Invoices
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'invoices')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'invoices')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 
@@ -90,13 +89,13 @@ class Invoices
      */
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AdvancesPaymentsMethods $paymentMethods = null;
+    private ?AdvancesPaymentsMethods $paymentsMethod = null;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->selledAt = new DateTimeImmutable();
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     /**
@@ -311,18 +310,18 @@ class Invoices
     /**
      * @return AdvancesPaymentsMethods|null
      */
-    public function getPaymentMethods(): ?AdvancesPaymentsMethods
+    public function getPaymentsMethod(): ?AdvancesPaymentsMethods
     {
-        return $this->paymentMethods;
+        return $this->paymentsMethod;
     }
 
     /**
-     * @param AdvancesPaymentsMethods|null $paymentMethods
+     * @param AdvancesPaymentsMethods|null $paymentsMethod
      * @return $this
      */
-    public function setPaymentMethods(?AdvancesPaymentsMethods $paymentMethods): self
+    public function setPaymentsMethod(?AdvancesPaymentsMethods $paymentsMethod): self
     {
-        $this->paymentMethods = $paymentMethods;
+        $this->paymentsMethod = $paymentsMethod;
 
         return $this;
     }

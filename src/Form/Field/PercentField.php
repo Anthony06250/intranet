@@ -40,7 +40,7 @@ final class PercentField implements FieldInterface
             ->setCustomOption(self::OPTION_SYMBOL, '%')
             ->setCustomOption(self::OPTION_ROUNDING_MODE, NumberFormatter::ROUND_HALFUP)
             // Add percent field js file
-            ->addJsFiles(Asset::new('assets/js/field/field.percent.js')
+            ->addWebpackEncoreEntries(Asset::new('field/percent')
                 ->onlyOnForms());
     }
 

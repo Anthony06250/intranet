@@ -37,7 +37,7 @@ class ControlsCounters
      * @var float|null
      */
     #[ORM\Column(nullable: true)]
-    private ?float $cash_fund = null;
+    private ?float $cashFund = null;
 
     /**
      * @var bool|null
@@ -48,19 +48,19 @@ class ControlsCounters
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'controlsCounter', targetEntity: Controls::class)]
+    #[ORM\OneToMany(mappedBy: 'counter', targetEntity: Controls::class)]
     private Collection|ArrayCollection $controls;
 
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Safes::class, mappedBy: 'controlsCounters')]
+    #[ORM\ManyToMany(targetEntity: Safes::class, mappedBy: 'counters')]
     private Collection|ArrayCollection $safes;
 
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: SafesControls::class, mappedBy: 'controlsCounters')]
+    #[ORM\ManyToMany(targetEntity: SafesControls::class, mappedBy: 'counters')]
     private Collection|ArrayCollection $safesControls;
 
     public function __construct()
@@ -110,16 +110,16 @@ class ControlsCounters
      */
     public function getCashFund(): ?float
     {
-        return $this->cash_fund;
+        return $this->cashFund;
     }
 
     /**
-     * @param float|null $cash_fund
+     * @param float|null $cashFund
      * @return $this
      */
-    public function setCashFund(?float $cash_fund): self
+    public function setCashFund(?float $cashFund): self
     {
-        $this->cash_fund = $cash_fund;
+        $this->cashFund = $cashFund;
 
         return $this;
     }
@@ -159,7 +159,7 @@ class ControlsCounters
     {
         if (!$this->controls->contains($control)) {
             $this->controls->add($control);
-            $control->setControlsCounter($this);
+            $control->setCounter($this);
         }
 
         return $this;
@@ -173,8 +173,8 @@ class ControlsCounters
     {
         if ($this->controls->removeElement($control)) {
             // set the owning side to null (unless already changed)
-            if ($control->getControlsCounter() === $this) {
-                $control->setControlsCounter(null);
+            if ($control->getCounter() === $this) {
+                $control->setCounter(null);
             }
         }
 
@@ -197,7 +197,7 @@ class ControlsCounters
     {
         if (!$this->safes->contains($safe)) {
             $this->safes->add($safe);
-            $safe->addControlsCounter($this);
+            $safe->addCounter($this);
         }
 
         return $this;
@@ -210,7 +210,7 @@ class ControlsCounters
     public function removeSafe(Safes $safe): self
     {
         if ($this->safes->removeElement($safe)) {
-            $safe->removeControlsCounter($this);
+            $safe->removeCounter($this);
         }
 
         return $this;
@@ -232,7 +232,7 @@ class ControlsCounters
     {
         if (!$this->safesControls->contains($safesControl)) {
             $this->safesControls->add($safesControl);
-            $safesControl->addControlsCounter($this);
+            $safesControl->addCounter($this);
         }
 
         return $this;
@@ -245,7 +245,7 @@ class ControlsCounters
     public function removeSafesControl(SafesControls $safesControl): self
     {
         if ($this->safesControls->removeElement($safesControl)) {
-            $safesControl->removeControlsCounter($this);
+            $safesControl->removeCounter($this);
         }
 
         return $this;

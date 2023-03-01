@@ -33,11 +33,17 @@ class AdvancesPaymentsMethods
     #[Assert\Length(min:2, max: 50)]
     private ?string $label = null;
 
-    #[ORM\OneToMany(mappedBy: 'advancesPaymentMethods', targetEntity: AdvancesPayments::class)]
-    private Collection $advancesPayments;
+    /**
+     * @var ArrayCollection|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'paymentsMethod', targetEntity: AdvancesPayments::class)]
+    private Collection|ArrayCollection $advancesPayments;
 
-    #[ORM\OneToMany(mappedBy: 'paymentMethods', targetEntity: Invoices::class)]
-    private Collection $invoices;
+    /**
+     * @var ArrayCollection|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'paymentsMethod', targetEntity: Invoices::class)]
+    private Collection|ArrayCollection $invoices;
 
     public function __construct()
     {
@@ -88,22 +94,30 @@ class AdvancesPaymentsMethods
         return $this->advancesPayments;
     }
 
+    /**
+     * @param AdvancesPayments $advancesPayment
+     * @return $this
+     */
     public function addAdvancesPayment(AdvancesPayments $advancesPayment): self
     {
         if (!$this->advancesPayments->contains($advancesPayment)) {
             $this->advancesPayments->add($advancesPayment);
-            $advancesPayment->setAdvancesPaymentMethods($this);
+            $advancesPayment->setPaymentsMethod($this);
         }
 
         return $this;
     }
 
+    /**
+     * @param AdvancesPayments $advancesPayment
+     * @return $this
+     */
     public function removeAdvancesPayment(AdvancesPayments $advancesPayment): self
     {
         if ($this->advancesPayments->removeElement($advancesPayment)) {
             // set the owning side to null (unless already changed)
-            if ($advancesPayment->getAdvancesPaymentMethods() === $this) {
-                $advancesPayment->setAdvancesPaymentMethods(null);
+            if ($advancesPayment->getPaymentsMethod() === $this) {
+                $advancesPayment->setPaymentsMethod(null);
             }
         }
 
@@ -118,22 +132,30 @@ class AdvancesPaymentsMethods
         return $this->invoices;
     }
 
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
     public function addInvoice(Invoices $invoice): self
     {
         if (!$this->invoices->contains($invoice)) {
             $this->invoices->add($invoice);
-            $invoice->setPaymentMethods($this);
+            $invoice->setPaymentsMethod($this);
         }
 
         return $this;
     }
 
+    /**
+     * @param Invoices $invoice
+     * @return $this
+     */
     public function removeInvoice(Invoices $invoice): self
     {
         if ($this->invoices->removeElement($invoice)) {
             // set the owning side to null (unless already changed)
-            if ($invoice->getPaymentMethods() === $this) {
-                $invoice->setPaymentMethods(null);
+            if ($invoice->getPaymentsMethod() === $this) {
+                $invoice->setPaymentsMethod(null);
             }
         }
 

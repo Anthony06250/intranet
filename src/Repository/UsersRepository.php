@@ -3,9 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Users;
-use App\Entity\UsersCivilities;
-use DateInterval;
-use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -105,7 +102,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
             ->addFieldResult('u', 'username', 'username')
             ->addFieldResult('u', 'firstname', 'firstname')
             ->addFieldResult('u', 'lastname', 'lastname')
-            ->addFieldResult('u', 'birthday_date', 'birthday_date')
+            ->addFieldResult('u', 'birthday_date', 'birthdayDate')
             ->addFieldResult('u', 'email', 'email');
         $sql = 'SELECT *
             FROM users u

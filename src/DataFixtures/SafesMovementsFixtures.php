@@ -29,7 +29,7 @@ class SafesMovementsFixtures extends Fixture implements DependentFixtureInterfac
 
             $object->setUser($this->getReference('user-' . mt_rand(1, count(UsersFixtures::USERS))))
                 ->setStore($this->getReference('store-' . mt_rand(1, count(StoresFixtures::STORES))))
-                ->setSafesMovementsType($this->getReference('SafesMovementsType-' . mt_rand(1, count(SafesMovementsTypesFixtures::TYPES))))
+                ->setMovementsType($this->getReference('SafesMovementsType-' . mt_rand(1, count(SafesMovementsTypesFixtures::TYPES))))
                 ->setAmount($faker->boolean() ? $amount : $amount * -1)
                 ->setComments($faker->realText())
                 ->setCreatedAt($date)

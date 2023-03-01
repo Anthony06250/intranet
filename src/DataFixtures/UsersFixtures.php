@@ -199,7 +199,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
                 ->setFirstname($user['firstname'])
                 ->setLastname($user['lastname'])
                 ->setPassword($this->hasher->hashPassword($object, $user['password']))
-                ->setUsersPermission($this->getReference('usersPermission-' . $user['permission']))
+                ->setPermission($this->getReference('usersPermission-' . $user['permission']))
                 ->setBirthdayDate($user['birthday'] ? new DateTime($user['birthday']) : null)
                 ->setHiringDate($user['hiring'] ? new DateTime($user['hiring']) : null)
                 ->setEmail($user['email'])

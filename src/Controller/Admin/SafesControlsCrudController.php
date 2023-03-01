@@ -88,7 +88,7 @@ class SafesControlsCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.safes-controls.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/safes-controls')
             ->onlyOnForms());
 
         return $assets;
@@ -118,7 +118,7 @@ class SafesControlsCrudController extends AbstractCrudController
         yield $this->getStoresField();
         yield $this->getControlsCountersField();
 
-        yield DateTimeField::new('created_at', 'Forms.Labels.Created at')
+        yield DateTimeField::new('createdAt', 'Forms.Labels.Created at')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
@@ -190,7 +190,7 @@ class SafesControlsCrudController extends AbstractCrudController
      */
     private function getControlsCountersField(): AssociationField
     {
-        $countersField = AssociationField::new('controlsCounters', 'Forms.Labels.Counter')
+        $countersField = AssociationField::new('counters', 'Forms.Labels.Counter')
             ->setFormTypeOptions([
                 'choice_attr' => function ($choice) {
                     return [
@@ -199,11 +199,11 @@ class SafesControlsCrudController extends AbstractCrudController
                 }
             ]);
 
-        if (!$this->isGranted(self::ROLE_NEW) || isset($_GET['controlsCounter'])) {
+        if (!$this->isGranted(self::ROLE_NEW) || isset($_GET['counter'])) {
             $countersField->setFormTypeOptions([
                 'query_builder' => function (ControlsCountersRepository $countersRepository) {
                     return $countersRepository->createQueryBuilder('c')
-                        ->where('c.id = ' . ($_GET['controlsCounter'] ?? '1'));
+                        ->where('c.id = ' . ($_GET['counter'] ?? '1'));
                 },
             ]);
         }
@@ -218,7 +218,9 @@ class SafesControlsCrudController extends AbstractCrudController
      */
     private function getCountsFields(string $name, float $calc): IntegerField
     {
-        return IntegerField::new($name, 'Forms.Labels.' . ucfirst(str_replace('_', ' ', $name)))
+        $label = ucfirst(strtolower(preg_replace(array('/(?<=[^A-Z])([A-Z])/', '/(?<=[^0-9])([0-9])/'), ' $0', $name)));
+
+        return IntegerField::new($name, 'Forms.Labels.' . $label)
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'min' => 0,
@@ -251,11 +253,11 @@ class SafesControlsCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn): mixed
     {
         $safesControl = parent::createEntity($entityFqcn);
-        $controlsCounterRepository = $this->container->get('doctrine')->getRepository(ControlsCounters::class);
-        $controlsCounters = $controlsCounterRepository->findAll();
+        $counterRepository = $this->container->get('doctrine')->getRepository(ControlsCounters::class);
+        $counters = $counterRepository->findAll();
 
-        foreach ($controlsCounters as $controlsCounter) {
-            $safesControl->addControlsCounters($controlsCounter);
+        foreach ($counters as $counter) {
+            $safesControl->addCounters($counter);
         }
 
         return $safesControl;

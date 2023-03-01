@@ -14,6 +14,8 @@ use libphonenumber\PhoneNumberUtil;
 
 class CustomersFixtures extends Fixture implements DependentFixtureInterface
 {
+    const NBR_CUSTOMERS_GENERATE = 10;
+
     /**
      * @param PhoneNumberUtil $phoneNumberUtil
      */
@@ -30,14 +32,14 @@ class CustomersFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        for ($count = 1; $count <= CustomersCrudController::MAX_RESULTS_REQUEST; $count++) {
+        for ($count = 1; $count <= self::NBR_CUSTOMERS_GENERATE; $count++) {
             $object = new Customers();
 
             $object->setCivility($this->getReference('usersCivility-' . $faker->numberBetween(1, count(UsersCivilitiesFixtures::CIVILITIES))))
                 ->setFirstname($faker->firstName)
                 ->setLastname($faker->lastName)
                 ->setBirthdayDate($faker->dateTime)
-                ->setCustomersTypesId($this->getReference('customersTypesId-' . $faker->numberBetween(1, count(CustomersTypesIdsFixtures::TYPES_ID))))
+                ->setTypesId($this->getReference('customersTypesId-' . $faker->numberBetween(1, count(CustomersTypesIdsFixtures::TYPES_ID))))
                 ->setIdNumber($faker->postcode . $faker->postcode)
                 ->setAddress($faker->address)
                 ->setCity($faker->city)

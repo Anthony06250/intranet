@@ -1,68 +1,67 @@
 //
 // toastr.scss
 //
-
 .jq-toast-single {
     text-align: left !important;
-    padding: 15px;
-    font-family: $font-family-base;
-    background-color: var(--#{$prefix}primary);
-    font-size: 13px;
-    line-height: 22px;
+    padding: 15px !important;
+    font-family: $font-family-base !important;
+    background-color: var(--#{$prefix}primary) !important;
+    font-size: 13px !important;
+    line-height: 22px !important;
 
     h2 {
-        font-family: $font-family-base;
+        font-family: $font-family-base !important;
     }
 
     a {
-        font-size: $font-size-base;
+        font-size: $font-size-base !important;
 
         &:hover {
-            color: $white;
+            color: $white !important;
         }
     }
 }
 
 .jq-has-icon {
-    padding: 10px;
+    padding: 10px !important;
 }
 
 
 .close-jq-toast-single {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    font-size: 20px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    background: var(--#{$prefix}gray-800);
-    color: var(--#{$prefix}gray-300);
-    border-radius: 50%;
-    text-align: center;
-    line-height: 32px;
+    position: absolute !important;
+    top: -12px !important;
+    right: -12px !important;
+    font-size: 20px !important;
+    cursor: pointer !important;
+    height: 32px !important;
+    width: 32px !important;
+    background: var(--#{$prefix}gray-800) !important;
+    color: var(--#{$prefix}gray-300) !important;
+    border-radius: 50% !important;
+    text-align: center !important;
+    line-height: 32px !important;
 }
 
 .jq-toast-loader {
-    height: 3px;
-    top: 0;
-    border-radius: 0;
+    height: 3px !important;
+    top: 0 !important;
+    border-radius: 0 !important;
 }
 
 @each $color,
 $value in $theme-colors {
     .jq-icon-#{$color} {
-        background-color: #{$value};
-        color: $white;
-        border-color: #{$value};
+        background-color: #{$value} !important;
+        color: $white !important;
+        border-color: #{$value} !important;
     }
 }
 
 // For error
 .jq-icon-error {
-    background-color: $danger;
-    color: $white;
-    border-color: $danger;
+    background-color: $danger !important;
+    color: $white !important;
+    border-color: $danger !important;
 }
 
 
@@ -70,5 +69,5 @@ $value in $theme-colors {
 .jq-icon-warning,
 .jq-icon-error,
 .jq-icon-success {
-    background-image: none;
+    background-image: none !important;
 }

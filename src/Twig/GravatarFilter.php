@@ -28,7 +28,7 @@ class GravatarFilter extends AbstractExtension
     {
         $queryParams = [];
 
-        // Size in pixels beetween 1 and 2048
+        // Size in pixels between 1 and 2048
         if (isset($params['size'])) {
             $queryParams['s'] = $params['size'];
         }

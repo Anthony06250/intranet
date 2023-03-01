@@ -26,7 +26,8 @@ jobs:
         run:
           sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
-
+  
+          rm -rf ./package-lock.json &&
           git fetch origin master --quiet &&
           echo -e "Git fetch ${BIGreen}[OK]" &&
 
@@ -38,7 +39,9 @@ jobs:
           sshpass -e ssh -o stricthostkeychecking=no -p 22 ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
 
+          rm -rf ./public/build/ &&
           rm -rf ./public/bundles/ &&
+          rm -rf ./public/node_modules/ &&
           rm -rf ./var/ &&
           rm -rf ./vendor/ &&
           export COMPOSER_ALLOW_SUPERUSER=1 &&
@@ -55,10 +58,7 @@ jobs:
           'BIGreen="\033[1;92m" && cd /var/www/intranet/html/ &&
 
           npm run build &> /dev/null &&
-          echo -e "Compile webpack assets ${BIGreen}[OK]" &&
-
-          gulp build --silent &&
-          echo -e "Compile gulp assets ${BIGreen}[OK]"'
+          echo -e "Compile webpack assets ${BIGreen}[OK]"'
 
       - name: Set server settings
         run:

@@ -1,4 +1,4 @@
-{% extends 'bundles/EasyAdminBundle/crud/' ~ app.request.get('crudAction') ~ '.html.twig' %}
+{% extends 'bundles/EasyAdminBundle/crud/' ~ pageName ~ '.html.twig' %}
 
 {%- block new_form -%}
     {% include 'bundles/EasyAdminBundle/crud/_form/_customers.html.twig' with {'form': new_form} %}

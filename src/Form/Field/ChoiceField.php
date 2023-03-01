@@ -51,13 +51,8 @@ final class ChoiceField implements FieldInterface
                 'class' => 'select2',
                 'data-toggle' => 'select2'
             ])
-            // Add select2 css file
-            ->addCssFiles(Asset::new('assets/vendor/select2/css/select2.min.css')
-                ->onlyOnForms())
             // Add select2 js file
-            ->addJsFiles(Asset::new('assets/vendor/select2/js/select2.min.js')
-                ->onlyOnForms())
-            ->addJsFiles(Asset::new('assets/js/field/field.select2.js')
+            ->addWebpackEncoreEntries(Asset::new('plugin/select2')
                 ->onlyOnForms());
     }
 

@@ -77,7 +77,7 @@ class SafesMovementsCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'SafesMovements.Edit safes movement')
             ->setPageTitle(Crud::PAGE_DETAIL, 'SafesMovements.View safes movement')
             ->setDefaultSort([
-                'created_at' => 'DESC'
+                'createdAt' => 'DESC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined();
@@ -106,8 +106,9 @@ class SafesMovementsCrudController extends AbstractCrudController
         yield $this->getStoresField();
 
         yield MoneyField::new('amount', 'Forms.Labels.Amount');
-        yield AssociationField::new('safesMovementsType', 'Forms.Labels.Movements type');
-        yield DateTimeField::new('created_at', 'Forms.Labels.Created at');
+        yield AssociationField::new('movementsType', 'Forms.Labels.Movements type')
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Movements type');
+        yield DateTimeField::new('createdAt', 'Forms.Labels.Created at');
         yield TextareaField::new('comments', 'Forms.Labels.Comments')
             ->setColumns('col-12');
     }

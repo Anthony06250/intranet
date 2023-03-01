@@ -1,0 +1,11 @@
+// Core files
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+@import "config/variables";
+@import "config/variables-custom";
+
+@import "~bootstrap/scss/bootstrap";
+
+// Plugins
+@import "custom/plugins/dompdf";

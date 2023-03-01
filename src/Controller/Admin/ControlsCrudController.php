@@ -36,21 +36,21 @@ class ControlsCrudController extends AbstractCrudController
      * Counts fields data
      */
     public const COUNTS_FIELDS_DATA = [
-        'one_cent' => 0.01,
-        'two_cents' => 0.02,
-        'five_cents' => 0.05,
-        'ten_cents' => 0.1,
-        'twenty_cents' => 0.2,
-        'fifty_cents' => 0.5,
-        'one_euro' => 1,
-        'two_euros' => 2,
-        'five_euros' => 5,
-        'ten_euros' => 10,
-        'twenty_euros' => 20,
-        'fifty_euros' => 50,
-        'one_hundred_euros' => 100,
-        'two_hundred_euros' => 200,
-        'five_hundred_euros' => 500
+        'oneCent' => 0.01,
+        'twoCents' => 0.02,
+        'fiveCents' => 0.05,
+        'tenCents' => 0.1,
+        'twentyCents' => 0.2,
+        'fiftyCents' => 0.5,
+        'oneEuro' => 1,
+        'twoEuros' => 2,
+        'fiveEuros' => 5,
+        'tenEuros' => 10,
+        'twentyEuros' => 20,
+        'fiftyEuros' => 50,
+        'oneHundredEuros' => 100,
+        'twoHundredEuros' => 200,
+        'fiveHundredEuros' => 500
     ];
 
     /**
@@ -103,7 +103,7 @@ class ControlsCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'Controls.Edit control')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Controls.View control')
             ->setDefaultSort([
-                'created_at' => 'DESC'
+                'createdAt' => 'DESC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -119,7 +119,7 @@ class ControlsCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.controls.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/controls')
             ->onlyOnForms());
 
         return $assets;
@@ -146,14 +146,14 @@ class ControlsCrudController extends AbstractCrudController
     {
         yield $this->getUsersField();
         yield $this->getStoresField();
-        yield $this->getControlsCountersField();
-        yield $this->getControlsPeriodsField();
+        yield $this->getCountersField();
+        yield $this->getPeriodsField();
 
-        yield DateTimeField::new('created_at', 'Forms.Labels.Created at')
+        yield DateTimeField::new('createdAt', 'Forms.Labels.Created at')
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
-        yield DateTimeField::new('updated_at', 'Forms.Labels.Updated at')
+        yield DateTimeField::new('updatedAt', 'Forms.Labels.Updated at')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => true
@@ -164,7 +164,7 @@ class ControlsCrudController extends AbstractCrudController
                 'required' => false,
                 'empty_data' => '0'
             ]);
-        yield MoneyField::new('cash_fund', 'Forms.Labels.Cash fund')
+        yield MoneyField::new('cashFund', 'Forms.Labels.Cash fund')
             ->hideOnIndex()
             ->setFormTypeOptions([
                 'required' => false,
@@ -250,9 +250,9 @@ class ControlsCrudController extends AbstractCrudController
     /**
      * @return AssociationField
      */
-    private function getControlsCountersField(): AssociationField
+    private function getCountersField(): AssociationField
     {
-        $countersField = AssociationField::new('controlsCounter', 'Forms.Labels.Counter')
+        $countersField = AssociationField::new('counter', 'Forms.Labels.Counter')
             ->setFormTypeOptions([
                 'choice_attr' => function ($choice) {
                     return [
@@ -262,11 +262,11 @@ class ControlsCrudController extends AbstractCrudController
                 }
             ]);
 
-        if (!$this->isGranted(self::ROLE_NEW_BUY) || isset($_GET['controlsCounter'])) {
+        if (!$this->isGranted(self::ROLE_NEW_BUY) || isset($_GET['counter'])) {
             $countersField->setFormTypeOptions([
                 'query_builder' => function (ControlsCountersRepository $countersRepository) {
                     return $countersRepository->createQueryBuilder('c')
-                        ->where('c.id = ' . ($_GET['controlsCounter'] ?? '1'));
+                        ->where('c.id = ' . ($_GET['counter'] ?? '1'));
                 },
             ]);
         }
@@ -277,9 +277,9 @@ class ControlsCrudController extends AbstractCrudController
     /**
      * @return AssociationField
      */
-    private function getControlsPeriodsField(): AssociationField
+    private function getPeriodsField(): AssociationField
     {
-        $periodsField = AssociationField::new('controlsPeriod', 'Forms.Labels.Period')
+        $periodsField = AssociationField::new('period', 'Forms.Labels.Period')
             ->setFormTypeOptions([
                 'choice_attr' => function ($choice) {
                     return [
@@ -288,11 +288,11 @@ class ControlsCrudController extends AbstractCrudController
                 }
             ]);
 
-        if (isset($_GET['controlsPeriod'])) {
+        if (isset($_GET['period'])) {
             $periodsField->setFormTypeOptions([
                 'query_builder' => function (ControlsPeriodsRepository $periodsRepository) {
                     return $periodsRepository->createQueryBuilder('p')
-                        ->where('p.id = ' . $_GET['controlsPeriod']);
+                        ->where('p.id = ' . $_GET['period']);
                 }
             ]);
         }
@@ -307,7 +307,9 @@ class ControlsCrudController extends AbstractCrudController
      */
     private function getCountsFields(string $name, float $calc): IntegerField
     {
-        return IntegerField::new($name, 'Forms.Labels.' . ucfirst(str_replace('_', ' ', $name)))
+        $label = ucfirst(strtolower(preg_replace(array('/(?<=[^A-Z])([A-Z])/', '/(?<=[^0-9])([0-9])/'), ' $0', $name)));
+
+        return IntegerField::new($name, 'Forms.Labels.' . $label)
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'min' => 0,

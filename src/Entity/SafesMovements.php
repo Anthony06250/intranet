@@ -49,7 +49,7 @@ class SafesMovements
      */
     #[ORM\ManyToOne(inversedBy: 'safesMovements')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?SafesMovementsTypes $safesMovementsType = null;
+    private ?SafesMovementsTypes $movementsType = null;
 
     /**
      * @var string|null
@@ -59,7 +59,7 @@ class SafesMovements
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     /**
@@ -75,7 +75,7 @@ class SafesMovements
             IntlDateFormatter::GREGORIAN,
         );
 
-        return $this->getStore() . ' - (' . $this->getSafesMovementsType() . ') - '
+        return $this->getStore() . ' - (' . $this->getMovementsType() . ') - '
             . $dateFormatter->format($this->getCreatedAt()->getTimestamp());
     }
 
@@ -147,18 +147,18 @@ class SafesMovements
     /**
      * @return SafesMovementsTypes|null
      */
-    public function getSafesMovementsType(): ?SafesMovementsTypes
+    public function getMovementsType(): ?SafesMovementsTypes
     {
-        return $this->safesMovementsType;
+        return $this->movementsType;
     }
 
     /**
-     * @param SafesMovementsTypes|null $safesMovementsType
+     * @param SafesMovementsTypes|null $movementsType
      * @return $this
      */
-    public function setSafesMovementsType(?SafesMovementsTypes $safesMovementsType): self
+    public function setMovementsType(?SafesMovementsTypes $movementsType): self
     {
-        $this->safesMovementsType = $safesMovementsType;
+        $this->movementsType = $movementsType;
 
         return $this;
     }

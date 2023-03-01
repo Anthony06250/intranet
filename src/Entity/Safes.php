@@ -47,26 +47,26 @@ class Safes
      */
     #[ORM\ManyToMany(targetEntity: ControlsCounters::class, inversedBy: 'safes')]
     #[ORM\JoinColumn(nullable: false)]
-    private Collection|ArrayCollection $controlsCounters;
+    private Collection|ArrayCollection $counters;
 
     /**
      * @var ControlsPeriods|null
      */
     #[ORM\ManyToOne(inversedBy: 'safes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ControlsPeriods $controlsPeriod = null;
+    private ?ControlsPeriods $period = null;
 
     /**
      * @var ArrayCollection|Collection
      */
     #[ORM\ManyToMany(targetEntity: SafesMovementsTypes::class, inversedBy: 'safes')]
     #[ORM\JoinColumn(nullable: false)]
-    private Collection|ArrayCollection $safesMovementsTypes;
+    private Collection|ArrayCollection $movementsTypes;
 
     public function __construct()
     {
-        $this->controlsCounters = new ArrayCollection();
-        $this->safesMovementsTypes = new ArrayCollection();
+        $this->counters = new ArrayCollection();
+        $this->movementsTypes = new ArrayCollection();
     }
 
     /**
@@ -154,31 +154,31 @@ class Safes
     /**
      * @return Collection<int, ControlsCounters>
      */
-    public function getControlsCounters(): Collection
+    public function getCounters(): Collection
     {
-        return $this->controlsCounters;
+        return $this->counters;
     }
 
     /**
-     * @param ControlsCounters $controlsCounter
+     * @param ControlsCounters $counter
      * @return $this
      */
-    public function addControlsCounters(ControlsCounters $controlsCounter): self
+    public function addCounter(ControlsCounters $counter): self
     {
-        if (!$this->controlsCounters->contains($controlsCounter)) {
-            $this->controlsCounters->add($controlsCounter);
+        if (!$this->counters->contains($counter)) {
+            $this->counters->add($counter);
         }
 
         return $this;
     }
 
     /**
-     * @param ControlsCounters $controlsCounter
+     * @param ControlsCounters $counter
      * @return $this
      */
-    public function removeControlsCounters(ControlsCounters $controlsCounter): self
+    public function removeCounter(ControlsCounters $counter): self
     {
-        $this->controlsCounters->removeElement($controlsCounter);
+        $this->counters->removeElement($counter);
 
         return $this;
     }
@@ -186,18 +186,18 @@ class Safes
     /**
      * @return ControlsPeriods|null
      */
-    public function getControlsPeriod(): ?ControlsPeriods
+    public function getPeriod(): ?ControlsPeriods
     {
-        return $this->controlsPeriod;
+        return $this->period;
     }
 
     /**
-     * @param ControlsPeriods|null $controlsPeriod
+     * @param ControlsPeriods|null $period
      * @return $this
      */
-    public function setControlsPeriod(?ControlsPeriods $controlsPeriod): self
+    public function setPeriod(?ControlsPeriods $period): self
     {
-        $this->controlsPeriod = $controlsPeriod;
+        $this->period = $period;
 
         return $this;
     }
@@ -205,31 +205,31 @@ class Safes
     /**
      * @return Collection<int, SafesMovementsTypes>
      */
-    public function getSafesMovementsTypes(): Collection
+    public function getMovementsTypes(): Collection
     {
-        return $this->safesMovementsTypes;
+        return $this->movementsTypes;
     }
 
     /**
-     * @param SafesMovementsTypes $safesMovementsType
+     * @param SafesMovementsTypes $movementsType
      * @return $this
      */
-    public function addSafesMovementsTypes(SafesMovementsTypes $safesMovementsType): self
+    public function addMovementsType(SafesMovementsTypes $movementsType): self
     {
-        if (!$this->safesMovementsTypes->contains($safesMovementsType)) {
-            $this->safesMovementsTypes->add($safesMovementsType);
+        if (!$this->movementsTypes->contains($movementsType)) {
+            $this->movementsTypes->add($movementsType);
         }
 
         return $this;
     }
 
     /**
-     * @param SafesMovementsTypes $safesMovementsType
+     * @param SafesMovementsTypes $movementsType
      * @return $this
      */
-    public function removeSafesMovementsTypes(SafesMovementsTypes $safesMovementsType): self
+    public function removeMovementsType(SafesMovementsTypes $movementsType): self
     {
-        $this->safesMovementsTypes->removeElement($safesMovementsType);
+        $this->movementsTypes->removeElement($movementsType);
 
         return $this;
     }

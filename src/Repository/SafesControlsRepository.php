@@ -81,12 +81,12 @@ class SafesControlsRepository extends ServiceEntityRepository
         $to = $month->add(new DateInterval('P1M'))->format('Y-m-d') . ' 00:00:00';
 
         return $this->createQueryBuilder('sc')
-            ->andWhere('sc.created_at BETWEEN :from AND :to')
+            ->andWhere('sc.createdAt BETWEEN :from AND :to')
             ->setParameter('from', $from)
             ->setParameter('to', $to)
             ->andWhere('sc.store = :store')
             ->setParameter('store', $store->getId())
-            ->orderBy('sc.created_at', 'DESC')
+            ->orderBy('sc.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

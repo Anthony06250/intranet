@@ -6,8 +6,10 @@ use App\DBAL\Types\AdvancesPaymentsStatusesType;
 use App\Entity\AdvancesPayments;
 use App\Form\Field\AssociationField;
 use App\Form\Field\ChoiceField;
+use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
+use App\Form\Field\ProductField;
 use App\Form\Field\TextareaField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
@@ -26,7 +28,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -113,7 +114,7 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.advances-payments.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/advances-payments')
             ->onlyOnForms());
 
         return $assets;
@@ -141,28 +142,18 @@ class AdvancesPaymentsCrudController extends AbstractCrudController
         yield $this->getUsersField();
         yield $this->getStoresField();
 
-        yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->renderAsEmbeddedForm(CustomersCrudController::class,
-                'embedded_fields_without_ids',
-                'embedded_fields_without_ids')
-            ->setFormTypeOption('row_attr', [
-                'accordion' => true,
-                'expanded' => true
-            ])
-            ->setRequired(false)
-            ->setColumns('col-12');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class)
-            ->setColumns('col-12');
+        yield CustomerField::new('customer', 'Forms.Labels.Customer');
+        yield ProductField::new('products', 'Forms.Labels.Products');
         yield ChoiceField::new('status', 'Forms.Labels.Status')
             ->setChoices(AdvancesPaymentsStatusesType::getChoices())
             ->setRequired(true)
             ->setFormTypeOption('placeholder', false);
         yield MoneyField::new('depositAmount', 'Forms.Labels.Deposit amount')
             ->hideOnIndex();
-        yield AssociationField::new('advancesPaymentMethods', 'Forms.Labels.Payment method')
-            ->hideOnIndex();
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield AssociationField::new('paymentsMethod', 'Forms.Labels.Payment method')
+            ->hideOnIndex()
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Payment method');
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')

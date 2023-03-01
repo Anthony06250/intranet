@@ -12,121 +12,121 @@ trait CurrenciesTrait
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $one_cent = null;
+    private ?int $oneCent = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $two_cents = null;
+    private ?int $twoCents = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $five_cents = null;
+    private ?int $fiveCents = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $ten_cents = null;
+    private ?int $tenCents = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $twenty_cents = null;
+    private ?int $twentyCents = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $fifty_cents = null;
+    private ?int $fiftyCents = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $one_euro = null;
+    private ?int $oneEuro = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $two_euros = null;
+    private ?int $twoEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $five_euros = null;
+    private ?int $fiveEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $ten_euros = null;
+    private ?int $tenEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $twenty_euros = null;
+    private ?int $twentyEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $fifty_euros = null;
+    private ?int $fiftyEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $one_hundred_euros = null;
+    private ?int $oneHundredEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $two_hundred_euros = null;
+    private ?int $twoHundredEuros = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero]
-    private ?int $five_hundred_euros = null;
+    private ?int $fiveHundredEuros = null;
 
     /**
      * @return int|null
      */
     public function getOneCent(): ?int
     {
-        return $this->one_cent;
+        return $this->oneCent;
     }
 
     /**
-     * @param int|null $one_cent
+     * @param int|null $oneCent
      * @return $this
      */
-    public function setOneCent(?int $one_cent): self
+    public function setOneCent(?int $oneCent): self
     {
-        $this->one_cent = $one_cent;
+        $this->oneCent = $oneCent;
 
         return $this;
     }
@@ -136,16 +136,16 @@ trait CurrenciesTrait
      */
     public function getTwoCents(): ?int
     {
-        return $this->two_cents;
+        return $this->twoCents;
     }
 
     /**
-     * @param int|null $two_cents
+     * @param int|null $twoCents
      * @return $this
      */
-    public function setTwoCents(?int $two_cents): self
+    public function setTwoCents(?int $twoCents): self
     {
-        $this->two_cents = $two_cents;
+        $this->twoCents = $twoCents;
 
         return $this;
     }
@@ -155,16 +155,16 @@ trait CurrenciesTrait
      */
     public function getFiveCents(): ?int
     {
-        return $this->five_cents;
+        return $this->fiveCents;
     }
 
     /**
-     * @param int|null $five_cents
+     * @param int|null $fiveCents
      * @return $this
      */
-    public function setFiveCents(?int $five_cents): self
+    public function setFiveCents(?int $fiveCents): self
     {
-        $this->five_cents = $five_cents;
+        $this->fiveCents = $fiveCents;
 
         return $this;
     }
@@ -174,16 +174,16 @@ trait CurrenciesTrait
      */
     public function getTenCents(): ?int
     {
-        return $this->ten_cents;
+        return $this->tenCents;
     }
 
     /**
-     * @param int|null $ten_cents
+     * @param int|null $tenCents
      * @return $this
      */
-    public function setTenCents(?int $ten_cents): self
+    public function setTenCents(?int $tenCents): self
     {
-        $this->ten_cents = $ten_cents;
+        $this->tenCents = $tenCents;
 
         return $this;
     }
@@ -193,16 +193,16 @@ trait CurrenciesTrait
      */
     public function getTwentyCents(): ?int
     {
-        return $this->twenty_cents;
+        return $this->twentyCents;
     }
 
     /**
-     * @param int|null $twenty_cents
+     * @param int|null $twentyCents
      * @return $this
      */
-    public function setTwentyCents(?int $twenty_cents): self
+    public function setTwentyCents(?int $twentyCents): self
     {
-        $this->twenty_cents = $twenty_cents;
+        $this->twentyCents = $twentyCents;
 
         return $this;
     }
@@ -212,16 +212,16 @@ trait CurrenciesTrait
      */
     public function getFiftyCents(): ?int
     {
-        return $this->fifty_cents;
+        return $this->fiftyCents;
     }
 
     /**
-     * @param int|null $fifty_cents
+     * @param int|null $fiftyCents
      * @return $this
      */
-    public function setFiftyCents(?int $fifty_cents): self
+    public function setFiftyCents(?int $fiftyCents): self
     {
-        $this->fifty_cents = $fifty_cents;
+        $this->fiftyCents = $fiftyCents;
 
         return $this;
     }
@@ -231,16 +231,16 @@ trait CurrenciesTrait
      */
     public function getOneEuro(): ?int
     {
-        return $this->one_euro;
+        return $this->oneEuro;
     }
 
     /**
-     * @param int|null $one_euro
+     * @param int|null $oneEuro
      * @return $this
      */
-    public function setOneEuro(?int $one_euro): self
+    public function setOneEuro(?int $oneEuro): self
     {
-        $this->one_euro = $one_euro;
+        $this->oneEuro = $oneEuro;
 
         return $this;
     }
@@ -250,16 +250,16 @@ trait CurrenciesTrait
      */
     public function getTwoEuros(): ?int
     {
-        return $this->two_euros;
+        return $this->twoEuros;
     }
 
     /**
-     * @param int|null $two_euros
+     * @param int|null $twoEuros
      * @return $this
      */
-    public function setTwoEuros(?int $two_euros): self
+    public function setTwoEuros(?int $twoEuros): self
     {
-        $this->two_euros = $two_euros;
+        $this->twoEuros = $twoEuros;
 
         return $this;
     }
@@ -269,16 +269,16 @@ trait CurrenciesTrait
      */
     public function getFiveEuros(): ?int
     {
-        return $this->five_euros;
+        return $this->fiveEuros;
     }
 
     /**
-     * @param int|null $five_euros
+     * @param int|null $fiveEuros
      * @return $this
      */
-    public function setFiveEuros(?int $five_euros): self
+    public function setFiveEuros(?int $fiveEuros): self
     {
-        $this->five_euros = $five_euros;
+        $this->fiveEuros = $fiveEuros;
 
         return $this;
     }
@@ -288,16 +288,16 @@ trait CurrenciesTrait
      */
     public function getTenEuros(): ?int
     {
-        return $this->ten_euros;
+        return $this->tenEuros;
     }
 
     /**
-     * @param int|null $ten_euros
+     * @param int|null $tenEuros
      * @return $this
      */
-    public function setTenEuros(?int $ten_euros): self
+    public function setTenEuros(?int $tenEuros): self
     {
-        $this->ten_euros = $ten_euros;
+        $this->tenEuros = $tenEuros;
 
         return $this;
     }
@@ -307,16 +307,16 @@ trait CurrenciesTrait
      */
     public function getTwentyEuros(): ?int
     {
-        return $this->twenty_euros;
+        return $this->twentyEuros;
     }
 
     /**
-     * @param int|null $twenty_euros
+     * @param int|null $twentyEuros
      * @return $this
      */
-    public function setTwentyEuros(?int $twenty_euros): self
+    public function setTwentyEuros(?int $twentyEuros): self
     {
-        $this->twenty_euros = $twenty_euros;
+        $this->twentyEuros = $twentyEuros;
 
         return $this;
     }
@@ -326,16 +326,16 @@ trait CurrenciesTrait
      */
     public function getFiftyEuros(): ?int
     {
-        return $this->fifty_euros;
+        return $this->fiftyEuros;
     }
 
     /**
-     * @param int|null $fifty_euros
+     * @param int|null $fiftyEuros
      * @return $this
      */
-    public function setFiftyEuros(?int $fifty_euros): self
+    public function setFiftyEuros(?int $fiftyEuros): self
     {
-        $this->fifty_euros = $fifty_euros;
+        $this->fiftyEuros = $fiftyEuros;
 
         return $this;
     }
@@ -345,16 +345,16 @@ trait CurrenciesTrait
      */
     public function getOneHundredEuros(): ?int
     {
-        return $this->one_hundred_euros;
+        return $this->oneHundredEuros;
     }
 
     /**
-     * @param int|null $one_hundred_euros
+     * @param int|null $oneHundredEuros
      * @return $this
      */
-    public function setOneHundredEuros(?int $one_hundred_euros): self
+    public function setOneHundredEuros(?int $oneHundredEuros): self
     {
-        $this->one_hundred_euros = $one_hundred_euros;
+        $this->oneHundredEuros = $oneHundredEuros;
 
         return $this;
     }
@@ -364,16 +364,16 @@ trait CurrenciesTrait
      */
     public function getTwoHundredEuros(): ?int
     {
-        return $this->two_hundred_euros;
+        return $this->twoHundredEuros;
     }
 
     /**
-     * @param int|null $two_hundred_euros
+     * @param int|null $twoHundredEuros
      * @return $this
      */
-    public function setTwoHundredEuros(?int $two_hundred_euros): self
+    public function setTwoHundredEuros(?int $twoHundredEuros): self
     {
-        $this->two_hundred_euros = $two_hundred_euros;
+        $this->twoHundredEuros = $twoHundredEuros;
 
         return $this;
     }
@@ -383,16 +383,16 @@ trait CurrenciesTrait
      */
     public function getFiveHundredEuros(): ?int
     {
-        return $this->five_hundred_euros;
+        return $this->fiveHundredEuros;
     }
 
     /**
-     * @param int|null $five_hundred_euros
+     * @param int|null $fiveHundredEuros
      * @return $this
      */
-    public function setFiveHundredEuros(?int $five_hundred_euros): self
+    public function setFiveHundredEuros(?int $fiveHundredEuros): self
     {
-        $this->five_hundred_euros = $five_hundred_euros;
+        $this->fiveHundredEuros = $fiveHundredEuros;
 
         return $this;
     }

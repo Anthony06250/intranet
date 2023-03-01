@@ -53,7 +53,7 @@ class DashboardController extends AbstractDashboardController
     /**
      * Dashboard page settings
      */
-    public const DAYS_UNTIL_BIRTHDAYS = 90;
+    public const DAYS_UNTIL_BIRTHDAYS = 60;
 
     /**
      * @param UsersRepository $usersRepository
@@ -65,6 +65,8 @@ class DashboardController extends AbstractDashboardController
      * @param SafesControlsRepository $safesControlsRepository
      * @param BuybacksRepository $buybacksRepository
      * @param DepositsSalesRepository $depositsSalesRepository
+     * @param AdvancesPaymentsRepository $advancesPaymentsRepository
+     * @param InvoicesRepository $invoicesRepository
      */
     public function __construct(private readonly UsersRepository $usersRepository,
                                 private readonly CustomersRepository $customersRepository,
@@ -127,7 +129,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->SetFaviconPath('assets/images/favicon.png');
+            ->SetFaviconPath('build/images/favicon.png');
     }
 
     /**
@@ -237,23 +239,23 @@ class DashboardController extends AbstractDashboardController
                     ->setAction(Crud::PAGE_INDEX),
                 MenuItem::section(),
                 MenuItem::linkToCrud('Controls.Create sell morning control', null, Controls::class)
-                    ->setQueryParameter('controlsCounter', '1')
-                    ->setQueryParameter('controlsPeriod', '1')
+                    ->setQueryParameter('counter', '1')
+                    ->setQueryParameter('period', '1')
                     ->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud('Controls.Create sell evening control', null, Controls::class)
-                    ->setQueryParameter('controlsCounter', '1')
-                    ->setQueryParameter('controlsPeriod', '2')
+                    ->setQueryParameter('counter', '1')
+                    ->setQueryParameter('period', '2')
                     ->setAction(Crud::PAGE_NEW),
                 MenuItem::section()
                     ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
                 MenuItem::linkToCrud('Controls.Create buy morning control', null, Controls::class)
-                    ->setQueryParameter('controlsCounter', '2')
-                    ->setQueryParameter('controlsPeriod', '1')
+                    ->setQueryParameter('counter', '2')
+                    ->setQueryParameter('period', '1')
                     ->setAction(Crud::PAGE_NEW)
                     ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
                 MenuItem::linkToCrud('Controls.Create buy evening control', null, Controls::class)
-                    ->setQueryParameter('controlsCounter', '2')
-                    ->setQueryParameter('controlsPeriod', '2')
+                    ->setQueryParameter('counter', '2')
+                    ->setQueryParameter('period', '2')
                     ->setAction(Crud::PAGE_NEW)
                     ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
                 MenuItem::section()

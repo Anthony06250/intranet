@@ -55,6 +55,11 @@ Customers:
   Create customer: Créer un client
   Edit customer: Éditer un client
   View customer: Voir un client
+  Delete customer: Supprimer le client
+  Existing modal:
+    Title: Cet utilisateur existe déjà !
+    Text: L'utilisateur __FULLNAME__ est déjà présent dans la liste des clients.<br>Que souhaitez-vous faire ?
+    Select button: Utiliser l'utilisateur existant
 
 CustomersTypesIds:
   CustomersTypesId: un type de pièce d'identité
@@ -63,6 +68,10 @@ CustomersTypesIds:
   Create customers types id: Créer un type de pièce d'identité
   Edit customers types id: Éditer un type de pièce d'identité
   View customers types id: Voir un type de pièce d'identité
+
+Products:
+  Add product: Ajouter un produit
+  Remove product: Supprimer un produit
 
 Stores:
   Store: un magasin
@@ -287,9 +296,12 @@ Forms:
   Placeholders:
     Username: Entrer votre nom d'utilisateur
     Password: Entrer votre mot de passe
+    Permission: Choisissez une permission
     Civility: Choisissez une civilité
     Customers: Choisissez un client
     Type id: Choisissez un type de pièce d'identité
+    Movements type: Choisissez un type de mouvement
+    Payment method: Choisissez un mode de paiement
   Feedbacks:
     Username: Veuillez entrer un nom d'utilisateur.
     Password: Veuillez entrer un mot de passe.
@@ -308,98 +320,98 @@ Flashes:
     Success: Succès
     Error: Erreur
   Login:
-    Login: Bienvenue %username% !</br> Vous êtes maintenant connecté.
-    Logout: Au revoir %username% !</br> Vous êtes maintenant déconnecté.
+    Login: Bienvenue %username% !<br>Vous êtes maintenant connecté.
+    Logout: Au revoir %username% !<br>Vous êtes maintenant déconnecté.
   Users:
-    Create: L'utilisateur \"%instance%\" a été créé.
-    Update: L'utilisateur \"%instance%\" a été mis à jour.
-    Delete: L'utilisateur \"%instance%\" a été supprimé.
-    Inactive: L'utilisateur \"%user%\" est inactif.
+    Create: L'utilisateur "%instance%" a été créé.
+    Update: L'utilisateur "%instance%" a été mis à jour.
+    Delete: L'utilisateur "%instance%" a été supprimé.
+    Inactive: L'utilisateur "%user%" est inactif.
   UsersPermissions:
-    Create: L'autorisation \"%instance%\" a été créé.
-    Update: L'autorisation \"%instance%\" a été mis à jour.
-    Delete: L'autorisation \"%instance%\" a été supprimé.
+    Create: L'autorisation "%instance%" a été créé.
+    Update: L'autorisation "%instance%" a été mis à jour.
+    Delete: L'autorisation "%instance%" a été supprimé.
   Customers:
-    Create: Le client \"%instance%\" a été créé.
-    Update: Le client \"%instance%\" a été mis à jour.
-    Delete: Le client \"%instance%\" a été supprimé.
+    Create: Le client "%instance%" a été créé.
+    Update: Le client "%instance%" a été mis à jour.
+    Delete: Le client "%instance%" a été supprimé.
   CustomersTypesIds:
-    Create: Le type de pièce d'identité \"%instance%\" a été créé.
-    Update: Le type de pièce d'identité \"%instance%\" a été mis à jour.
-    Delete: Le type de pièce d'identité \"%instance%\" a été supprimé.
+    Create: Le type de pièce d'identité "%instance%" a été créé.
+    Update: Le type de pièce d'identité "%instance%" a été mis à jour.
+    Delete: Le type de pièce d'identité "%instance%" a été supprimé.
   Stores:
-    Create: Le magasin de \"%instance%\" a été créé.
-    Update: Le magasin de \"%instance%\" a été mis à jour.
-    Delete: Le magasin de \"%instance%\" a été supprimé.
+    Create: Le magasin de "%instance%" a été créé.
+    Update: Le magasin de "%instance%" a été mis à jour.
+    Delete: Le magasin de "%instance%" a été supprimé.
   ControlsCounters:
-    Create: Le comptoir \"%instance%\" a été créé.
-    Update: Le comptoir \"%instance%\" a été mis à jour.
-    Delete: Le comptoir \"%instance%\" a été supprimé.
+    Create: Le comptoir "%instance%" a été créé.
+    Update: Le comptoir "%instance%" a été mis à jour.
+    Delete: Le comptoir "%instance%" a été supprimé.
   ControlsPeriods:
-    Create: La période \"%instance%\" a été créé.
-    Update: La période \"%instance%\" a été mis à jour.
-    Delete: La période \"%instance%\" a été supprimé.
+    Create: La période "%instance%" a été créé.
+    Update: La période "%instance%" a été mis à jour.
+    Delete: La période "%instance%" a été supprimé.
   Controls:
-    Create: Le contrôle \"%instance%\" a été créé.
-    Update: Le contrôle \"%instance%\" a été mis à jour.
-    Delete: Le contrôle \"%instance%\" a été supprimé.
+    Create: Le contrôle "%instance%" a été créé.
+    Update: Le contrôle "%instance%" a été mis à jour.
+    Delete: Le contrôle "%instance%" a été supprimé.
   Safes:
-    Create: Le coffre de \"%instance%\" a été créé.
-    Update: Le coffre de \"%instance%\" a été mis à jour.
-    Delete: Le coffre de \"%instance%\" a été supprimé.
+    Create: Le coffre de "%instance%" a été créé.
+    Update: Le coffre de "%instance%" a été mis à jour.
+    Delete: Le coffre de "%instance%" a été supprimé.
   SafesMovements:
-    Create: Le mouvement du coffre de \"%instance%\" a été créé.
-    Update: Le mouvement du coffre de \"%instance%\" a été mis à jour.
-    Delete: Le mouvement du coffre de \"%instance%\" a été supprimé.
+    Create: Le mouvement du coffre de "%instance%" a été créé.
+    Update: Le mouvement du coffre de "%instance%" a été mis à jour.
+    Delete: Le mouvement du coffre de "%instance%" a été supprimé.
   SafesMovementsTypes:
-    Create: Le type de mouvment \"%instance%\" a été créé.
-    Update: Le type de mouvment \"%instance%\" a été mis à jour.
-    Delete: Le type de mouvment \"%instance%\" a été supprimé.
+    Create: Le type de mouvment "%instance%" a été créé.
+    Update: Le type de mouvment "%instance%" a été mis à jour.
+    Delete: Le type de mouvment "%instance%" a été supprimé.
   SafesControls:
-    Create: Le contrôle du coffre de \"%instance%\" a été créé.
-    Update: Le contrôle du coffre de \"%instance%\" a été mis à jour.
-    Delete: Le contrôle du coffre de \"%instance%\" a été supprimé.
+    Create: Le contrôle du coffre de "%instance%" a été créé.
+    Update: Le contrôle du coffre de "%instance%" a été mis à jour.
+    Delete: Le contrôle du coffre de "%instance%" a été supprimé.
   Buybacks:
-    Create: Le buyback \"%instance%\" a été créé.
-    Update: Le buyback \"%instance%\" a été mis à jour.
-    Delete: Le buyback \"%instance%\" a été supprimé.
-    Recover: Le buyback \"%instance%\" a été récupéré.
-    Expire: Le buyback \"%instance%\" a expiré.
+    Create: Le buyback "%instance%" a été créé.
+    Update: Le buyback "%instance%" a été mis à jour.
+    Delete: Le buyback "%instance%" a été supprimé.
+    Recover: Le buyback "%instance%" a été récupéré.
+    Expire: Le buyback "%instance%" a expiré.
   DepositsSales:
-    Create: Le dépôt-vente \"%instance%\" a été créé.
-    Update: Le dépôt-vente \"%instance%\" a été mis à jour.
-    Delete: Le dépôt-vente \"%instance%\" a été supprimé.
-    Recover: Le dépôt-vente \"%instance%\" a été récupéré.
-    Sold: Le dépôt-vente \"%instance%\" a été vendu.
-    Paid: Le dépôt-vente \"%instance%\" a été payé.
+    Create: Le dépôt-vente "%instance%" a été créé.
+    Update: Le dépôt-vente "%instance%" a été mis à jour.
+    Delete: Le dépôt-vente "%instance%" a été supprimé.
+    Recover: Le dépôt-vente "%instance%" a été récupéré.
+    Sold: Le dépôt-vente "%instance%" a été vendu.
+    Paid: Le dépôt-vente "%instance%" a été payé.
   AdvancesPayments:
-    Create: L\'acompte \"%instance%\" a été créé.
-    Update: L\'acompte \"%instance%\" a été mis à jour.
-    Delete: L\'acompte \"%instance%\" a été supprimé.
-    Use: L\'acompte \"%instance%\" a été utilisé.
-    Expire: L\'acompte \"%instance%\" a expiré.
+    Create: L'acompte "%instance%" a été créé.
+    Update: L'acompte "%instance%" a été mis à jour.
+    Delete: L'acompte "%instance%" a été supprimé.
+    Use: L'acompte "%instance%" a été utilisé.
+    Expire: L'acompte "%instance%" a expiré.
   AdvancesPaymentsMethods:
-    Create: Le mode de paiement \"%instance%\" a été créé.
-    Update: Le mode de paiement \"%instance%\" a été mis à jour.
-    Delete: Le mode de paiement \"%instance%\" a été supprimé.
+    Create: Le mode de paiement "%instance%" a été créé.
+    Update: Le mode de paiement "%instance%" a été mis à jour.
+    Delete: Le mode de paiement "%instance%" a été supprimé.
   Invoices:
-    Create: La facture \"%instance%\" a été créé.
-    Update: La facture \"%instance%\" a été mis à jour.
-    Delete: La facture \"%instance%\" a été supprimé.
+    Create: La facture "%instance%" a été créé.
+    Update: La facture "%instance%" a été mis à jour.
+    Delete: La facture "%instance%" a été supprimé.
   InvoicesTaxesRates:
-    Create: Le taux \"%instance%\" a été créé.
-    Update: Le taux \"%instance%\" a été mis à jour.
-    Delete: Le taux \"%instance%\" a été supprimé.
+    Create: Le taux "%instance%" a été créé.
+    Update: Le taux "%instance%" a été mis à jour.
+    Delete: Le taux "%instance%" a été supprimé.
 
 Errors:
   Title: Erreur %error_code%
   Return: Retour à l'accueil
   404:
     Label: Page non trouvée
-    Message: Il semble que vous ayez pris un mauvais virage.</br> Ne vous inquiétez pas... cela arrive aux meilleurs d'entre nous.</br> Voici une petite astuce qui pourrait vous aider à vous remettre sur la bonne voie.
+    Message: Il semble que vous ayez pris un mauvais virage.<br>Ne vous inquiétez pas... cela arrive aux meilleurs d'entre nous.<br>Voici une petite astuce qui pourrait vous aider à vous remettre sur la bonne voie.
   500:
     Label: Erreur interne du serveur
-    Message: Pourquoi ne pas essayer de rafraîchir votre page ?</br> Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.
+    Message: Pourquoi ne pas essayer de rafraîchir votre page ?<br>Ou vous pouvez contacter <a href="%url%" class="text-muted fw-bold">le support</a>.
 
 Pdf:
   Customer copy: Exemplaire client

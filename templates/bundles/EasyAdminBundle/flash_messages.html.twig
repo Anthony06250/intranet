@@ -7,29 +7,14 @@
 {% if app.session is not null and app.session.started %}
     {% set flash_messages = app.session.flashbag.all %}
     {% if flash_messages | length > 0 %}
-        <script>
-            !function (c) {
-                'use strict';
-
-                function t() {}
-                t.prototype.send = function (t, o, i, e, n, a, s, r) {
-                    t = {heading: t, text: o, position: i, loaderBg: e, icon: n, hideAfter: a = a || 3e3, stack: s = s || 1};
-                    t.showHideTransition = r || "fade", c.toast().reset("all"), c.toast(t)
-                }, c.NotificationApp = new t, c.NotificationApp.Constructor = t
-            }(window.jQuery);
-
+        <section id="flash-message" class="d-none">
             {% for label, messages in flash_messages %}
-                {% if label == 'danger' %}
-                    {% set label = 'error' %}
-                {% endif %}
                 {% for message in messages %}
-                    $.NotificationApp.send("{{ ('Flashes.Title.' ~ (label | capitalize)) | trans({}, 'messages') }}",
-                        '{{ message | trans | raw }}',
-                        'top-right',
-                        'rgba(0,0,0,0.2)',
-                        '{{ label }}');
+                    <article class="flash-message-item" data-title="{{ ('Flashes.Title.' ~ (label | capitalize)) | trans({}, 'messages') }}" data-status="{{ label }}">
+                        {{ message | trans }}
+                    </article>
                 {% endfor %}
             {% endfor %}
-        </script>
+        </section>
     {% endif %}
 {% endif %}

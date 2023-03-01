@@ -36,13 +36,13 @@ class SafesMovementsTypes
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'safesMovementsType', targetEntity: SafesMovements::class)]
+    #[ORM\OneToMany(mappedBy: 'movementsType', targetEntity: SafesMovements::class)]
     private Collection|ArrayCollection $safesMovements;
 
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Safes::class, mappedBy: 'safesMovementsTypes')]
+    #[ORM\ManyToMany(targetEntity: Safes::class, mappedBy: 'movementsTypes')]
     private Collection|ArrayCollection $safes;
 
     public function __construct()
@@ -102,7 +102,7 @@ class SafesMovementsTypes
     {
         if (!$this->safesMovements->contains($safesMovement)) {
             $this->safesMovements->add($safesMovement);
-            $safesMovement->setSafesMovementsType($this);
+            $safesMovement->setMovementsType($this);
         }
 
         return $this;
@@ -116,8 +116,8 @@ class SafesMovementsTypes
     {
         if ($this->safesMovements->removeElement($safesMovement)) {
             // set the owning side to null (unless already changed)
-            if ($safesMovement->getSafesMovementsType() === $this) {
-                $safesMovement->setSafesMovementsType(null);
+            if ($safesMovement->getMovementsType() === $this) {
+                $safesMovement->setMovementsType(null);
             }
         }
 
@@ -140,7 +140,7 @@ class SafesMovementsTypes
     {
         if (!$this->safes->contains($safe)) {
             $this->safes->add($safe);
-            $safe->addSafesMovementsType($this);
+            $safe->addMovementsType($this);
         }
 
         return $this;
@@ -153,7 +153,7 @@ class SafesMovementsTypes
     public function removeSafe(Safes $safe): self
     {
         if ($this->safes->removeElement($safe)) {
-            $safe->removeSafesMovementsType($this);
+            $safe->removeMovementsType($this);
         }
 
         return $this;

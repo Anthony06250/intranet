@@ -81,12 +81,12 @@ class SafesMovementsRepository extends ServiceEntityRepository
         $to = $month->add(new DateInterval('P1M'))->format('Y-m-d') . ' 00:00:00';
 
         return $this->createQueryBuilder('sm')
-            ->andWhere('sm.created_at BETWEEN :from AND :to')
+            ->andWhere('sm.createdAt BETWEEN :from AND :to')
             ->setParameter('from', $from)
             ->setParameter('to', $to)
             ->andWhere('sm.store = :store')
             ->setParameter('store', $store->getId())
-            ->orderBy('sm.created_at', 'ASC')
+            ->orderBy('sm.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -45,7 +45,7 @@ class DepositsSales
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'depositsSales', cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Products::class, inversedBy: 'depositsSales', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection|ArrayCollection $products;
 
@@ -65,7 +65,7 @@ class DepositsSales
     /**
      * @var Customers|null
      */
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'depositsSales')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'depositsSales')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Customers $customer = null;
 
@@ -77,7 +77,7 @@ class DepositsSales
 
     public function __construct()
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         $this->products = new ArrayCollection();
     }
 

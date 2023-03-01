@@ -30,7 +30,7 @@ final class IntegerField implements FieldInterface
             ->setColumns('col-6')
             ->setCustomOption(self::OPTION_NUMBER_FORMAT, null)
             // Add integer field js file
-            ->addJsFiles(Asset::new('assets/js/field/field.integer.js')
+            ->addWebpackEncoreEntries(Asset::new('field/integer')
                 ->onlyOnForms());
     }
 

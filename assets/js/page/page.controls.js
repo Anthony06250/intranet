@@ -6,11 +6,11 @@ $(document).ready(function () {
 
     let control = new Control();
 
-    $('#Controls_controlsCounter').on('change', function () {
+    $('#Controls_counter').on('change', function () {
         control.loadCounter(true);
     });
 
-    $('#Controls_controlsPeriod').on('change', function () {
+    $('#Controls_period').on('change', function () {
         control.loadPeriod();
     });
 
@@ -51,7 +51,7 @@ class Control {
      * Load the counter
      */
     loadCounter(force = false) {
-        if (!$('#Controls_cash_fund').val() || force) {
+        if (!$('#Controls_cashFund').val() || force) {
             this.updateCashFund();
         }
 
@@ -62,7 +62,7 @@ class Control {
      * Load the period
      */
     loadPeriod() {
-        let isDebit = (typeof $('#Controls_controlsPeriod').find(':selected').attr('data-debit') !== 'undefined');
+        let isDebit = (typeof $('#Controls_period').find(':selected').attr('data-debit') !== 'undefined');
 
         $('#Controls_turnover').attr('readonly', !isDebit).val(isDebit ? this.default_turnover : null);
 
@@ -73,9 +73,9 @@ class Control {
      * Load the cash fund default value
      */
     updateCashFund() {
-        let cash_fund = $('#Controls_controlsCounter').find(':selected').attr('data-cash-fund') / 100;
+        let cash_fund = $('#Controls_counter').find(':selected').attr('data-cash-fund') / 100;
 
-        $('#Controls_cash_fund').val(cash_fund ? cash_fund.toCurrency() : null);
+        $('#Controls_cashFund').val(cash_fund ? cash_fund.toCurrency() : null);
     }
 
     /**
@@ -84,7 +84,7 @@ class Control {
     calcResult() {
         let result = 0;
         let turnover = $('#Controls_turnover').val().toNumber();
-        let cash_fund = $('#Controls_cash_fund').val().toNumber();
+        let cash_fund = $('#Controls_cashFund').val().toNumber();
 
         $('input[data-calc]').each(function () {
             result += $(this).val() * $(this).attr('data-calc');
@@ -102,7 +102,7 @@ class Control {
      * @param cash_fund
      */
     calcError(result, turnover, cash_fund) {
-        let reverse = (typeof $('#Controls_controlsCounter').find(':selected').attr('data-reverse') !== 'undefined');
+        let reverse = (typeof $('#Controls_counter').find(':selected').attr('data-reverse') !== 'undefined');
         let error = !reverse ? result - (turnover + cash_fund) : result + (turnover - cash_fund);
 
         $('#Controls_error').val(turnover || cash_fund ? error.toCurrency() : null);
@@ -145,8 +145,8 @@ class Control {
      * @param debit
      */
     displayDebit(debit) {
-        let isReverse = (typeof $('#Controls_controlsCounter').find(':selected').attr('data-reverse') !== 'undefined');
-        let isDebit = (typeof $('#Controls_controlsPeriod').find(':selected').attr('data-debit') !== 'undefined');
+        let isReverse = (typeof $('#Controls_counter').find(':selected').attr('data-reverse') !== 'undefined');
+        let isDebit = (typeof $('#Controls_period').find(':selected').attr('data-debit') !== 'undefined');
 
         $('#debit-alert').css('display', (isDebit && debit) ? 'block' : 'none')
             .removeClass(debit >= 0

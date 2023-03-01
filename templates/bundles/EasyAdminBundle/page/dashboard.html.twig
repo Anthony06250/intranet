@@ -9,112 +9,114 @@
 {% endblock %}
 
 {% block main %}
-    <section class="row">
-        <article class="col-8">
-            <section class="row">
-                {{ _self.render_count_widget('Users', 'col-3', 'uil-users-alt', 'bg-success-lighten text-success', count_users) }}
-                {{ _self.render_count_widget('Customers', 'col-3', 'uil-raddit-alien-alt', 'bg-info-lighten text-info', count_customers) }}
-                {{ _self.render_count_widget('Stores', 'col-3', 'uil-store', null, count_stores) }}
-                {{ _self.render_count_widget('AdvancesPayments', 'col-3', 'uil-bill', null, count_advances_payments) }}
-                <article class="col-9">
-                    <div class="card cta-box bg-danger text-white">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div class="w-100 overflow-hidden">
-                                    <h3 class="mt-0">
-                                        <i class="mdi mdi-bullhorn-outline me-1"></i>
-                                        {{ 'Widgets.Support.Title' | trans({}, 'messages') }}
-                                    </h3>
-                                    <h3 class="m-0 fw-normal cta-box-title">
-                                        {{ 'Widgets.Support.Message' | trans({}, 'messages') | raw }}
-                                    </h3>
+    <section id="dashboard">
+        <section class="row">
+            <article class="col-8">
+                <section class="row">
+                    {{ _self.render_count_widget('Users', 'col-3', 'uil-users-alt', 'success', count_users) }}
+                    {{ _self.render_count_widget('Customers', 'col-3', 'uil-raddit-alien-alt', 'info', count_customers) }}
+                    {{ _self.render_count_widget('Stores', 'col-3', 'uil-store', 'info', count_stores) }}
+                    {{ _self.render_count_widget('AdvancesPayments', 'col-3', 'uil-bill', 'primary', count_advances_payments) }}
+                    <article class="col-9">
+                        <div id="support-box" class="card cta-box bg-danger text-white">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="w-100 overflow-hidden">
+                                        <h3 class="mt-0">
+                                            <i class="mdi mdi-bullhorn-outline me-1"></i>
+                                            {{ 'Widgets.Support.Title' | trans({}, 'messages') }}
+                                        </h3>
+                                        <h3 class="m-0 fw-normal cta-box-title">
+                                            {{ 'Widgets.Support.Message' | trans({}, 'messages') | raw }}
+                                        </h3>
+                                    </div>
+                                    <img class="ms-3" src="{{ asset('build/images/svg/email-campaign.svg') }}" width="120" alt="Generic placeholder image">
                                 </div>
-                                <img class="ms-3" src="{{ asset('assets/images/svg/email-campaign.svg') }}" width="120" alt="Generic placeholder image">
                             </div>
                         </div>
-                    </div>
-                </article>
-                {{ _self.render_count_widget('Invoices', 'col-3', 'uil-receipt', null, count_invoices) }}
-            </section>
-        </article>
-        <article class="col-4">
-            <article class="card cta-box bg-success text-white" style="height: 92.5%;">
-                <article class="card-body">
-                    <header class="d-flex align-items-center">
-                        <article class="w-100 overflow-hidden">
-                            <h3 class="m-0 cta-box-title">
-                                <i class="mdi mdi-cake-variant me-1"></i>
-                                {{ 'Widgets.Birthday.Title' | trans({'%days%': birthday.days_until_birthdays}, 'messages') }}
-                            </h3>
-                        </article>
-                        <img class="ms-3" src="{{ asset('assets/images/svg/birthday.svg')}}" width="100" alt="Birthday image">
-                    </header>
-                    <section>
-                        {% if birthday.next_birthdays | length %}
-                            {% for next_birthday in birthday.next_birthdays %}
-                                <section class="mt-1">
-                                    {% set url = ea_url()
-                                        .setController('App\\Controller\\Admin\\UsersCrudController')
-                                        .setAction('detail')
-                                        .set('entityId', next_birthday.id) %}
-                                    <a href="{{ url }}" class="text-reset">
-                                        <img class="me-2 rounded-circle" src="{{ next_birthday.email | gravatar({'size': 32}) }}"
-                                             alt="{{ next_birthday.username | capitalize }} gravatar"
-                                             height="32"
-                                        >
-                                        <span class="font-14 fw-bold">
+                    </article>
+                    {{ _self.render_count_widget('Invoices', 'col-3', 'uil-receipt', 'primary', count_invoices) }}
+                </section>
+            </article>
+            <article class="col-4">
+                <article id="birthday-box" class="card cta-box bg-success text-white">
+                    <article class="card-body">
+                        <header class="d-flex align-items-center">
+                            <article class="w-100 overflow-hidden">
+                                <h3 class="m-0 cta-box-title">
+                                    <i class="mdi mdi-cake-variant me-1"></i>
+                                    {{ 'Widgets.Birthday.Title' | trans({'%days%': birthday.days_until_birthdays}, 'messages') }}
+                                </h3>
+                            </article>
+                            <img class="ms-3" src="{{ asset('build/images/svg/birthday.svg')}}" width="100" alt="Birthday image">
+                        </header>
+                        <section>
+                            {% if birthday.next_birthdays | length %}
+                                {% for next_birthday in birthday.next_birthdays %}
+                                    <section class="mt-1">
+                                        {% set url = ea_url()
+                                            .setController('App\\Controller\\Admin\\UsersCrudController')
+                                            .setAction('detail')
+                                            .set('entityId', next_birthday.id) %}
+                                        <a href="{{ url }}" class="text-reset">
+                                            <img class="me-2 rounded-circle" src="{{ next_birthday.email | gravatar({'size': 32}) }}"
+                                                 alt="{{ next_birthday.username | capitalize }} gravatar"
+                                                 height="32"
+                                            >
+                                            <span class="font-14 fw-bold">
                                             {{ next_birthday.firstname | capitalize }} {{ next_birthday.lastname | upper }}
                                         </span>
-                                        <span class="ms-2 font-12">
+                                            <span class="ms-2 font-12">
                                             {{ next_birthday.birthdayDate | format_datetime('short', 'none', locale=app.request.locale) }}
-                                            {% set age = date().diff(date(next_birthday.birthdayDate)).y %}
-                                            {{ 'Widgets.Birthday.Age' | trans({'%age%': age}, 'messages') }}
+                                                {% set age = date().diff(date(next_birthday.birthdayDate)).y %}
+                                                {{ 'Widgets.Birthday.Age' | trans({'%age%': age}, 'messages') }}
                                         </span>
-                                    </a>
-                                </section>
-                            {% endfor %}
-                        {% else %}
-                            <span class="mt-1 font-14 fw-bold">
+                                        </a>
+                                    </section>
+                                {% endfor %}
+                            {% else %}
+                                <span class="mt-1 font-14 fw-bold">
                                 {{ 'Widgets.Birthday.Empty' | trans({'%days%': birthday.days_until_birthdays}, 'messages') }}
                             </span>
-                        {% endif %}
-                    </section>
+                            {% endif %}
+                        </section>
+                    </article>
                 </article>
             </article>
-        </article>
-        {{ _self.render_count_widget('Controls', 'col-2', 'uil-file-check-alt', 'bg-warning-lighten text-warning', count_controls) }}
-        {{ _self.render_count_widget('Safes', 'col-2', 'uil-shield-check', 'bg-danger-lighten text-danger', count_safes) }}
-        {{ _self.render_count_widget('SafesMovements', 'col-2', 'uil-shield-exclamation', 'bg-warning-lighten text-warning', count_safesMovements) }}
-        {{ _self.render_count_widget('SafesControls', 'col-2', 'uil-file-shield-alt', 'bg-warning-lighten text-warning', count_safesControls) }}
-        {{ _self.render_count_widget('Buybacks', 'col-2', 'uil-exchange-alt', null, count_buybacks) }}
-        {{ _self.render_count_widget('DepositsSales', 'col-2', 'uil-moneybag-alt', null, count_deposits_sales) }}
-    </section>
-    <section class="row">
-        {{ _self.render_controls_widget(1, 1, 'Controls.Create sell morning control') }}
-        {{ _self.render_controls_widget(1, 2, 'Controls.Create sell evening control') }}
-        {% if is_granted('ROLE_JEWELER') %}
-            {{ _self.render_controls_widget(2, 1, 'Controls.Create buy morning control') }}
-            {{ _self.render_controls_widget(2, 2, 'Controls.Create buy evening control') }}
-        {% endif %}
+            {{ _self.render_count_widget('Controls', 'col-2', 'uil-file-check-alt', 'warning', count_controls) }}
+            {{ _self.render_count_widget('Safes', 'col-2', 'uil-shield-check', 'danger', count_safes) }}
+            {{ _self.render_count_widget('SafesMovements', 'col-2', 'uil-shield-exclamation', 'warning', count_safesMovements) }}
+            {{ _self.render_count_widget('SafesControls', 'col-2', 'uil-file-shield-alt', 'warning', count_safesControls) }}
+            {{ _self.render_count_widget('Buybacks', 'col-2', 'uil-exchange-alt', 'primary', count_buybacks) }}
+            {{ _self.render_count_widget('DepositsSales', 'col-2', 'uil-moneybag-alt', 'primary', count_deposits_sales) }}
+        </section>
+        <section class="row mt-3">
+            {{ _self.render_controls_widget(1, 1, 'Controls.Create sell morning control') }}
+            {{ _self.render_controls_widget(1, 2, 'Controls.Create sell evening control') }}
+            {% if is_granted('ROLE_JEWELER') %}
+                {{ _self.render_controls_widget(2, 1, 'Controls.Create buy morning control') }}
+                {{ _self.render_controls_widget(2, 2, 'Controls.Create buy evening control') }}
+            {% endif %}
+        </section>
     </section>
 {% endblock %}
 
-{% macro render_count_widget(controller, column, icon, icon_color, value) %}
+{% macro render_count_widget(controller, column, icon, color, value) %}
     <article class="{{  column }}">
         {% set url = ea_url()
             .setController('App\\Controller\\Admin\\' ~ controller ~ 'CrudController')
             .setAction('index') %}
-        <a href="{{ url }}" class="card widget-flat">
+        <a href="{{ url }}" class="card ribbon-box">
             <section class="card-body">
-                <article class="float-end">
-                    <i class="{{ icon }} {{ icon_color }} widget-icon"></i>
-                </article>
-                <h5 class="text-muted fw-normal mt-0" title="users">
+                <section class="ribbon ribbon-{{ color }} float-start">
                     {{ ('Menu.' ~ controller) | trans({}, 'messages') }}
+                </section>
+                <h5 class="text-primary float-end mt-0">
+                    <i class="{{ icon }} bg-{{ color }}-lighten text-{{ color }} widget-icon"></i>
                 </h5>
-                <h3 class="mt-3 mb-3">
-                    {{ value }}
-                </h3>
+                <article class="ribbon-content pt-2 fw-bold text-black-50">
+                    {{ value }} {{ ('Menu.' ~ controller) | trans({}, 'messages') | lower }}
+                </article>
             </section>
         </a>
     </article>
@@ -125,8 +127,8 @@
         {% set url = ea_url()
             .setController('App\\Controller\\Admin\\ControlsCrudController')
             .setAction('new')
-            .set('controlsCounter', counter)
-            .set('controlsPeriod', period) %}
+            .set('counter', counter)
+            .set('period', period) %}
         <a href="{{ url }}" class="card cta-box {{ period == 1 ? 'bg-warning' : 'bg-primary' }} text-white">
             <article class="card-body">
                 <h3 class="m-0 fw-normal cta-box-title">

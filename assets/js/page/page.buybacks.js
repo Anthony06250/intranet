@@ -14,15 +14,15 @@ $(document).ready(function () {
         buyback.calcStartingPrice();
     });
 
-    $('#Buybacks_increased_percent').on('change', function () {
+    $('#Buybacks_increasedPercent').on('change', function () {
         buyback.calcInterests();
     })
 
-    $('#Buybacks_increased_price').on('change', function () {
+    $('#Buybacks_increasedPrice').on('change', function () {
         buyback.calcPercent();
     })
 
-    $('#Buybacks_created_at, #Buybacks_duration').on('change', function () {
+    $('#Buybacks_createdAt, #Buybacks_duration').on('change', function () {
         buyback.calcDueDate();
     })
 });
@@ -70,7 +70,7 @@ class Buyback {
             total += $(this).val().toNumber();
         });
 
-        $('#Buybacks_starting_price').val(total ? total.toCurrency() : null);
+        $('#Buybacks_startingPrice').val(total ? total.toCurrency() : null);
         this.calcInterests();
     }
 
@@ -78,36 +78,36 @@ class Buyback {
      * Calculate buyback interests
      */
     calcInterests() {
-        let price = $('#Buybacks_starting_price').val().toNumber();
-        let percent = $('#Buybacks_increased_percent').val().toNumber() / 100;
+        let price = $('#Buybacks_startingPrice').val().toNumber();
+        let percent = $('#Buybacks_increasedPercent').val().toNumber() / 100;
 
-        $('#Buybacks_increased_price').val(price ? (price + (price * percent)).toCurrency() : null);
+        $('#Buybacks_increasedPrice').val(price ? (price + (price * percent)).toCurrency() : null);
     }
 
     /**
      * Calculate increase percent
      */
     calcPercent() {
-        let starting_price = $('#Buybacks_starting_price').val().toNumber();
-        let increased_price = $('#Buybacks_increased_price').val().toNumber();
+        let starting_price = $('#Buybacks_startingPrice').val().toNumber();
+        let increased_price = $('#Buybacks_increasedPrice').val().toNumber();
         let percent = (increased_price - starting_price) / starting_price * 100;
 
-        $('#Buybacks_increased_percent').val((increased_price ? percent : 30).toCurrency());
+        $('#Buybacks_increasedPercent').val((increased_price ? percent : 30).toCurrency());
     }
 
     /**
      * Calculate buyback due date
      */
     calcDueDate() {
-        let start_date = new Date($('#Buybacks_created_at').val());
+        let start_date = new Date($('#Buybacks_createdAt').val());
         let duration = parseInt($('#Buybacks_duration').val());
 
         if (!isNaN(start_date) && !isNaN(duration)) {
             start_date.setDate(start_date.getDate() + duration);
-            $('#Buybacks_due_at').val(start_date.toInputFormat());
+            $('#Buybacks_dueAt').val(start_date.toInputFormat());
         }
         else {
-            $('#Buybacks_due_at').val(null);
+            $('#Buybacks_dueAt').val(null);
         }
     }
 }

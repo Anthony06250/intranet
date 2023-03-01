@@ -34,7 +34,7 @@
                         <header class="card-header pt-4 pb-4 text-center bg-primary">
                             <div id="header-logo">
                                 {% block header_logo %}
-                                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo" height="22">
+                                    <img src="{{ asset('build/images/logo.png') }}" alt="logo" height="22">
                                 {% endblock header_logo %}
                             </div>
                         </header>
@@ -44,7 +44,7 @@
                                     {{ _sign_in_label }}
                                 </h4>
                                 <p class="text-muted mb-4">
-                                    {{ 'Login.Message' | trans }}
+                                    {{ 'Login.Message' | trans({}, 'messages') }}
                                 </p>
                             </div>
                             <form class="needs-validation" novalidate action="{{ action|default('') }}" method="post">
@@ -59,10 +59,10 @@
                                     <input class="form-control" type="text" id="username"
                                            name="{{ username_parameter|default('_username') }}"
                                            value="{{ last_username | default('') }}"
-                                           placeholder="{{ 'Forms.Placeholders.Username' | trans }}" required autofocus
+                                           placeholder="{{ 'Forms.Placeholders.Username' | trans({}, 'messages') }}" required autofocus
                                            autocomplete="username">
                                     <footer class="invalid-feedback">
-                                        {{ 'Forms.Feedbacks.Username' | trans }}
+                                        {{ 'Forms.Feedbacks.Username' | trans({}, 'messages') }}
                                     </footer>
                                 </article>
                                 <article class="mb-3">
@@ -79,13 +79,13 @@
                                     <div class="input-group input-group-merge">
                                         <input class="form-control" type="password" id="password"
                                                name="{{ password_parameter|default('_password') }}"
-                                               placeholder="{{ 'Forms.Placeholders.Password' | trans }}" required
+                                               placeholder="{{ 'Forms.Placeholders.Password' | trans({}, 'messages') }}" required
                                                autocomplete="current-password">
                                         <div class="input-group-text" data-password="false">
                                             <span class="password-eye"></span>
                                         </div>
                                         <footer class="invalid-feedback">
-                                            {{ 'Forms.Feedbacks.Password' | trans }}
+                                            {{ 'Forms.Feedbacks.Password' | trans({}, 'messages') }}
                                         </footer>
                                     </div>
                                 </article>

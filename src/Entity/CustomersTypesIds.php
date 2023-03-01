@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity('label')]
@@ -23,6 +24,7 @@ class CustomersTypesIds
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['search'])]
     private ?int $id = null;
 
     /**
@@ -36,7 +38,7 @@ class CustomersTypesIds
     /**
      * @var ArrayCollection|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'customersTypesId', targetEntity: Customers::class)]
+    #[ORM\OneToMany(mappedBy: 'typesId', targetEntity: Customers::class)]
     private Collection|ArrayCollection $customers;
 
     public function __construct()
@@ -95,7 +97,7 @@ class CustomersTypesIds
     {
         if (!$this->customers->contains($customer)) {
             $this->customers->add($customer);
-            $customer->setCustomersTypesId($this);
+            $customer->setTypesId($this);
         }
 
         return $this;
@@ -109,8 +111,8 @@ class CustomersTypesIds
     {
         if ($this->customers->removeElement($customer)) {
             // set the owning side to null (unless already changed)
-            if ($customer->getCustomersTypesId() === $this) {
-                $customer->setCustomersTypesId(null);
+            if ($customer->getTypesId() === $this) {
+                $customer->setTypesId(null);
             }
         }
 

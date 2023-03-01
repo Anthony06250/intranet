@@ -4,8 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Invoices;
 use App\Form\Field\AssociationField;
+use App\Form\Field\CustomerField;
 use App\Form\Field\DateField;
 use App\Form\Field\MoneyField;
+use App\Form\Field\ProductField;
 use App\Repository\StoresRepository;
 use App\Repository\UsersRepository;
 use App\Service\PdfService;
@@ -22,7 +24,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class InvoicesCrudController extends AbstractCrudController
 {
@@ -81,7 +82,7 @@ class InvoicesCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_EDIT, 'Invoices.Edit invoice')
             ->setPageTitle(Crud::PAGE_DETAIL, 'Invoices.View invoice')
             ->setDefaultSort([
-                'created_at' => 'ASC'
+                'createdAt' => 'ASC'
             ])
             ->setPaginatorPageSize(self::MAX_RESULTS_REQUEST)
             ->showEntityActionsInlined()
@@ -97,7 +98,7 @@ class InvoicesCrudController extends AbstractCrudController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addJsFile(Asset::new('assets/js/page/page.invoices.js')
+        $assets->addWebpackEncoreEntry(Asset::new('page/invoices')
             ->onlyOnForms());
 
         return $assets;
@@ -126,24 +127,13 @@ class InvoicesCrudController extends AbstractCrudController
         yield $this->getStoresField();
 
         yield DateField::new('selledAt', 'Forms.Labels.Selled at');
-        yield DateField::new('created_at', 'Forms.Labels.Created at')
+        yield DateField::new('createdAt', 'Forms.Labels.Created at')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
                 'readonly' => !$this->isGranted('ROLE_ADMIN')
             ]);
-        yield AssociationField::new('customer', 'Forms.Labels.Customer')
-            ->renderAsEmbeddedForm(CustomersCrudController::class,
-                'embedded_fields_without_ids_and_contact',
-                'embedded_fields_without_ids_and_contact')
-            ->setFormTypeOption('row_attr', [
-                'accordion' => true,
-                'expanded' => true
-            ])
-            ->setRequired(false)
-            ->setColumns('col-12');
-        yield CollectionField::new('products', 'Forms.Labels.Products')
-            ->useEntryCrudForm(ProductsCrudController::class)
-            ->setColumns('col-12');
+        yield CustomerField::new('customer', 'Forms.Labels.Customer');
+        yield ProductField::new('products', 'Forms.Labels.Products');
         yield MoneyField::new('totalWithoutTaxes', 'Forms.Labels.Total without taxes')
             ->hideOnIndex()
             ->setFormTypeOption('attr', [
@@ -171,8 +161,9 @@ class InvoicesCrudController extends AbstractCrudController
             ->setFormTypeOption('attr', [
                 'readonly' => true
             ]);
-        yield AssociationField::new('paymentMethods', 'Forms.Labels.Payment method')
-            ->hideOnIndex();
+        yield AssociationField::new('paymentsMethod', 'Forms.Labels.Payment method')
+            ->hideOnIndex()
+            ->setFormTypeOption('placeholder', 'Forms.Placeholders.Payment method');
     }
 
     /**
