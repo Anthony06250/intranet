@@ -112,6 +112,10 @@ Controls:
   Create sell evening control: Créer un contrôle des ventes du soir
   Create buy morning control: Créer un contrôle des achats du matin
   Create buy evening control: Créer un contrôle des achats du soir
+  Edit sell morning control: Editer le contrôle des ventes du matin
+  Edit sell evening control: Editer le contrôle des ventes du soir
+  Edit buy morning control: Editer le contrôle des achats du matin
+  Edit buy evening control: Editer le contrôle des achats du soir
   Edit control: Éditer un contrôle
   View control: Voir un contrôle
   Positive debit: <strong>Attention -</strong> Vous devez prélever <strong class="debit-span"></strong> euros dans la caisse.
