@@ -91,11 +91,11 @@
             {{ _self.render_count_widget('DepositsSales', 'col-2', 'uil-moneybag-alt', 'primary', count_deposits_sales) }}
         </section>
         <section class="row mt-3">
-            {{ _self.render_controls_widget(1, 1, 'sell', 'morning', today_controls_ids) }}
-            {{ _self.render_controls_widget(1, 2, 'sell', 'evening', today_controls_ids) }}
+            {{ _self.render_controls_widget(1, 1, today_controls_ids[1][1]) }}
+            {{ _self.render_controls_widget(1, 2, today_controls_ids[1][2]) }}
             {% if is_granted('ROLE_JEWELER') %}
-                {{ _self.render_controls_widget(2, 1, 'buy', 'morning', today_controls_ids) }}
-                {{ _self.render_controls_widget(2, 2, 'buy', 'evening', today_controls_ids) }}
+                {{ _self.render_controls_widget(2, 1, today_controls_ids[2][1]) }}
+                {{ _self.render_controls_widget(2, 2, today_controls_ids[2][2]) }}
             {% endif %}
         </section>
     </section>
@@ -122,14 +122,9 @@
     </article>
 {% endmacro %}
 
-{% macro render_controls_widget(counter, period, counter_label, period_label, today_controls_ids) %}
+{% macro render_controls_widget(counter, period, today_control_id) %}
     <article class="col-6">
-        {% set today_control_id = today_controls_ids[counter_label][period_label] is defined
-            ? today_controls_ids[counter_label][period_label]
-            : 0 %}
-        {% set action_label = today_control_id == 0 ? 'Create' : 'Edit' %}
-        {% set message = 'Controls.' ~ action_label ~ ' ' ~ counter_label ~ ' ' ~ period_label ~ ' control' %}
-        {% set url = today_control_id == 0
+        {% set url = today_control_id['id'] == 0
             ? ea_url()
                 .setController('App\\Controller\\Admin\\ControlsCrudController')
                 .setAction('new')
@@ -138,7 +133,9 @@
             : ea_url()
                 .setController('App\\Controller\\Admin\\ControlsCrudController')
                 .setAction('edit')
-                .set('entityId', today_control_id) %}
+                .set('entityId', today_control_id['id']) %}
+        {% set action_label = today_control_id['id'] == 0 ? 'Create' : 'Edit' %}
+        {% set message = 'Controls.' ~ action_label ~ ' ' ~ today_control_id['label'] ~ ' control' %}
         <a href="{{ url }}" class="card cta-box {{ period == 1 ? 'bg-warning' : 'bg-primary' }} text-white">
             <article class="card-body">
                 <h3 class="m-0 fw-normal cta-box-title">
