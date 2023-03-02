@@ -94,8 +94,13 @@
 {#                </div>#}
 {#            </li>#}
             <li class="dropdown">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="{{ asset('bundles/easyadmin/images/flags/' ~ (app.request.locale == 'en' ? 'us' : app.request.locale) | upper ~ '.svg') }}" alt="user-image" class="me-0 me-sm-1" height="12">
+                <a class="nav-link dropdown-toggle arrow-none" href="#" role="button"
+                   data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false"
+                >
+                    {% set locale = app.request.locale == 'en' ? 'us' : app.request.locale %}
+                    <img class="me-0 me-sm-1" alt="Flag {{ app.request.locale }}" height="12"
+                         src="{{ asset('bundles/easyadmin/images/flags/' ~ locale | upper ~ '.svg') }}"
+                    >
                     <span class="align-middle d-none d-lg-inline-block">
                         {{ app.request.locale | locale_name | capitalize }}
                     </span>
@@ -104,8 +109,13 @@
                 <section class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
                     {% for supported_locale in supported_locales %}
                         {% if app.request.locale != supported_locale %}
-                            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params') | merge(app.request.query.all | merge({'_locale': supported_locale }))) }}" class="dropdown-item notify-item">
-                                <img src="{{ asset('bundles/easyadmin/images/flags/' ~ (supported_locale == 'en' ? 'us' : supported_locale) | upper ~ '.svg') }}" alt="user-image" class="me-1" height="12">
+                            <a class="dropdown-item notify-item"
+                               href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params') | merge(app.request.query.all | merge({'_locale': supported_locale }))) }}"
+                            >
+                                {% set locale = supported_locale == 'en' ? 'us' : supported_locale %}
+                                <img class="me-1" alt="Flag {{ app.request.locale }}" height="12"
+                                     src="{{ asset('bundles/easyadmin/images/flags/' ~ locale | upper ~ '.svg') }}"
+                                >
                                 <span class="align-middle">
                                     {{ supported_locale | locale_name | capitalize }}
                                 </span>
@@ -115,9 +125,15 @@
                 </section>
             </li>
             <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <i class="ri-notification-3-line font-22"></i>
-                    <span class="noti-icon-badge"></span>
+                <a class="nav-link dropdown-toggle arrow-none" href="#" role="button"
+                   data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false"
+                >
+                    <span data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="primary-tooltip"
+                          data-bs-title="{{ 'Top menu.Notifications' | trans({}, 'messages') }}"
+                    >
+                        <i class="ri-notification-3-line font-22"></i>
+                        <span class="noti-icon-badge"></span>
+                    </span>
                 </a>
                 <section class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
                     <article class="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
@@ -241,25 +257,117 @@
                 </section>
             </li>
             <li class="dropdown d-none d-sm-inline-block">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <i class="ri-apps-2-line font-22"></i>
+                <a class="nav-link dropdown-toggle arrow-none" href="#" role="button"
+                   data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false"
+                >
+                    <span data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="primary-tooltip"
+                             data-bs-title="{{ 'Top menu.Useful links' | trans({}, 'messages') }}"
+                    >
+                        <i class="ri-apps-2-line font-22"></i>
+                    </span>
                 </a>
                 <article class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg p-0">
                     <section class="p-2">
                         <section class="row g-0">
                             <article class="col">
-                                <a class="dropdown-icon-item" href="https://github.com/Anthony06250/intranet" target="_blank">
-                                    <img src="{{ asset('build/images/brands/github.png') }}" alt="Github">
+                                <a class="dropdown-icon-item" href="https://www.leboncoin.fr" target="_blank">
+                                    <img src="{{ asset('build/images/brands/leboncoin.png') }}" alt="Leboncoin">
                                     <span>
-                                        GitHub
+                                        Leboncoin
                                     </span>
                                 </a>
                             </article>
                             <article class="col">
-                                <a class="dropdown-icon-item" href="https://www.dropbox.com/login" target="_blank">
-                                    <img src="{{ asset('build/images/brands/dropbox.png') }}" alt="dropbox">
+                                <a class="dropdown-icon-item" href="https://www.vinted.fr" target="_blank">
+                                    <img src="{{ asset('build/images/brands/vinted.png') }}" alt="Vinted">
+                                    <span>
+                                        Vinted
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.backmarket.fr" target="_blank">
+                                    <img src="{{ asset('build/images/brands/backmarket.png') }}" alt="BackMarket">
+                                    <span>
+                                        BackMarket
+                                    </span>
+                                </a>
+                            </article>
+                        </section>
+                        <section class="row g-0">
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.amazon.fr" target="_blank">
+                                    <img src="{{ asset('build/images/brands/amazon.png') }}" alt="Amazon">
+                                    <span>
+                                        Amazon
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://fr.shopping.rakuten.com" target="_blank">
+                                    <img src="{{ asset('build/images/brands/rakuten.png') }}" alt="Rakuten">
+                                    <span>
+                                        Rakuten
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.cdiscount.com" target="_blank">
+                                    <img src="{{ asset('build/images/brands/cdiscount.png') }}" alt="Cdiscount">
+                                    <span>
+                                        Cdiscount
+                                    </span>
+                                </a>
+                            </article>
+                        </section>
+                        <section class="row g-0">
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.jensmobiles.fr" target="_blank">
+                                    <img src="{{ asset('build/images/brands/jma.png') }}" alt="Jen's Mobile">
+                                    <span>
+                                        Jen's Mobile
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.undercontrol.fr" target="_blank">
+                                    <img src="{{ asset('build/images/brands/under-control.png') }}" alt="Under Control">
+                                    <span>
+                                        Under Control
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.bijouxcn.com/EspaceProAccueil.aspx" target="_blank">
+                                    <img src="{{ asset('build/images/brands/bijoux-cn.png') }}" alt="Bijoux CN">
+                                    <span>
+                                        Bijoux CN
+                                    </span>
+                                </a>
+                            </article>
+                        </section>
+                        <section class="row g-0">
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://www.dropbox.com" target="_blank">
+                                    <img src="{{ asset('build/images/brands/dropbox.png') }}" alt="Dropbox">
                                     <span>
                                         Dropbox
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://login.teamviewer.com/LogOn" target="_blank">
+                                    <img src="{{ asset('build/images/brands/teamviewer.png') }}" alt="TeamViewer">
+                                    <span>
+                                        TeamViewer
+                                    </span>
+                                </a>
+                            </article>
+                            <article class="col">
+                                <a class="dropdown-icon-item" href="https://github.com/Anthony06250/intranet" target="_blank">
+                                    <img src="{{ asset('build/images/brands/github.png') }}" alt="Github">
+                                    <span>
+                                        GitHub
                                     </span>
                                 </a>
                             </article>
@@ -270,19 +378,31 @@
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <li class="d-none d-sm-inline-block">
                     <a class="nav-link" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas">
-                        <i class="ri-settings-3-line font-22"></i>
+                        <span data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="primary-tooltip"
+                              data-bs-title="{{ 'Top menu.Theme settings' | trans({}, 'messages') }}"
+                        >
+                            <i class="ri-settings-3-line font-22"></i>
+                        </span>
                     </a>
                 </li>
             {% endif %}
             <li class="d-none d-sm-inline-block">
-                <article class="nav-link" id="light-dark-mode" data-bs-toggle="tooltip" data-bs-placement="left" aria-label="Theme Mode" data-bs-original-title="Theme Mode">
-                    <i class="ri-moon-line font-22"></i>
+                <article class="nav-link" id="light-dark-mode">
+                    <span data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="primary-tooltip"
+                          data-bs-title="{{ 'Top menu.Theme mode' | trans({}, 'messages') }}"
+                    >
+                        <i class="ri-moon-line font-22"></i>
+                    </span>
                 </article>
             </li>
             <li class="d-none d-md-inline-block">
-                <a class="nav-link" href="" data-toggle="fullscreen">
-                    <i class="ri-fullscreen-line font-22"></i>
-                </a>
+                <article class="nav-link" data-toggle="fullscreen">
+                    <span data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="primary-tooltip"
+                          data-bs-title="{{ 'Top menu.Fullscreen' | trans({}, 'messages') }}"
+                    >
+                        <i class="ri-fullscreen-line font-22"></i>
+                    </span>
+                </article>
             </li>
             <li class="dropdown">
                 <a class="nav-link dropdown-toggle nav-user arrow-none px-2" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">

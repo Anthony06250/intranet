@@ -1,9 +1,16 @@
-Menu:
+Top menu:
+  Notifications: Notifications
+  Useful links: Liens utiles
+  Theme settings: Réglages du thèmes
+  Theme mode: Mode thème
+  Fullscreen: Plein écran
   Welcome !: Bienvenue !
-  Navigation: Navigation
-  Dashboard: Tableau de bord
   My account: Mon compte
   Support: Assistance
+  Logout: Se déconnecter
+
+Menu:
+  Dashboard: Tableau de bord
   Users: Utilisateurs
   UsersPermissions: Autorisations
   Customers: Clients
@@ -19,7 +26,6 @@ Menu:
   AdvancesPayments: Acomptes
   Invoices: Factures
   Search: Rechercher
-  Logout: Se déconnecter
 
 Login:
   Message: Entrez votre identifiant et votre mot de passe pour accéder au panneau d'administration.
@@ -119,6 +125,7 @@ Safes:
   Edit safe: Éditer un coffre
   View safe: Voir un coffre
   Safe sheet: Fiche coffre du magasin de "%store%" pour le mois de "%month%"
+  Safe error: Erreur de comptage de __ERROR__
 
 SafesMovements:
   SafesMovement: un mouvement
