@@ -399,13 +399,13 @@ class DashboardController extends AbstractDashboardController
             ->setName((string) $user)
             ->setGravatarEmail($user->getEmail() ?? 'email@example.com')
             ->addMenuItems([
-                MenuItem::section('Menu.Welcome !'),
-                MenuItem::linkToCrud('Menu.My account', 'mdi mdi-account-circle', Users::class)
+                MenuItem::section('Top menu.Welcome !'),
+                MenuItem::linkToCrud('Top menu.My account', 'mdi mdi-account-circle', Users::class)
                     ->setAction(Crud::PAGE_DETAIL)
                     ->setEntityId($user->getId()),
-                MenuItem::linkToUrl('Menu.Support', 'mdi mdi-lifebuoy', 'tel:0618824312'),
+                MenuItem::linkToUrl('Top menu.Support', 'mdi mdi-lifebuoy', 'tel:0618824312'),
                 MenuItem::section(),
-                MenuItem::linkToLogout('Menu.Logout', 'mdi mdi-logout')
+                MenuItem::linkToLogout('Top menu.Logout', 'mdi mdi-logout')
             ]);
     }
 

@@ -88,9 +88,6 @@
 </article>
 
 {% macro render_safe_item(entity, value, valueName) %}
-    {% if entity %}
-        {% set entityName = constant('class', entity[0]) | split('\\') | last %}
-    {% endif %}
     <td class="text-end
         {% if value > 0 %}
             text-success
@@ -98,43 +95,57 @@
             text-danger
         {% endif %}"
     >
-        {% if entity | length == 1 %}
-            {% set url = ea_url()
-                .setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController')
-                .setAction('detail')
-                .set('entityId', entity[0].id) %}
-            <a class="text-reset" href="{{ url }}">
-                {{ value | format_currency('EUR', {fraction_digit: 2}) }}
-            </a>
-        {% elseif entity | length > 1 %}
-            <section class="dropdown">
-                <a href="#" class="text-reset dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+        {% if entity %}
+            {% set entityName = constant('class', entity[0]) | split('\\') | last %}
+            {% if entityName == 'SafesControls' %}
+                <span class="d-none" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                      data-bs-title="{{ 'Safes.Safe error' | trans({}, 'messages') }}"
+                >
+                    <i class="uil-shield-exclamation"></i>
+                </span>
+            {% endif %}
+            {% if entity | length == 1 %}
+                {% set url = ea_url()
+                    .setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController')
+                    .setAction('detail')
+                    .set('entityId', entity[0].id) %}
+                <a class="text-reset" href="{{ url }}">
                     {{ value | format_currency('EUR', {fraction_digit: 2}) }}
                 </a>
-                <section class="dropdown-menu dropdown-menu-animated mt-2">
-                    {%  for control in entity %}
-                        {% set url = ea_url()
-                            .setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController')
-                            .setAction('detail')
-                            .set('entityId', control.id) %}
-                        <a href="{{ url }}" class="dropdown-item" target="_self" rel="" referrerpolicy="origin-when-cross-origin">
-                            <span>
-                                {{ control.createdAt | date('H:i') }} -
-                                {% set value = attribute(control, valueName) / 100 %}
-                                <span class="
-                                    {% if value > 0 %}
-                                        text-success
-                                    {% elseif value < 0 %}
-                                        text-danger
-                                    {% endif %}"
-                                >
-                                    {{ (value) | format_currency('EUR', {fraction_digit: 2}) }}
+            {% elseif entity | length > 1 %}
+                <section class="dropdown">
+                    <a href="#" class="text-reset dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                       aria-haspopup="false" aria-expanded="false"
+                    >
+                        {{ value | format_currency('EUR', {fraction_digit: 2}) }}
+                    </a>
+                    <section class="dropdown-menu dropdown-menu-animated mt-2">
+                        {%  for control in entity %}
+                            {% set url = ea_url()
+                                .setController('App\\Controller\\Admin\\' ~ entityName ~ 'CrudController')
+                                .setAction('detail')
+                                .set('entityId', control.id) %}
+                            <a href="{{ url }}" class="dropdown-item" target="_self" rel=""
+                               referrerpolicy="origin-when-cross-origin"
+                            >
+                                <span>
+                                    {{ control.createdAt | date('H:i') }} -
+                                    {% set value = attribute(control, valueName) / 100 %}
+                                    <span class="
+                                        {% if value > 0 %}
+                                            text-success
+                                        {% elseif value < 0 %}
+                                            text-danger
+                                        {% endif %}"
+                                    >
+                                        {{ (value) | format_currency('EUR', {fraction_digit: 2}) }}
+                                    </span>
                                 </span>
-                            </span>
-                        </a>
-                    {% endfor %}
+                            </a>
+                        {% endfor %}
+                    </section>
                 </section>
-            </section>
+            {% endif %}
         {% else %}
             {{ 0 | format_currency('EUR', {fraction_digit: 2}) }}
         {% endif %}
