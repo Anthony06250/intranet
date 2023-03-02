@@ -50,6 +50,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+    /**
+     * @var array
+     */
     private array $todayControlsIds = [];
 
     /**
@@ -142,13 +145,23 @@ class DashboardController extends AbstractDashboardController
      */
     private function getTodayControlsIds(): void
     {
-        if (count($this->getUser()->getStores()) === 1) {
-            $store = $this->getUser()->getStores()[0];
-            $this->todayControlsIds['sell']['morning'] = $this->controlsRepository->findTodayControl($store, 1, 1);
-            $this->todayControlsIds['sell']['evening'] = $this->controlsRepository->findTodayControl($store, 1, 2);
-            $this->todayControlsIds['buy']['morning'] = $this->controlsRepository->findTodayControl($store, 2, 1);
-            $this->todayControlsIds['buy']['evening'] = $this->controlsRepository->findTodayControl($store, 2, 2);
-        }
+        $store = count($this->getUser()->getStores()) === 1 ? $this->getUser()->getStores()[0] : 0;
+        $this->todayControlsIds[1][1] = [
+            'label' => 'sell morning',
+            'id' => $store ? $this->controlsRepository->findTodayControl($store, 1, 1) : 0
+        ];
+        $this->todayControlsIds[1][2] = [
+            'label' => 'sell evening',
+            'id' => $store ? $this->controlsRepository->findTodayControl($store, 1, 2) : 0
+        ];
+        $this->todayControlsIds[2][1] = [
+            'label' => 'buy morning',
+            'id' => $store ? $this->controlsRepository->findTodayControl($store, 2, 1) : 0
+        ];
+        $this->todayControlsIds[2][2] = [
+            'label' => 'buy evening',
+            'id' => $store ? $this->controlsRepository->findTodayControl($store, 2, 2) : 0
+        ];
     }
 
     /**
@@ -257,12 +270,12 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Controls.List of controls', null, Controls::class)
                     ->setAction(Crud::PAGE_INDEX),
                 MenuItem::section(),
-                $this->getControlMenuItem(1, 1, 'sell', 'morning'),
-                $this->getControlMenuItem(1, 2, 'sell', 'evening'),
+                $this->getControlMenuItem(1, 1),
+                $this->getControlMenuItem(1, 2),
                 MenuItem::section()
                     ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
-                $this->getControlMenuItem(2, 1, 'buy', 'morning'),
-                $this->getControlMenuItem(2, 2, 'buy', 'evening'),
+                $this->getControlMenuItem(2, 1),
+                $this->getControlMenuItem(2, 2),
                 MenuItem::section()
                     ->setPermission(ControlsCountersCrudController::ROLE_INDEX),
                 MenuItem::linkToCrud('ControlsCounters.List of controlsCounters', null, ControlsCounters::class)
@@ -281,19 +294,20 @@ class DashboardController extends AbstractDashboardController
     /**
      * @param int $counter
      * @param int $period
-     * @param string $counterLabel
-     * @param string $periodLabel
      * @return CrudMenuItem
      */
-    private function getControlMenuItem(int $counter, int $period, string $counterLabel, string $periodLabel): CrudMenuItem
+    private function getControlMenuItem(int $counter, int $period): CrudMenuItem
     {
-        return !isset($this->todayControlsIds[$counterLabel][$periodLabel]) || !$this->todayControlsIds[$counterLabel][$periodLabel]
-            ? MenuItem::linkToCrud('Controls.Create ' . $counterLabel . ' ' . $periodLabel . ' control', null, Controls::class)
+        $actionLabel = $this->todayControlsIds[$counter][$period]['id'] === 0 ? 'Create' : 'Edit';
+        $message = 'Controls.' . $actionLabel . ' ' . $this->todayControlsIds[$counter][$period]['label'] . ' control';
+
+        return !$this->todayControlsIds[$counter][$period]['id']
+            ? MenuItem::linkToCrud($message, null, Controls::class)
                 ->setQueryParameter('counter', $counter)
                 ->setQueryParameter('period', $period)
                 ->setAction(Crud::PAGE_NEW)
-            : MenuItem::linkToCrud('Controls.Edit ' . $counterLabel . ' ' . $periodLabel . ' control', null, Controls::class)
-                ->setQueryParameter('entityId', $this->todayControlsIds[$counterLabel][$periodLabel])
+            : MenuItem::linkToCrud($message, null, Controls::class)
+                ->setQueryParameter('entityId', $this->todayControlsIds[$counter][$period]['id'])
                 ->setAction(Crud::PAGE_EDIT);
     }
 
