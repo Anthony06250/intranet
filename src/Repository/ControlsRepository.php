@@ -74,17 +74,17 @@ class ControlsRepository extends ServiceEntityRepository
     /**
      * @param DateTimeImmutable $month
      * @param Stores $store
-     * @param ControlsPeriods $controlsPeriods
+     * @param ControlsPeriods $period
      * @return float|int|mixed|string
      */
-    public function findControlsForSafe(DateTimeImmutable $month, Stores $store, ControlsPeriods $controlsPeriods): mixed
+    public function findControlsForSafe(DateTimeImmutable $month, Stores $store, ControlsPeriods $period): mixed
     {
         $from = $month->format('Y-m-d') . ' 00:00:00';
         $to = $month->add(new DateInterval('P1M'))->format('Y-m-d') . ' 00:00:00';
 
         return $this->createQueryBuilder('c')
             ->andWhere('c.period = :period')
-            ->setParameter('period', $controlsPeriods->getId())
+            ->setParameter('period', $period->getId())
             ->andWhere('c.createdAt BETWEEN :from AND :to')
             ->setParameter('from', $from)
             ->setParameter('to', $to)
@@ -93,6 +93,35 @@ class ControlsRepository extends ServiceEntityRepository
             ->orderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param Stores $store
+     * @param int $counter
+     * @param int $period
+     * @return int
+     */
+    public function findTodayControl(Stores $store, int $counter, int $period): int
+    {
+        $from = (new DateTimeImmutable())->format('Y-m-d') . ' 00:00:00';
+        $to = (new DateTimeImmutable())->format('Y-m-d') . ' 23:59:59';
+
+        $result = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->andWhere('c.store = :store')
+            ->setParameter('store', $store->getId())
+            ->andWhere('c.counter = :counter')
+            ->setParameter('counter', $counter)
+            ->andWhere('c.period = :period')
+            ->setParameter('period', $period)
+            ->andWhere('c.createdAt BETWEEN :from AND :to')
+            ->setParameter('from', $from)
+            ->setParameter('to', $to)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return !empty($result) ? $result[0]['id'] : 0;
     }
 
 //    /**

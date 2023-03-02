@@ -50,6 +50,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+    private array $todayControlsIds = [];
+
     /**
      * Dashboard page settings
      */
@@ -119,7 +121,8 @@ class DashboardController extends AbstractDashboardController
             'birthday' => [
                 'days_until_birthdays' => self::DAYS_UNTIL_BIRTHDAYS,
                 'next_birthdays' => $nextBirthdays ?? null,
-            ]
+            ],
+            'today_controls_ids' => $this->todayControlsIds
         ]);
     }
 
@@ -128,8 +131,24 @@ class DashboardController extends AbstractDashboardController
      */
     public function configureDashboard(): Dashboard
     {
+        $this->getTodayControlsIds();
+
         return Dashboard::new()
             ->SetFaviconPath('build/images/favicon.png');
+    }
+
+    /**
+     * @return void
+     */
+    private function getTodayControlsIds(): void
+    {
+        if (count($this->getUser()->getStores()) === 1) {
+            $store = $this->getUser()->getStores()[0];
+            $this->todayControlsIds['sell']['morning'] = $this->controlsRepository->findTodayControl($store, 1, 1);
+            $this->todayControlsIds['sell']['evening'] = $this->controlsRepository->findTodayControl($store, 1, 2);
+            $this->todayControlsIds['buy']['morning'] = $this->controlsRepository->findTodayControl($store, 2, 1);
+            $this->todayControlsIds['buy']['evening'] = $this->controlsRepository->findTodayControl($store, 2, 2);
+        }
     }
 
     /**
@@ -238,26 +257,12 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Controls.List of controls', null, Controls::class)
                     ->setAction(Crud::PAGE_INDEX),
                 MenuItem::section(),
-                MenuItem::linkToCrud('Controls.Create sell morning control', null, Controls::class)
-                    ->setQueryParameter('counter', '1')
-                    ->setQueryParameter('period', '1')
-                    ->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud('Controls.Create sell evening control', null, Controls::class)
-                    ->setQueryParameter('counter', '1')
-                    ->setQueryParameter('period', '2')
-                    ->setAction(Crud::PAGE_NEW),
+                $this->getControlMenuItem(1, 1, 'sell', 'morning'),
+                $this->getControlMenuItem(1, 2, 'sell', 'evening'),
                 MenuItem::section()
                     ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
-                MenuItem::linkToCrud('Controls.Create buy morning control', null, Controls::class)
-                    ->setQueryParameter('counter', '2')
-                    ->setQueryParameter('period', '1')
-                    ->setAction(Crud::PAGE_NEW)
-                    ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
-                MenuItem::linkToCrud('Controls.Create buy evening control', null, Controls::class)
-                    ->setQueryParameter('counter', '2')
-                    ->setQueryParameter('period', '2')
-                    ->setAction(Crud::PAGE_NEW)
-                    ->setPermission(ControlsCrudController::ROLE_NEW_BUY),
+                $this->getControlMenuItem(2, 1, 'buy', 'morning'),
+                $this->getControlMenuItem(2, 2, 'buy', 'evening'),
                 MenuItem::section()
                     ->setPermission(ControlsCountersCrudController::ROLE_INDEX),
                 MenuItem::linkToCrud('ControlsCounters.List of controlsCounters', null, ControlsCounters::class)
@@ -271,6 +276,25 @@ class DashboardController extends AbstractDashboardController
 
         return MenuItem::linkToCrud('Menu.Controls', 'uil-file-check-alt', Controls::class)
             ->setAction(Crud::PAGE_INDEX);
+    }
+
+    /**
+     * @param int $counter
+     * @param int $period
+     * @param string $counterLabel
+     * @param string $periodLabel
+     * @return CrudMenuItem
+     */
+    private function getControlMenuItem(int $counter, int $period, string $counterLabel, string $periodLabel): CrudMenuItem
+    {
+        return !isset($this->todayControlsIds[$counterLabel][$periodLabel]) || !$this->todayControlsIds[$counterLabel][$periodLabel]
+            ? MenuItem::linkToCrud('Controls.Create ' . $counterLabel . ' ' . $periodLabel . ' control', null, Controls::class)
+                ->setQueryParameter('counter', $counter)
+                ->setQueryParameter('period', $period)
+                ->setAction(Crud::PAGE_NEW)
+            : MenuItem::linkToCrud('Controls.Edit ' . $counterLabel . ' ' . $periodLabel . ' control', null, Controls::class)
+                ->setQueryParameter('entityId', $this->todayControlsIds[$counterLabel][$periodLabel])
+                ->setAction(Crud::PAGE_EDIT);
     }
 
     /**

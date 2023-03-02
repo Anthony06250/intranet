@@ -20,9 +20,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ControlsCrudController extends AbstractCrudController
 {
@@ -337,5 +343,30 @@ class ControlsCrudController extends AbstractCrudController
                 Action::EDIT => self::ROLE_EDIT,
                 Action::DELETE => self::ROLE_DELETE
             ]);
+    }
+
+    /**
+     * @param AdminContext $context
+     * @return KeyValueStore|RedirectResponse|Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function new(AdminContext $context): KeyValueStore|RedirectResponse|Response
+    {
+        if (count($this->getUser()->getStores()) === 1 && isset($_GET['counter']) && isset($_GET['period'])) {
+            $store = $this->getUser()->getStores()[0];
+            $controlRepository = $this->container->get('doctrine')->getRepository(Controls::class);
+
+            if ($todayControlId = $controlRepository->findTodayControl($store, $_GET['counter'], $_GET['period'])) {
+                $url = $this->container->get(AdminUrlGenerator::class)
+                    ->setAction(Action::EDIT)
+                    ->setEntityId($todayControlId)
+                    ->generateUrl();
+
+                return $this->redirect($url);
+            }
+        }
+
+        return parent::new($context);
     }
 }
