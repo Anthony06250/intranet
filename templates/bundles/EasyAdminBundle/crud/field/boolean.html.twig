@@ -5,13 +5,15 @@
 
 {% if ea.crud.currentAction == 'detail' or not field.customOptions.get('renderAsSwitch') %}
     <span class="badge {{ field.value == true ? 'bg-success' : 'bg-danger' }}">
-        {{ (field.value == true ? 'label.true' : 'label.false')|trans }}
+        {{ (field.value == true ? 'label.true' : 'label.false') | trans }}
     </span>
 {% else %}
-    <div class="form-check form-switch">
+    <section class="form-check form-switch">
         <input type="checkbox" class="form-check-input" id="{{ field.uniqueId }}" {{ field.value == true ? 'checked' }}
             data-toggle-url="{{ field.customOptions.get('toggleUrl') }}"
             {{ field.formTypeOption('disabled') == true ? 'disabled' }} autocomplete="off">
-        <label class="form-check-label" for="{{ field.uniqueId }}"></label>
-    </div>
+        <label class="form-check-label" for="{{ field.uniqueId }}">
+            {{ (field.value == true ? 'label.true' : 'label.false') | trans }}
+        </label>
+    </section>
 {% endif %}

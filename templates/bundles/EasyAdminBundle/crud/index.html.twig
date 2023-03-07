@@ -189,7 +189,20 @@
                         {% endblock table_body %}
                     </tbody>
                     <tfoot>
-                        {% block table_footer %}{% endblock table_footer %}
+                        {% block table_footer %}
+                            <tr>
+                                {% for field in entities | first.fields ?? [] %}
+                                    {% set is_sorting_field = ea.search.isSortingField(field.property) %}
+                                    {% set sort_direction = ea.search.sortDirection(field.property) %}
+                                    <th {% if is_sorting_field %}data-sort-direction="{{ sort_direction }}"{% endif %}>
+                                        {{ field.label | trans | raw }}
+                                    </th>
+                                {% endfor %}
+                                <th class="text-center">
+                                    {{ t('action.entity_actions', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}
+                                </th>
+                            </tr>
+                        {% endblock table_footer %}
                     </tfoot>
                 </table>
             {% else %}

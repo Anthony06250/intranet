@@ -51,14 +51,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class DashboardController extends AbstractDashboardController
 {
     /**
-     * @var array
-     */
-    private array $todayControlsIds = [];
-
-    /**
      * Dashboard page settings
      */
     public const DAYS_UNTIL_BIRTHDAYS = 60;
+
+    /**
+     * @var array
+     */
+    private array $todayControlsIds = [];
 
     /**
      * @param UsersRepository $usersRepository
